@@ -7,8 +7,8 @@ Sailor Project
 
 - 下载地址
 
-  .. seealso:: - GitHub下载地址: `SerialScope git <https://github.com/SEASKY-Master/SerialScope>`_ .
-               - Gitee下载地址: `SerialScope gitee <https://gitee.com/SeaskyL/SerialScope.git>`_ .
+  .. seealso:: - GitHub下载地址: `SerialScope git <https://github.com/SEASKY-Master/vSailorProject>`_ .
+
 
 
 软件截图
