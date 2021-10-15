@@ -2,12 +2,25 @@
 Sailor Project
 ================
 
+.. hint::
+    对于该教程而言，本人不会花过多的时间去说明该软件如何使用，而是建议你自己有更多的尝试
+
+
 最新版本
 ========
 
 - 下载地址
 
-  .. seealso:: - GitHub下载地址: `SerialScope git <https://github.com/SEASKY-Master/vSailorProject>`_ .
+  .. seealso:: - V0-0-3版本简约黑色主题 : `vSailorProject-V0-0-3-black <https://github.com/SEASKY-Master/vSailorProject/releases/download/v0.0.3/vSailorProject-V0-0-3-black.zip>`_ .
+  .. seealso:: - V0-0-3版本默认主题     : `vSailorProject-V0-0-3-normal <https://github.com/SEASKY-Master/vSailorProject/releases/download/v0.0.3/vSailorProject-V0-0-3-normal.zip>`_ .
+
+代码完全开源
+================
+
+  .. seealso:: - vSailorProjec项目地址 : `vSailorProjec <https://github.com/SEASKY-Master/vSailorProject.git>`_ .
+  
+  .. important::
+      使用 `GPL` 开源协议，严禁用于商业用途
 
 
 
@@ -34,6 +47,11 @@ Sailor Project
     :width: 800 px
     :align: center
 
+  简约黑色主题
+
+  .. image:: ./image/serialport8.jpg
+    :width: 800 px
+    :align: center
 
 
 Sailor Project功能说明
@@ -43,6 +61,11 @@ Sailor Project功能说明
 *************
 
   .. image::  ./image/serialport6.jpg
+    :width: 800 px
+    :align: center
+  
+  
+  .. image::  ./image/serialport7.jpg
     :width: 800 px
     :align: center
 
@@ -56,12 +79,36 @@ Sailor Project功能说明
     由于保存数据为显示界面的数据，如果出于刷新状态，则无法保存所有数据，正确的做法是关闭串口后，将滚动条移动到最顶端，加载全部数据，然后保存窗口数据。
 
 
+串口调试助手功能
+****************
+
+- 支持传统的串口调试助手的基本收发功能，同时可以刷新大量的数据而不卡顿
+- 支持保存接收的数据
+- 支持最大200条可编辑指令的设置，并用于多条发送
+- 支持定时器发送
+- 支持换行符替换时间戳功能
+- 支持较多的中文编码格式
+- 值得注意的是支持Linux简单的串口调试
+- 支持加载csv表格数据到200条可编辑指令
+- 支持部分窗口配置的保存和重启恢复（前提是你不会删除配置文件）
+- ...
+
+
+.. note::
+    基础功能的使用较为简单，此处需要特别注意的是依照表格导入命令词条的功能，具体的操作可以参考下面 `TCPServer界面` 操作，不同的是，csv表格中的指引不同，串口为 ``SerialCommand``
+
+  .. image::  ./image/exc0.jpg
+    :width: 800 px
+    :align: center
+
 Seasky串口协议数据显示界面操作说明
 ***************************************
 
 - :doc:`SEASKY串口通信协议 <./../uart_protocol>`
   
   ``SEASKY串口通信协议`` 详细介绍 
+.. note::
+    为最大化提升效率，以及保证通信的可靠性，此处不适用printf方案，而是采用了自定义的通信协议，使用此工具需要你对CRC校验有一定的理解，能自行解读串口通信协议，如果完成了这部分协议的兼容，那么你将会发现此款串口示波器的强大之处
 
 - :doc:`SEASKY-BMI088技术手册 <./../bmi088>`
   
@@ -102,6 +149,81 @@ Seasky串口协议数据显示界面操作说明
    - ``静态界面`` 状态时，曲线不会进行刷新，界面显示定时器关闭，此时可以通过 :guilabel:`鼠标右键` 进入 ``实时刷新`` 状态， 或自动刷新Y轴坐标范围
    - X轴宽度只能手动调整
 
+
+TCPServer界面
+*****************
+
+
+- 支持保存接收的数据
+- 支持最大200条可编辑指令的设置，并用于多条发送
+- 支持定时器发送
+- 支持换行符替换时间戳功能
+- 支持较多的中文编码格式
+- 支持加载csv表格数据到200条可编辑指令
+- 支持部分窗口配置的保存和重启恢复（前提是你不会删除配置文件）
+- ...
+
+  .. image::  ./image/tcpserver1.jpg
+    :width: 800 px
+    :align: center
+
+  .. image::  ./image/tcpserver2.jpg
+    :width: 800 px
+    :align: center
+
+  .. image::  ./image/tcpserver3.jpg
+    :width: 800 px
+    :align: center
+
+  .. image::  ./image/tcpserver4.jpg
+    :width: 800 px
+    :align: center
+
+  .. image::  ./image/tcpserver5.jpg
+    :width: 800 px
+    :align: center
+
+
+  .. image::  ./image/tcpserver6.jpg
+    :width: 800 px
+    :align: center
+
+
+  .. image::  ./image/tcpserver7.jpg
+    :width: 800 px
+    :align: center
+
+
+  .. image::  ./image/tcpserver8.jpg
+    :width: 800 px
+    :align: center
+
+
+  .. image::  ./image/tcpserver9.jpg
+    :width: 800 px
+    :align: center
+
+
+  .. image::  ./image/tcpserver10.jpg
+    :width: 800 px
+    :align: center
+
+
+  .. image::  ./image/tcpserver11.jpg
+    :width: 800 px
+    :align: center
+
+
+  .. image::  ./image/tcpserver12.jpg
+    :width: 800 px
+    :align: center
+
+.. important::
+  注意：导入命令词条的功能，务必按照格式添加，非常规的csv表格可能会导致无法识别的现象，同时，由于没有采用复杂的解析算法，所以不建议使用过于复杂的csv表格格式,tcp为 ``TcpCommand`` 同时序号务必为升序
+
+  .. image::  ./image/exc1.jpg
+    :width: 800 px
+    :align: center
 
 帮助界面
 **********************
