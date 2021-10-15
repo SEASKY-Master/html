@@ -1,0 +1,423 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>2. 项目日志 &mdash; SEASKY  文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="1. SEASKY串口通信协议" href="../uart_protocol.html" />
+    <link rel="prev" title="1. Sailor Project" href="SailorProject.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SEASKY
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">实用开发工具</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../rst_sphinx/rst_sphinx.html">1. reStructuredText快速入门</a></li>
+</ul>
+<p class="caption"><span class="caption-text">串口示波器&lt;Sailor Project&gt;</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="SailorProject.html">1. Sailor Project</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. 项目日志</a></li>
+</ul>
+<p class="caption"><span class="caption-text">SEASKY模块说明</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../uart_protocol.html">1. SEASKY串口通信协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bmi088.html">2. SEASKY-BMI088技术手册</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SEASKY</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li><span class="section-number">2. </span>项目日志</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/seasky_works/SailorProject/readme.rst.txt" rel="nofollow"> 查看页面源码</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1><span class="section-number">2. </span>项目日志<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<ul>
+<li><dl>
+<dt>2021/7/7 日</dt><dd><p>准备重新编写SerialScope软件</p>
+<ul class="simple">
+<li><p>拟定加入功能</p></li>
+</ul>
+<ol class="arabic simple">
+<li><dl class="simple">
+<dt>常用的串口调试助手功能</dt><dd><ul class="simple">
+<li><p>基础数据收发</p></li>
+<li><p>HEX数据收发</p></li>
+<li><p>更多的多条发送配置，定时循环发送，方便指令调试</p></li>
+<li><p>界面优化</p></li>
+<li><p>QT的 <cite>QPlainTextEdit</cite> 加载大量数据会造成界面卡顿，因此如果直接使用，高效率的接收数据会导致程序卡死，网上暂无该 <cite>BUG`的改善措施，沿用上一个版本写的 `QPlainTextEdit</cite> 控件，并需要再做一定的优化</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>自定义协议的支持 <cite>Seasky协议</cite> 的支持</dt><dd><ul class="simple">
+<li><p><cite>Seasky串口协议</cite> 将满足极高的效率，将满足大多数的调试功能，不定长收发</p></li>
+<li><p>此版本软件发布版本固定最大支持 <cite>24个float数据</cite> 的传输，一个 <cite>CMD_ID</cite> ,一个 16位标志寄存器 <cite>reg</cite> ，如需发送24个 <a href="#id2"><span class="problematic" id="id3">`</span></a>float`数据，仅需发送 106 字节数据，同时具备了不定长收发功能</p></li>
+<li><p>增加和预留控件函数接口，方便扩展界面，此版本将加入基于`OpenGl`的3D 欧拉角显示功能</p></li>
+<li><p>和上次版本一样，所有解析的数据实时显示，以及所有数据汇总显示，汇总数据将加入时间戳，用于保存调试信息，拒绝字符串打印这种低效率的调试手段</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>同样是基于`Seasky`协议解算数据加入波形显示功能</p></li>
+<li><p>加入浏览器支持，用于加载网页端说明文档，不再需要跳出软件打开网页链接</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>2021/7/11 日</dt><dd><ul class="simple">
+<li><p>初步完成基本界面布局</p></li>
+<li><p>解决 <cite>MSVC</cite> 编译问题-&gt;中文注释编码格式导致编译不过</p></li>
+<li><p>由于本次采用`MSVC`编译，解决了 <cite>MINGW`编译无法使用 `WEB</cite> 功能的问题</p></li>
+<li><p>完成常用串口调试助手功能</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>2021/7/18 日</dt><dd><ul class="simple">
+<li><p>初步完成所有功能框架</p></li>
+<li><p>加入 <cite>Html</cite> 功能</p></li>
+<li><p>代码比较乱，需要简单修改位置，名称，相关功能还需要移动到一起</p></li>
+<li><p>程序需要去耦合</p></li>
+<li><p>波形显示窗口鼠标右键，界面抖动问题需要解决</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>2021/7/25 日</dt><dd><ul class="simple">
+<li><p>使用QSS初步优化界面</p></li>
+<li><p>开始完善控件部分功能，初步完善陀螺仪欧拉角的3D显示控件功能</p></li>
+<li><p>开始打包测试版本程序，后续群友测试，优化代码框架</p></li>
+<li><p>波形显示窗口鼠标右键，界面抖动问题需要解决</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>2021/7/27 日</dt><dd><ul class="simple">
+<li><p>发布压缩包</p></li>
+<li><p>功能未完善、功能未完善、功能未完善、功能未完善、测试阶段</p></li>
+<li><p>改善界面，发送编辑窗口高度固定</p></li>
+<li><p>波形显示窗口鼠标右键，界面抖动问题需要解决</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>2021/7/28 日</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>解决波形显示窗口鼠标右键，界面抖动问题</dt><dd><ul>
+<li><p>在此上一个版本是MINGW编译，自带的OPENGL库，所以没有兼容问题，而MSVC缺少OPENGL库，应该是自己添加的OPENGL库带来的兼容问题？</p></li>
+<li><p>修改了 <cite>qcustomplot</cite> 中的 <cite>void QCPPaintBufferGlFbo::draw(QCPPainter *painter) const</cite> 函数</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>2021/7/30 日</dt><dd><ul class="simple">
+<li><p>解决Linux串口调试时打印窗口数据混乱的问题，数据更新太快，由于使用了信号与槽分发数据，导致数据错位，更改后直接从串口流中取数据并处理，而不使用槽函数分发，不过不建立分发，需要在数据分类时，每种类型都需要做该处理，因此共享了串口类的指针</p></li>
+<li><p>重新梳理串口类的依赖关系，程序进一步去耦合，串口类多线程封装</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>2021/7/31 日</dt><dd><ul class="simple">
+<li><p>进一步去耦合，优化依赖关系</p></li>
+<li><p>协议部分优化，修改到方便切换支持的最大FLOAT数据长度，方便定制化软件</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>2021/8/1 日</dt><dd><ul class="simple">
+<li><p>添加多条指令发送窗口对导入csv表格的指令支持，以便于规范化、高效率的使用字符串命令调试</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>2021/8/2 日</dt><dd><ul class="simple">
+<li><p>处理SEASKY协议显示窗口定时器关闭，导致刷新暂停的问题</p></li>
+<li><p>添加协议容错处理，解决发送非协议数据时，使能协议程序意外退出的问题</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>2021/8/7 日</dt><dd><ul class="simple">
+<li><p>处理界面刷新相关的定时器，一共4个界面刷新相关的定时器，当且仅当切换到此界面才可以开启刷新定时器，以便于减小占用</p></li>
+<li><p>进一步优化程序，暂时不准备继续添加功能，此版本将作为V1版本发布</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>2021/9/4</dt><dd><ul class="simple">
+<li><p>考虑工作需求，工作调试软件颇为简陋，在此需要加入需要的TCP服务器功能</p></li>
+<li><dl class="simple">
+<dt>拟定加入功能</dt><dd><ul>
+<li><p>TCP Server</p></li>
+<li><p>TCP Client</p></li>
+<li><p>了解QT TCP实现的相关机制，需要先打通通信接口</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>2021/9/5</dt><dd><ul class="simple">
+<li><p>简要写了一个TCP 的类，由于没有机器，暂时不能验证</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>2021/9/16</dt><dd><ul class="simple">
+<li><p>自己写的Tcp服务器无法触发连接，而其他TCP工具可以触发，对比下来是自己的问题</p></li>
+<li><p>Tcp Server设置为 <code class="docutils literal notranslate"><span class="pre">this-&gt;listen(QHostAddress::AnyIPv4,this-&gt;vServerPort)``后可以触发</span> <span class="pre">``vNewConnect</span></code> ,然后通过 <code class="docutils literal notranslate"><span class="pre">this-&gt;nextPendingConnection()</span></code> ，获取``TcpSocket``指针，便于操作该连接</p></li>
+<li><p>需要记录多个连接，同时在关闭TCP是删除所有的连接，在此需要分配动态地址，保存所有 <cite>TcpSocket</cite> 信息数据，以及其对应的接收数据，故在此使用了 <cite>QList&lt;QTcpSocket*&gt;</cite> <a href="#id4"><span class="problematic" id="id5">`</span></a>QList&lt;QByteArray*&gt;`以方便管理服务器数据，使用`QVector&lt;quint16&gt;`记录端口号</p></li>
+<li><p>显示接收数据沿用串口调试助手界面编写的``vPlainTextEdit``自定义类，以解决QT目前文本刷新大量数据带来的卡顿问题</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>2021/9/11-12</dt><dd><ul class="simple">
+<li><p>加入发送功能，优化 <cite>TcpServer</cite> 界面</p></li>
+<li><p>加入多条发送</p></li>
+<li><p>加入hex格式支持</p></li>
+<li><p>加入换行符支持，新增支持设定以”}”判断是否换行，该功能只有 <cite>TcpServer</cite> 拥有</p></li>
+<li><p>加入定时发送等</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>2021/9/18-21</dt><dd><ul class="simple">
+<li><p>修改 <code class="docutils literal notranslate"><span class="pre">vPlainTextEdit</span></code> 自定义类的原始基类对象 <code class="docutils literal notranslate"><span class="pre">QPlainTextEdit</span></code> 为 <code class="docutils literal notranslate"><span class="pre">QTextEdit</span></code> ,以支持富文本操作;</p></li>
+<li><p>修改刷新界面的判断需求,所有功能都需要针对 <cite>“n”</cite> 即换行符做一些针对性的优化</p></li>
+<li><p>富文本中换行符不支持 <cite>“n”</cite> ,取而代之的是html语言中的&lt;br/&gt;</p></li>
+<li><p>加入简单的串口终端界面，你可以直接使用 <cite>Enter</cite> 键发送你需要发送的数据，同时加入换行符，以及清除当前窗口内容</p></li>
+<li><p>终端窗口界面支持设置一些简要的命令，同时通过鼠标点击发送</p></li>
+<li><p>继续优化TCP功能，串口接收界面，以及TCP接收界面，加入时间戳，设置不同颜色</p></li>
+<li><p>Linux返回数据做一些简要处理，删除 <cite>x1B[xx:xxm</cite> 格式的 <cite>ANSI序列（终端的富文本控制符）</cite> ，同时将 <code class="docutils literal notranslate"><span class="pre">ANSI序列</span></code> 中的颜色设置保留，并转换为 <cite>html</cite> 的``&lt;font&gt;``标签，以保留颜色格式，而过滤其他格式</p></li>
+<li><p>新增功能的数据备份和恢复功能的添加，在之前的基础之上，新增功能窗口的部分设置功能，以及需要发送的数据需要在第二次打开时可以恢复第一次关闭前的状态，以减少重复性工作，然而部分功能需要恢复为默认关闭状态</p></li>
+<li><p>基本完成这个版本功能，V0.0.2版本暂时告于段落。</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>2021/10/15</dt><dd><ul class="simple">
+<li><p>公布添加TCP服务器部分的源码，完全开源，同时发布v0.0.3版本的软件，一个四个软件包，包含黑色简约主题的32位和64位版本，以及默认主题的32位和64位版本</p></li>
+<li><p>在此感谢 <code class="docutils literal notranslate"><span class="pre">&#64;BraiseFish</span></code> 贡献的黑色主题的 css配置文件</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../uart_protocol.html" class="btn btn-neutral float-right" title="1. SEASKY串口通信协议" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="SailorProject.html" class="btn btn-neutral float-left" title="1. Sailor Project" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2020/10/29,SEASKY.
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

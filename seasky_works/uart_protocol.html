@@ -1,0 +1,633 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>1. SEASKY串口通信协议 &mdash; SEASKY  文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="2. SEASKY-BMI088技术手册" href="bmi088.html" />
+    <link rel="prev" title="2. 项目日志" href="SailorProject/readme.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> SEASKY
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">实用开发工具</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../rst_sphinx/rst_sphinx.html">1. reStructuredText快速入门</a></li>
+</ul>
+<p class="caption"><span class="caption-text">串口示波器&lt;Sailor Project&gt;</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="SailorProject/SailorProject.html">1. Sailor Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SailorProject/readme.html">2. 项目日志</a></li>
+</ul>
+<p class="caption"><span class="caption-text">SEASKY模块说明</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. SEASKY串口通信协议</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">1.1. 串口配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">1.2. 接口协议说明</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="bmi088.html">2. SEASKY-BMI088技术手册</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SEASKY</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li><span class="section-number">1. </span>SEASKY串口通信协议</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/seasky_works/uart_protocol.rst.txt" rel="nofollow"> 查看页面源码</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="seasky">
+<h1><span class="section-number">1. </span>SEASKY串口通信协议<a class="headerlink" href="#seasky" title="永久链接至标题">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>串口通信协议，包含帧头CRC8校验以及数据的整包校验，可以实现不定长收发数据（例如RoboMaster中可用于和视觉双方通信，以及其他自研模块）</p>
+</div>
+<div class="section" id="id1">
+<h2><span class="section-number">1.1. </span>串口配置<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<div class="line-block">
+<div class="line">通信方式是串口，配置为波特率 <code class="docutils literal notranslate"><span class="pre">115200</span></code>， <code class="docutils literal notranslate"><span class="pre">8</span></code>  位数据位， <code class="docutils literal notranslate"><span class="pre">1</span></code>  位停止位， <code class="docutils literal notranslate"><span class="pre">无</span></code> 硬件流控， <code class="docutils literal notranslate"><span class="pre">无</span></code> 校验位。</div>
+</div>
+</div>
+<div class="section" id="id2">
+<h2><span class="section-number">1.2. </span>接口协议说明<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<div class="line-block">
+<div class="line">以下所有低位在前发送</div>
+</div>
+<ol class="arabic simple">
+<li><p>通信协议格式</p></li>
+</ol>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 17%" />
+<col style="width: 16%" />
+<col style="width: 40%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>帧头</p></th>
+<th class="head"><p>数据ID</p></th>
+<th class="head"><p>数据</p></th>
+<th class="head"><p>帧尾</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>protocol_header(4-byte)</p></td>
+<td><p>cmd_id(2-byte)</p></td>
+<td><p>data (n-byte)</p></td>
+<td><p>frame_tail(2-byte，CRC16，整包校验)</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="2">
+<li><p>帧头详细定义</p></li>
+</ol>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 48%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>帧头</p></th>
+<th class="head"><p>偏移位置</p></th>
+<th class="head"><p>字节大小</p></th>
+<th class="head"><p>内容</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>sof(CMD)</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>数据帧起始字节，固定值为 0xA5</p></td>
+</tr>
+<tr class="row-odd"><td><p>data_length</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>数据帧中 data 的长度</p></td>
+</tr>
+<tr class="row-even"><td><p>crc_check</p></td>
+<td><p>3</p></td>
+<td><p>1</p></td>
+<td><p>帧头CRC校验</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="3">
+<li><p><code class="docutils literal notranslate"><span class="pre">cmd_id</span></code> 命令码 <code class="docutils literal notranslate"><span class="pre">ID</span></code> 说明(字节偏移 4，字节大小 2)</p></li>
+</ol>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 36%" />
+<col style="width: 27%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>命令码</p></th>
+<th class="head"><p>数据段长度</p></th>
+<th class="head"><p>功能说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x0001(可修改)</p></td>
+<td><p>1</p></td>
+<td><p>视觉数据</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x0002</p></td>
+<td><p>2</p></td>
+<td><p>BMI088姿态数据</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="4">
+<li><p>数据段 <code class="docutils literal notranslate"><span class="pre">data</span></code>  ( <code class="docutils literal notranslate"><span class="pre">n-byte</span></code> )</p></li>
+</ol>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+<col style="width: 43%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>数据</p></th>
+<th class="head"><p>偏移位置</p></th>
+<th class="head"><p>字节大小</p></th>
+<th class="head"><p>内容</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>flags_register</p></td>
+<td><p>6</p></td>
+<td><p>2</p></td>
+<td><p>16位标志置位寄存器</p></td>
+</tr>
+<tr class="row-odd"><td><p>float_date(len)</p></td>
+<td><p>8</p></td>
+<td><p><cite>4len</cite></p></td>
+<td><p>float数据内容(<cite>4len-byte</cite>)</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="5">
+<li><p><code class="docutils literal notranslate"><span class="pre">frame_tail</span></code> ( <code class="docutils literal notranslate"><span class="pre">CRC16</span></code> ，整包校验)</p></li>
+<li><p>使用待发送数据更新获取发送数据帧</p></li>
+</ol>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">根据待发送数据更新buff</span><a class="headerlink" href="#id3" title="永久链接至代码">¶</a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kt">void</span> <span class="n">get_protocol_send_data</span>
+<span class="linenos">2</span><span class="p">(</span><span class="kt">uint16_t</span> <span class="n">send_id</span><span class="p">,</span>               <span class="c1">//信号id</span>
+<span class="linenos">3</span><span class="kt">uint16_t</span> <span class="n">flags_register</span><span class="p">,</span> <span class="c1">//16位寄存器</span>
+<span class="linenos">4</span><span class="kt">float</span>    <span class="o">*</span><span class="n">tx_data</span><span class="p">,</span>               <span class="c1">//待发送的float数据</span>
+<span class="linenos">5</span><span class="kt">uint8_t</span>  <span class="n">float_length</span><span class="p">,</span>   <span class="c1">//float的数据长度</span>
+<span class="linenos">6</span><span class="kt">uint8_t</span>  <span class="o">*</span><span class="n">tx_buf</span><span class="p">,</span>                  <span class="c1">//待发送的数据帧</span>
+<span class="linenos">7</span><span class="kt">uint16_t</span> <span class="o">*</span><span class="n">tx_buf_len</span><span class="p">)</span>    <span class="c1">//待发送的数据帧长度</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">提示</p>
+<p>使用说明，如定义需要发送的数据为  <code class="docutils literal notranslate"><span class="pre">flags_register_t</span></code>  (寄存器，用于传递部分标志), <code class="docutils literal notranslate"><span class="pre">tx_data[2]</span></code> (假设只发视觉的两个数据x,y)，<code class="docutils literal notranslate"><span class="pre">tx_data_len</span> <span class="pre">=</span> <span class="pre">2</span></code>  (发送的float数据长度为2)，信号id定义为  <code class="docutils literal notranslate"><span class="pre">vis_id</span> <span class="pre">=</span> <span class="pre">0x000A</span></code> ;定义发送数据发送缓冲区 <code class="docutils literal notranslate"><span class="pre">uint8_t</span> <span class="pre">tx_buf[100]</span></code> ,  <code class="docutils literal notranslate"><span class="pre">uint16_t</span> <span class="pre">tx_buf_len</span> <span class="pre">=</span> <span class="pre">0</span></code> 则上述函数调用后会更新  <code class="docutils literal notranslate"><span class="pre">tx_buf</span></code> 中的数据，以及更新发送数据长度 <code class="docutils literal notranslate"><span class="pre">tx_buf_len</span></code></p>
+</div>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">使用示例</span><a class="headerlink" href="#id4" title="永久链接至代码">¶</a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="cm">/*更新数据发送缓冲区*/</span>
+<span class="linenos">2</span><span class="n">get_protocol_send_data</span><span class="p">(</span><span class="n">vis_id</span><span class="p">,</span>
+<span class="linenos">3</span>                      <span class="o">&amp;</span><span class="n">flags_register_t</span><span class="p">,</span>
+<span class="linenos">4</span>                      <span class="n">tx_data</span><span class="p">,</span>
+<span class="linenos">5</span>                      <span class="o">&amp;</span><span class="n">tx_data_len</span><span class="p">,</span>
+<span class="linenos">6</span>                      <span class="n">tx_buf</span><span class="p">,</span>
+<span class="linenos">7</span>                      <span class="n">tx_buf_len</span><span class="p">);</span>
+<span class="linenos">8</span><span class="cm">/*发送缓冲区数据，多字节发送函数，按字节形式发送，linux或win只需调用底层的字节发送接口函数*/</span>
+<span class="linenos">9</span><span class="n">usart6_send</span><span class="p">(</span><span class="n">tx_buf</span><span class="p">,</span><span class="n">tx_buf_len</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<ol class="arabic simple" start="7">
+<li><p>接收数据获取id，获取flags_register，rx_data</p></li>
+</ol>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">使用示例</span><a class="headerlink" href="#id5" title="永久链接至代码">¶</a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kt">uint16_t</span> <span class="n">get_protocol_info</span>
+<span class="linenos">2</span>      <span class="p">(</span><span class="kt">uint8_t</span>  <span class="o">*</span><span class="n">rx_buf</span><span class="p">,</span>                        <span class="c1">//接收到的原始数据</span>
+<span class="linenos">3</span>       <span class="kt">uint16_t</span> <span class="o">*</span><span class="n">rx_pos</span><span class="p">,</span>                        <span class="c1">//原始数据指针</span>
+<span class="linenos">4</span>       <span class="kt">uint16_t</span> <span class="o">*</span><span class="n">flags_register</span><span class="p">,</span>   <span class="c1">//接收数据的16位寄存器地址</span>
+<span class="linenos">5</span>       <span class="kt">float</span>    <span class="o">*</span><span class="n">rx_data</span><span class="p">)</span>               <span class="c1">//接收的float数据存储地址</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">提示</p>
+<p>使用说明，首先将接收数据存储于 <code class="docutils literal notranslate"><span class="pre">rx_buf[]</span></code>,每接收一个数据  <code class="docutils literal notranslate"><span class="pre">*rx_pos</span></code> 的值会加一，以便于存储下一个数据，原始数据缓冲的存储由中断方式完成，在linux或win上可能有所区别，调用此函数，函数中包含crc校验，数据解读等相关处理，最后会更新 <code class="docutils literal notranslate"><span class="pre">flags_register</span></code> 的值即为收到的16位寄存器的值， <code class="docutils literal notranslate"><span class="pre">rx_data[]</span></code> 即为收到的 <code class="docutils literal notranslate"><span class="pre">float</span></code> 数据；</p>
+</div>
+<ol class="arabic simple" start="8">
+<li><p><code class="docutils literal notranslate"><span class="pre">Seasky</span></code> 串口通信协议</p></li>
+</ol>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">bsp_protocol.c</span><a class="headerlink" href="#id6" title="永久链接至代码">¶</a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span><span class="cm">/*</span>
+<span class="linenos">  2</span><span class="cm">  @SEASKY---2020/09/05</span>
+<span class="linenos">  3</span><span class="cm">  串口通信协议</span>
+<span class="linenos">  4</span><span class="cm">*/</span>
+<span class="linenos">  5</span><span class="cp">#include</span> <span class="cpf">&quot;bsp_protocol.h&quot;</span><span class="cp"></span>
+<span class="linenos">  6</span>
+<span class="linenos">  7</span><span class="cp">#include</span> <span class="cpf">&quot;bsp_crc8.h&quot;</span><span class="cp"></span>
+<span class="linenos">  8</span><span class="cp">#include</span> <span class="cpf">&quot;bsp_crc16.h&quot;</span><span class="cp"></span>
+<span class="linenos">  9</span>
+<span class="linenos"> 10</span><span class="cm">/*获取CRC8校验码*/</span>
+<span class="linenos"> 11</span><span class="kt">uint8_t</span> <span class="nf">Get_CRC8_Check</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">pchMessage</span><span class="p">,</span><span class="kt">uint16_t</span> <span class="n">dwLength</span><span class="p">)</span>
+<span class="linenos"> 12</span><span class="p">{</span>
+<span class="linenos"> 13</span>    <span class="k">return</span> <span class="n">crc_8</span><span class="p">(</span><span class="n">pchMessage</span><span class="p">,</span><span class="n">dwLength</span><span class="p">);</span>
+<span class="linenos"> 14</span><span class="p">}</span>
+<span class="linenos"> 15</span><span class="cm">/*检验CRC8数据段*/</span>
+<span class="linenos"> 16</span><span class="kt">uint8_t</span> <span class="nf">CRC8_Check_Sum</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">pchMessage</span><span class="p">,</span><span class="kt">uint16_t</span> <span class="n">dwLength</span><span class="p">)</span>
+<span class="linenos"> 17</span><span class="p">{</span>
+<span class="linenos"> 18</span>    <span class="kt">uint8_t</span> <span class="n">ucExpected</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="linenos"> 19</span>    <span class="k">if</span> <span class="p">((</span><span class="n">pchMessage</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">dwLength</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">))</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="linenos"> 20</span>    <span class="n">ucExpected</span> <span class="o">=</span> <span class="n">Get_CRC8_Check</span><span class="p">(</span><span class="n">pchMessage</span><span class="p">,</span> <span class="n">dwLength</span><span class="mi">-1</span><span class="p">);</span>
+<span class="linenos"> 21</span>    <span class="k">return</span> <span class="p">(</span> <span class="n">ucExpected</span> <span class="o">==</span> <span class="n">pchMessage</span><span class="p">[</span><span class="n">dwLength</span><span class="mi">-1</span><span class="p">]</span> <span class="p">);</span>
+<span class="linenos"> 22</span><span class="p">}</span>
+<span class="linenos"> 23</span><span class="cm">/*获取CRC16校验码*/</span>
+<span class="linenos"> 24</span><span class="kt">uint16_t</span> <span class="nf">Get_CRC16_Check</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">pchMessage</span><span class="p">,</span><span class="kt">uint32_t</span> <span class="n">dwLength</span><span class="p">)</span>
+<span class="linenos"> 25</span><span class="p">{</span>
+<span class="linenos"> 26</span>    <span class="k">return</span> <span class="n">crc_16</span><span class="p">(</span><span class="n">pchMessage</span><span class="p">,</span><span class="n">dwLength</span><span class="p">);</span>
+<span class="linenos"> 27</span><span class="p">}</span>
+<span class="linenos"> 28</span><span class="cm">/*检验CRC16数据段*/</span>
+<span class="linenos"> 29</span><span class="kt">uint16_t</span> <span class="nf">CRC16_Check_Sum</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">pchMessage</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">dwLength</span><span class="p">)</span>
+<span class="linenos"> 30</span><span class="p">{</span>
+<span class="linenos"> 31</span>    <span class="kt">uint16_t</span>  <span class="n">wExpected</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="linenos"> 32</span>    <span class="k">if</span> <span class="p">((</span><span class="n">pchMessage</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">dwLength</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">))</span>
+<span class="linenos"> 33</span>        <span class="p">{</span>
+<span class="linenos"> 34</span>            <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="linenos"> 35</span>        <span class="p">}</span>
+<span class="linenos"> 36</span>    <span class="n">wExpected</span> <span class="o">=</span> <span class="n">Get_CRC16_Check</span> <span class="p">(</span> <span class="n">pchMessage</span><span class="p">,</span> <span class="n">dwLength</span> <span class="o">-</span> <span class="mi">2</span><span class="p">);</span>
+<span class="linenos"> 37</span>    <span class="k">return</span> <span class="p">(((</span><span class="n">wExpected</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">)</span> <span class="o">==</span> <span class="n">pchMessage</span><span class="p">[</span><span class="n">dwLength</span> <span class="o">-</span> <span class="mi">2</span><span class="p">]</span> <span class="p">)</span><span class="o">&amp;&amp;</span> <span class="p">(((</span><span class="n">wExpected</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">)</span> <span class="o">==</span> <span class="n">pchMessage</span><span class="p">[</span><span class="n">dwLength</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]));</span>
+<span class="linenos"> 38</span><span class="p">}</span>
+<span class="linenos"> 39</span><span class="cm">/*检验数据帧头*/</span>
+<span class="linenos"> 40</span><span class="kt">uint8_t</span> <span class="nf">protocol_heade_Check</span><span class="p">(</span>
+<span class="linenos"> 41</span>    <span class="n">protocol</span> <span class="o">*</span><span class="n">pro</span><span class="p">,</span>
+<span class="linenos"> 42</span>    <span class="kt">uint8_t</span>  <span class="o">*</span><span class="n">rx_buf</span><span class="p">,</span>
+<span class="linenos"> 43</span>    <span class="kt">uint16_t</span> <span class="o">*</span><span class="n">rx_pos</span><span class="p">)</span>
+<span class="linenos"> 44</span><span class="p">{</span>
+<span class="linenos"> 45</span>    <span class="k">if</span><span class="p">(</span><span class="n">rx_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">PROTOCOL_CMD_ID</span><span class="p">)</span>
+<span class="linenos"> 46</span>        <span class="p">{</span>
+<span class="linenos"> 47</span>            <span class="n">pro</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">.</span><span class="n">sof</span> <span class="o">=</span> <span class="n">rx_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="linenos"> 48</span>            <span class="k">if</span><span class="p">(</span><span class="n">CRC8_Check_Sum</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rx_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">4</span><span class="p">))</span>
+<span class="linenos"> 49</span>                <span class="p">{</span>
+<span class="linenos"> 50</span>                    <span class="n">pro</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">.</span><span class="n">data_length</span> <span class="o">=</span> <span class="p">(</span><span class="n">rx_buf</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">&lt;&lt;</span><span class="mi">8</span><span class="p">)</span> <span class="o">|</span> <span class="n">rx_buf</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="linenos"> 51</span>                    <span class="n">pro</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">.</span><span class="n">crc_check</span> <span class="o">=</span> <span class="n">rx_buf</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+<span class="linenos"> 52</span>                    <span class="n">pro</span><span class="o">-&gt;</span><span class="n">cmd_id</span> <span class="o">=</span> <span class="p">(</span><span class="n">rx_buf</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">&lt;&lt;</span><span class="mi">8</span><span class="p">)</span> <span class="o">|</span> <span class="n">rx_buf</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+<span class="linenos"> 53</span>                    <span class="k">return</span>  <span class="mi">1</span><span class="p">;</span>
+<span class="linenos"> 54</span>                <span class="p">}</span>
+<span class="linenos"> 55</span>        <span class="p">}</span>
+<span class="linenos"> 56</span>    <span class="k">else</span>
+<span class="linenos"> 57</span>        <span class="p">{</span>
+<span class="linenos"> 58</span>            <span class="o">*</span><span class="n">rx_pos</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="linenos"> 59</span>        <span class="p">}</span>
+<span class="linenos"> 60</span>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="linenos"> 61</span><span class="p">}</span>
+<span class="linenos"> 62</span>
+<span class="linenos"> 63</span><span class="kt">float</span> <span class="nf">float_protocol</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">dat_t</span><span class="p">)</span>
+<span class="linenos"> 64</span><span class="p">{</span>
+<span class="linenos"> 65</span>    <span class="kt">uint8_t</span> <span class="n">f_data</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+<span class="linenos"> 66</span>    <span class="n">f_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">dat_t</span><span class="o">+</span><span class="mi">0</span><span class="p">);</span>
+<span class="linenos"> 67</span>    <span class="n">f_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">dat_t</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+<span class="linenos"> 68</span>    <span class="n">f_data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">dat_t</span><span class="o">+</span><span class="mi">2</span><span class="p">);</span>
+<span class="linenos"> 69</span>    <span class="n">f_data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">dat_t</span><span class="o">+</span><span class="mi">3</span><span class="p">);</span>
+<span class="linenos"> 70</span>    <span class="k">return</span> <span class="o">*</span><span class="p">(</span><span class="kt">float</span><span class="o">*</span><span class="p">)</span><span class="n">f_data</span><span class="p">;</span>
+<span class="linenos"> 71</span><span class="p">}</span>
+<span class="linenos"> 72</span><span class="cm">/*</span>
+<span class="linenos"> 73</span><span class="cm">  此函数根据待发送的数据更新数据帧格式以及内容，实现数据的打包操作</span>
+<span class="linenos"> 74</span><span class="cm">  后续调用通信接口的发送函数发送tx_buf中的对应数据</span>
+<span class="linenos"> 75</span><span class="cm">*/</span>
+<span class="linenos"> 76</span><span class="kt">void</span> <span class="nf">get_protocol_send_data</span>
+<span class="linenos"> 77</span><span class="p">(</span><span class="kt">uint16_t</span> <span class="n">send_id</span><span class="p">,</span>              <span class="c1">//信号id</span>
+<span class="linenos"> 78</span><span class="kt">uint16_t</span> <span class="n">flags_register</span><span class="p">,</span> <span class="c1">//16位寄存器</span>
+<span class="linenos"> 79</span><span class="kt">float</span>    <span class="o">*</span><span class="n">tx_data</span><span class="p">,</span>              <span class="c1">//待发送的float数据</span>
+<span class="linenos"> 80</span><span class="kt">uint8_t</span>  <span class="n">float_length</span><span class="p">,</span>   <span class="c1">//float的数据长度</span>
+<span class="linenos"> 81</span><span class="kt">uint8_t</span>  <span class="o">*</span><span class="n">tx_buf</span><span class="p">,</span>               <span class="c1">//待发送的数据帧</span>
+<span class="linenos"> 82</span><span class="kt">uint16_t</span> <span class="o">*</span><span class="n">tx_buf_len</span><span class="p">)</span>   <span class="c1">//待发送的数据帧长度</span>
+<span class="linenos"> 83</span><span class="p">{</span>
+<span class="linenos"> 84</span>    <span class="kt">uint16_t</span> <span class="n">crc16</span><span class="p">;</span>
+<span class="linenos"> 85</span>    <span class="kt">uint16_t</span> <span class="n">data_len</span><span class="p">;</span>
+<span class="linenos"> 86</span>
+<span class="linenos"> 87</span>    <span class="n">data_len</span> <span class="o">=</span> <span class="n">float_length</span><span class="o">*</span><span class="mi">4</span><span class="o">+</span><span class="mi">2</span><span class="p">;</span>
+<span class="linenos"> 88</span>    <span class="cm">/*帧头部分*/</span>
+<span class="linenos"> 89</span>    <span class="n">tx_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">PROTOCOL_CMD_ID</span><span class="p">;</span>
+<span class="linenos"> 90</span>    <span class="n">tx_buf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_len</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>                    <span class="c1">//低位在前</span>
+<span class="linenos"> 91</span>    <span class="n">tx_buf</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">data_len</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>       <span class="c1">//低位在前</span>
+<span class="linenos"> 92</span>    <span class="n">tx_buf</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">Get_CRC8_Check</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tx_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">3</span><span class="p">);</span> <span class="c1">//获取CRC8校验位</span>
+<span class="linenos"> 93</span>
+<span class="linenos"> 94</span>    <span class="cm">/*数据的信号id*/</span>
+<span class="linenos"> 95</span>    <span class="n">tx_buf</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">send_id</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>
+<span class="linenos"> 96</span>    <span class="n">tx_buf</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">send_id</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>
+<span class="linenos"> 97</span>
+<span class="linenos"> 98</span>    <span class="cm">/*建立16位寄存器*/</span>
+<span class="linenos"> 99</span>    <span class="n">tx_buf</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">flags_register</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>
+<span class="linenos">100</span>    <span class="n">tx_buf</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">flags_register</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>
+<span class="linenos">101</span>
+<span class="linenos">102</span>    <span class="cm">/*float数据段*/</span>
+<span class="linenos">103</span>    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">4</span><span class="o">*</span><span class="n">float_length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="linenos">104</span>        <span class="p">{</span>
+<span class="linenos">105</span>            <span class="n">tx_buf</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">8</span><span class="p">]</span>  <span class="o">=</span> <span class="p">((</span><span class="kt">uint8_t</span><span class="o">*</span><span class="p">)(</span><span class="o">&amp;</span><span class="n">tx_data</span><span class="p">[</span><span class="n">i</span><span class="o">/</span><span class="mi">4</span><span class="p">]))[</span><span class="n">i</span><span class="o">%</span><span class="mi">4</span><span class="p">];</span>
+<span class="linenos">106</span>        <span class="p">}</span>
+<span class="linenos">107</span>
+<span class="linenos">108</span>    <span class="cm">/*整包校验*/</span>
+<span class="linenos">109</span>    <span class="n">crc16</span> <span class="o">=</span> <span class="n">Get_CRC16_Check</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tx_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">data_len</span><span class="o">+</span><span class="mi">6</span><span class="p">);</span>
+<span class="linenos">110</span>    <span class="n">tx_buf</span><span class="p">[</span><span class="n">data_len</span><span class="o">+</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">crc16</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>
+<span class="linenos">111</span>    <span class="n">tx_buf</span><span class="p">[</span><span class="n">data_len</span><span class="o">+</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">crc16</span> <span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>
+<span class="linenos">112</span>
+<span class="linenos">113</span>    <span class="o">*</span><span class="n">tx_buf_len</span> <span class="o">=</span> <span class="n">data_len</span><span class="o">+</span><span class="mi">8</span><span class="p">;</span>
+<span class="linenos">114</span><span class="p">}</span>
+<span class="linenos">115</span><span class="cm">/*</span>
+<span class="linenos">116</span><span class="cm">  此函数用于处理接收数据，</span>
+<span class="linenos">117</span><span class="cm">  返回数据内容的id</span>
+<span class="linenos">118</span><span class="cm">*/</span>
+<span class="linenos">119</span>
+<span class="linenos">120</span><span class="kt">uint16_t</span> <span class="nf">get_protocol_info</span>
+<span class="linenos">121</span><span class="p">(</span><span class="kt">uint8_t</span>  <span class="o">*</span><span class="n">rx_buf</span><span class="p">,</span>                    <span class="c1">//接收到的原始数据</span>
+<span class="linenos">122</span><span class="kt">uint16_t</span> <span class="o">*</span><span class="n">rx_pos</span><span class="p">,</span>                     <span class="c1">//原始数据指针</span>
+<span class="linenos">123</span><span class="kt">uint16_t</span> <span class="o">*</span><span class="n">flags_register</span><span class="p">,</span>     <span class="c1">//接收数据的16位寄存器地址</span>
+<span class="linenos">124</span><span class="kt">float</span>    <span class="o">*</span><span class="n">rx_data</span><span class="p">)</span>                    <span class="c1">//接收的float数据存储地址</span>
+<span class="linenos">125</span><span class="p">{</span>
+<span class="linenos">126</span>  <span class="k">static</span> <span class="n">protocol</span> <span class="n">pro</span><span class="p">;</span>
+<span class="linenos">127</span>  <span class="k">static</span> <span class="kt">uint16_t</span> <span class="n">date_length</span><span class="p">;</span>
+<span class="linenos">128</span>    <span class="k">if</span><span class="p">(</span><span class="n">protocol_heade_Check</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pro</span><span class="p">,</span><span class="n">rx_buf</span><span class="p">,</span><span class="n">rx_pos</span><span class="p">))</span>
+<span class="linenos">129</span>        <span class="p">{</span>
+<span class="linenos">130</span>            <span class="n">date_length</span> <span class="o">=</span> <span class="n">OFFSET_BYTE</span> <span class="o">+</span> <span class="n">pro</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">data_length</span><span class="p">;</span>
+<span class="linenos">131</span>            <span class="k">while</span><span class="p">(</span><span class="n">CRC16_Check_Sum</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rx_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">date_length</span><span class="p">))</span>
+<span class="linenos">132</span>                <span class="p">{</span>
+<span class="linenos">133</span>                    <span class="o">*</span><span class="n">flags_register</span> <span class="o">=</span> <span class="p">(</span><span class="n">rx_buf</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">&lt;&lt;</span><span class="mi">8</span><span class="p">)</span> <span class="o">|</span> <span class="n">rx_buf</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span>
+<span class="linenos">134</span>                    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="p">(</span><span class="n">pro</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">data_length</span><span class="mi">-2</span><span class="p">)</span><span class="o">/</span><span class="mi">4</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="linenos">135</span>                        <span class="p">{</span>
+<span class="linenos">136</span>                            <span class="n">rx_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">float_protocol</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rx_buf</span><span class="p">[</span><span class="mi">8</span><span class="o">+</span><span class="mi">4</span><span class="o">*</span><span class="n">i</span><span class="p">]);</span>
+<span class="linenos">137</span>                        <span class="p">}</span>
+<span class="linenos">138</span>                    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">date_length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="linenos">139</span>                        <span class="p">{</span>
+<span class="linenos">140</span>                            <span class="n">rx_buf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="linenos">141</span>                        <span class="p">}</span>
+<span class="linenos">142</span>                    <span class="o">*</span><span class="n">rx_pos</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="linenos">143</span>                    <span class="k">return</span> <span class="n">pro</span><span class="p">.</span><span class="n">cmd_id</span><span class="p">;</span>
+<span class="linenos">144</span>                <span class="p">}</span>
+<span class="linenos">145</span>        <span class="p">}</span>
+<span class="linenos">146</span><span class="p">}</span>
+<span class="linenos">147</span><span class="cm">/*放入中断接收函数*/</span>
+<span class="linenos">148</span><span class="kt">void</span> <span class="nf">PROTOCOL_RX_IRQ</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">res</span><span class="p">,</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">rx_buf</span><span class="p">,</span><span class="kt">uint16_t</span> <span class="o">*</span><span class="n">rx_buf_pos</span><span class="p">)</span>
+<span class="linenos">149</span><span class="p">{</span>
+<span class="linenos">150</span>    <span class="n">rx_buf</span><span class="p">[</span><span class="o">*</span><span class="n">rx_buf_pos</span><span class="p">]</span><span class="o">=</span><span class="n">res</span><span class="p">;</span>
+<span class="linenos">151</span>    <span class="p">(</span><span class="o">*</span><span class="n">rx_buf_pos</span><span class="p">)</span> <span class="o">+=</span><span class="mi">1</span><span class="p">;</span>
+<span class="linenos">152</span>    <span class="k">if</span><span class="p">(</span><span class="n">rx_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span><span class="n">PROTOCOL_CMD_ID</span><span class="p">)</span>
+<span class="linenos">153</span>        <span class="p">{</span>
+<span class="linenos">154</span>            <span class="o">*</span><span class="n">rx_buf_pos</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="linenos">155</span>        <span class="p">};</span>
+<span class="linenos">156</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">bsp_protocol.h</span><a class="headerlink" href="#id7" title="永久链接至代码">¶</a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">#ifndef _BSP_PROTOCOL_H</span>
+<span class="linenos"> 2</span><span class="cp">#define _BSP_PROTOCOL_H</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="cp">#include</span> <span class="cpf">&quot;main.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="cp">#define PROTOCOL_CMD_ID 0XA5</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="cp">#define OFFSET_BYTE 8 </span><span class="c1">//出数据段外，其他部分所占字节数</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="k">typedef</span> <span class="k">struct</span>
+<span class="linenos">11</span><span class="p">{</span>
+<span class="linenos">12</span>    <span class="n">__packed</span> <span class="k">struct</span>
+<span class="linenos">13</span>    <span class="p">{</span>
+<span class="linenos">14</span>        <span class="kt">uint8_t</span>  <span class="n">sof</span><span class="p">;</span>
+<span class="linenos">15</span>        <span class="kt">uint16_t</span> <span class="n">data_length</span><span class="p">;</span>
+<span class="linenos">16</span>        <span class="kt">uint8_t</span>  <span class="n">crc_check</span><span class="p">;</span> <span class="c1">//帧头CRC校验</span>
+<span class="linenos">17</span>    <span class="p">}</span> <span class="n">header</span><span class="p">;</span>                                 <span class="c1">//数据帧头</span>
+<span class="linenos">18</span>    <span class="kt">uint16_t</span> <span class="n">cmd_id</span><span class="p">;</span>                  <span class="c1">//数据ID</span>
+<span class="linenos">19</span>    <span class="kt">uint16_t</span> <span class="n">frame_tail</span><span class="p">;</span>              <span class="c1">//帧尾CRC校验</span>
+<span class="linenos">20</span><span class="p">}</span> <span class="n">protocol</span><span class="p">;</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span><span class="cm">/*更新发送数据帧，并计算发送数据帧长度*/</span>
+<span class="linenos">23</span><span class="kt">void</span> <span class="nf">get_protocol_send_data</span>
+<span class="linenos">24</span><span class="p">(</span><span class="kt">uint16_t</span> <span class="n">send_id</span><span class="p">,</span>              <span class="c1">//信号id</span>
+<span class="linenos">25</span><span class="kt">uint16_t</span> <span class="n">flags_register</span><span class="p">,</span> <span class="c1">//16位寄存器</span>
+<span class="linenos">26</span><span class="kt">float</span>    <span class="o">*</span><span class="n">tx_data</span><span class="p">,</span>              <span class="c1">//待发送的float数据</span>
+<span class="linenos">27</span><span class="kt">uint8_t</span>  <span class="n">float_length</span><span class="p">,</span><span class="c1">//float的数据长度</span>
+<span class="linenos">28</span><span class="kt">uint8_t</span>  <span class="o">*</span><span class="n">tx_buf</span><span class="p">,</span>               <span class="c1">//待发送的数据帧</span>
+<span class="linenos">29</span><span class="kt">uint16_t</span> <span class="o">*</span><span class="n">tx_buf_len</span><span class="p">);</span>          <span class="c1">//待发送的数据帧长度</span>
+<span class="linenos">30</span>
+<span class="linenos">31</span><span class="cm">/*接收数据处理*/</span>
+<span class="linenos">32</span><span class="kt">uint16_t</span> <span class="nf">get_protocol_info</span>
+<span class="linenos">33</span><span class="p">(</span><span class="kt">uint8_t</span>  <span class="o">*</span><span class="n">rx_buf</span><span class="p">,</span>                    <span class="c1">//接收到的原始数据</span>
+<span class="linenos">34</span><span class="kt">uint16_t</span> <span class="o">*</span><span class="n">rx_pos</span><span class="p">,</span>                     <span class="c1">//原始数据指针</span>
+<span class="linenos">35</span><span class="kt">uint16_t</span> <span class="o">*</span><span class="n">flags_register</span><span class="p">,</span>     <span class="c1">//接收数据的16位寄存器地址</span>
+<span class="linenos">36</span><span class="kt">float</span>    <span class="o">*</span><span class="n">rx_data</span><span class="p">);</span>           <span class="c1">//接收的float数据存储地址</span>
+<span class="linenos">37</span>
+<span class="linenos">38</span>
+<span class="linenos">39</span><span class="cm">/*中断函数传值处理*/</span>
+<span class="linenos">40</span><span class="kt">void</span> <span class="nf">PROTOCOL_RX_IRQ</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">res</span><span class="p">,</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">rx_buf</span><span class="p">,</span><span class="kt">uint16_t</span> <span class="o">*</span><span class="n">rx_buf_pos</span><span class="p">);</span>
+<span class="linenos">41</span><span class="cp">#endif</span>
+</pre></div>
+</div>
+</div>
+<ol class="arabic simple" start="9">
+<li><p>通信协议依赖文件(CRC8,CRC16算法)</p></li>
+</ol>
+<blockquote>
+<div><p>&gt;&gt; bsp_crc16.h</p>
+<p>&gt;&gt; bsp_crc16.c</p>
+<p>&gt;&gt; bsp_crc8.h</p>
+<p>&gt;&gt; bsp_crc8.c</p>
+</div></blockquote>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="bmi088.html" class="btn btn-neutral float-right" title="2. SEASKY-BMI088技术手册" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="SailorProject/readme.html" class="btn btn-neutral float-left" title="2. 项目日志" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2020/10/29,SEASKY.
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
