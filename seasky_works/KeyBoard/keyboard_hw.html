@@ -1,0 +1,478 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>2. 硬件设计指南(LLQ-82) &mdash; SEASKY  文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="3. 软件设计指南(LLQ-82)" href="keyboard_sw.html" />
+    <link rel="prev" title="1. 机械键盘介绍(LLQ-82)" href="keyboard.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SEASKY
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">实用开发工具</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../rst_sphinx/rst_sphinx.html">1. reStructuredText快速入门</a></li>
+</ul>
+<p class="caption"><span class="caption-text">串口示波器&lt;Sailor Project&gt;</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../SailorProject/SailorProject.html">1. Sailor Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SailorProject/readme.html">2. 项目日志</a></li>
+</ul>
+<p class="caption"><span class="caption-text">KeyBoard&lt;LLQ-82&gt;</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="keyboard.html">1. 机械键盘介绍(LLQ-82)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. 硬件设计指南(LLQ-82)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">2.1. 硬件设计框图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">2.2. 硬件设计</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">2.2.1. 轴体结构</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pcb">2.2.1.1. 根据轴体制作PCB封装</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">2.2.2. 键盘轴体板设计</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id5">2.2.2.1. 原理图设计</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">2.2.2.2. PCB设计</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">2.2.3. 核心控制板设计</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id10">2.2.3.1. 原理图设计</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pcb-layout">2.2.3.2. PCB Layout设计</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="keyboard_sw.html">3. 软件设计指南(LLQ-82)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">SEASKY模块说明</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../uart_protocol.html">1. SEASKY串口通信协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bmi088.html">2. SEASKY-BMI088技术手册</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SEASKY</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li><span class="section-number">2. </span>硬件设计指南(LLQ-82)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/seasky_works/KeyBoard/keyboard_hw.rst.txt" rel="nofollow"> 查看页面源码</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="llq-82">
+<h1><span class="section-number">2. </span>硬件设计指南(LLQ-82)<a class="headerlink" href="#llq-82" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id1">
+<h2><span class="section-number">2.1. </span>硬件设计框图<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<blockquote>
+<div><div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/hardware.png"><img alt="../../_images/hardware.png" src="../../_images/hardware.png" style="width: 800px;" /></a>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="id2">
+<h2><span class="section-number">2.2. </span>硬件设计<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<ul>
+<li><p>先了解一下两个网站</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p><a class="reference external" href="http://www.keyboard-layout-editor.com/">keyboard-layout-editor</a></p></li>
+<li><p><a class="reference external" href="http://builder.swillkb.com/">builder</a></p></li>
+</ol>
+</div></blockquote>
+</li>
+</ul>
+<div class="section" id="id3">
+<h3><span class="section-number">2.2.1. </span>轴体结构<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<blockquote>
+<div><div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/gateron.jpg"><img alt="../../_images/gateron.jpg" src="../../_images/gateron.jpg" style="width: 800px;" /></a>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/gateron2.jpg"><img alt="../../_images/gateron2.jpg" src="../../_images/gateron2.jpg" style="width: 800px;" /></a>
+</div>
+</div></blockquote>
+<div class="section" id="pcb">
+<h4><span class="section-number">2.2.1.1. </span>根据轴体制作PCB封装<a class="headerlink" href="#pcb" title="永久链接至标题">¶</a></h4>
+<ul>
+<li><p>为了便于设计将WS2812灯珠的封装、开关二极管、电容的封装集成到轴体的封装中去。</p></li>
+<li><p>轴体的原理图库中隐藏了开关二极管和电容</p></li>
+<li><p>此处省略封装制作过程…</p></li>
+<li><p>…</p>
+<blockquote>
+<div><div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/pcb_lib1.jpg"><img alt="../../_images/pcb_lib1.jpg" src="../../_images/pcb_lib1.jpg" style="width: 800px;" /></a>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/pcb_lib2.jpg"><img alt="../../_images/pcb_lib2.jpg" src="../../_images/pcb_lib2.jpg" style="width: 800px;" /></a>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id4">
+<h3><span class="section-number">2.2.2. </span>键盘轴体板设计<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<div class="section" id="id5">
+<h4><span class="section-number">2.2.2.1. </span>原理图设计<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h4>
+<div class="admonition hint">
+<p class="admonition-title">提示</p>
+<p>为了尽可能的减少修改，避免重复性工作，硬件采用模块化设计，在此主要分为了轴体板设计和功能控制板设计，轴体板设计预留FPC40接口，并且尽可能兼容普通键盘配列</p>
+<p><code class="docutils literal notranslate"><span class="pre">80配列</span></code> + <code class="docutils literal notranslate"><span class="pre">2编码器2按键</span></code> + <code class="docutils literal notranslate"><span class="pre">LCD显示</span></code> 机械键盘轴体板方案设计，该设计通过 <code class="docutils literal notranslate"><span class="pre">FPC40</span></code> 接口引出所有通信和控制引脚，你可以尝试将它用于其它机械键盘主控上面，而不需要修改轴体板的设计</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/sch.jpg"><img alt="../../_images/sch.jpg" src="../../_images/sch.jpg" style="width: 800px;" /></a>
+</div>
+<p>按键扫描矩阵设计为 6*14 = 84 ，为了方便pcb布局，和软件设计，实际使用按键为80。</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/sch1.jpg"><img alt="../../_images/sch1.jpg" src="../../_images/sch1.jpg" style="width: 800px;" /></a>
+</div>
+<p>为满足扩展功能，在此添加了SPI接口的转接用于连接1.14寸LCD屏，同时加入两个编码器接口，一个 <code class="docutils literal notranslate"><span class="pre">EC11</span></code> 和一个 <code class="docutils literal notranslate"><span class="pre">EVQW2001</span></code>,分别为一个大的位于右侧的 <code class="docutils literal notranslate"><span class="pre">主旋扭</span></code> ，和一个小的左手 <code class="docutils literal notranslate"><span class="pre">侧旋钮</span></code> 。</p>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">提示</p>
+<p>这两种编码器都同时具有编码器功能和一个按键的功能，因此该键盘，具有 <code class="docutils literal notranslate"><span class="pre">82</span></code> 个按键和 <code class="docutils literal notranslate"><span class="pre">2</span></code> 个编码器接口。</p>
+</div>
+</div>
+<div class="section" id="id6">
+<h4><span class="section-number">2.2.2.2. </span>PCB设计<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h4>
+<ol class="arabic">
+<li><p>确定键盘配列，生成 DXF 轴体置位图纸（当然不嫌麻烦，可以自己根据键盘尺寸去画定位图纸）</p>
+<ol class="arabic">
+<li><p>进入  <a class="reference external" href="http://www.keyboard-layout-editor.com/">keyboard-layout-editor</a> 配置需要的键盘配列。</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/keyboard_hw1.jpg"><img alt="../../_images/keyboard_hw1.jpg" src="../../_images/keyboard_hw1.jpg" style="width: 800px;" /></a>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/keyboard_hw2.jpg"><img alt="../../_images/keyboard_hw2.jpg" src="../../_images/keyboard_hw2.jpg" style="width: 800px;" /></a>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/keyboard_hw3.jpg"><img alt="../../_images/keyboard_hw3.jpg" src="../../_images/keyboard_hw3.jpg" style="width: 800px;" /></a>
+</div>
+</li>
+<li><p>进入另一个网站 <a class="reference external" href="http://builder.swillkb.com/">builder</a>  生成需要的 <code class="docutils literal notranslate"><span class="pre">DXF定位图纸</span></code></p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/keyboard_hw4.jpg"><img alt="../../_images/keyboard_hw4.jpg" src="../../_images/keyboard_hw4.jpg" style="width: 800px;" /></a>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/keyboard_hw5.jpg"><img alt="../../_images/keyboard_hw5.jpg" src="../../_images/keyboard_hw5.jpg" style="width: 800px;" /></a>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/keyboard_hw6.jpg"><img alt="../../_images/keyboard_hw6.jpg" src="../../_images/keyboard_hw6.jpg" style="width: 800px;" /></a>
+</div>
+</li>
+<li><p>至此你完成了最简单的一步</p></li>
+</ol>
+</li>
+<li><p>前面我们生成了需要的定位图纸，在此我们将其导入 <cite>AD</cite> 进行PCB元器件辅助定位，</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/keyboard_hw7.jpg"><img alt="../../_images/keyboard_hw7.jpg" src="../../_images/keyboard_hw7.jpg" style="width: 800px;" /></a>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/keyboard_hw8.jpg"><img alt="../../_images/keyboard_hw8.jpg" src="../../_images/keyboard_hw8.jpg" style="width: 800px;" /></a>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/keyboard_hw9.jpg"><img alt="../../_images/keyboard_hw9.jpg" src="../../_images/keyboard_hw9.jpg" style="width: 800px;" /></a>
+</div>
+</li>
+<li><p>从原理图导入设计到PCB中，然后一个一个的将轴体移动到对应的空格上，进行PCB布局，最后进行PCB布线，最后完成PCB设计。</p></li>
+</ol>
+<div class="admonition hint">
+<p class="admonition-title">提示</p>
+<p>由于PCB Layout设计涉及的内容较多，在此不做介绍，可自行学习 AD 进行PCB设计的相关知识。</p>
+</div>
+<ol class="arabic" start="4">
+<li><p>完成PCB布局和布线，最后展示如下。</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/keyboard_hw10.jpg"><img alt="../../_images/keyboard_hw10.jpg" src="../../_images/keyboard_hw10.jpg" style="width: 800px;" /></a>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/keyboard_hw11.jpg"><img alt="../../_images/keyboard_hw11.jpg" src="../../_images/keyboard_hw11.jpg" style="width: 800px;" /></a>
+</div>
+</li>
+</ol>
+<div class="admonition hint">
+<p class="admonition-title">提示</p>
+<p>关于3D封装，部分来源于网上，部分3D文件需要自己绘制，如其中的键帽的3D文件就是自己绘制的。</p>
+</div>
+<ol class="arabic simple" start="5">
+<li><p>至此我们完成了轴体转接板的设计</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="id9">
+<h3><span class="section-number">2.2.3. </span>核心控制板设计<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<div class="section" id="id10">
+<h4><span class="section-number">2.2.3.1. </span>原理图设计<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h4>
+<ol class="arabic simple">
+<li><p>在设计之前你需要大体确定软件需求、功能需求、结构需求等，具体功能需求可以看最前面的功能框图。</p></li>
+<li><p>电源设计</p></li>
+</ol>
+<div class="admonition important">
+<p class="admonition-title">重要</p>
+<p>虽然我可以通过一个简单的直接使能方式的电源设计我的电路，但是对于产品而言，这是不合理的，因此，我希望我的设计尽可能的接近于真实的产品，它应该更具有稳定性，对于机械键盘的设计，我可以毫不夸张的说，如果我是做一个DEMO方案的设计，从硬件到软件的设计，我基本可以在两周之内解决，其中包含PCB加工、焊接等所有的非设计阶段的时间，同时我甚至于可以拍摄出一些比较好的视频然后发布，而省略其中的BUG，我感觉这应该是绝大部分开源项目的老套路了吧！实际拿来基本用不了，或者说只能勉强用用。</p>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/keyboard_hw15.jpg"><img alt="../../_images/keyboard_hw15.jpg" src="../../_images/keyboard_hw15.jpg" style="width: 800px;" /></a>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/keyboard_hw16.jpg"><img alt="../../_images/keyboard_hw16.jpg" src="../../_images/keyboard_hw16.jpg" style="width: 800px;" /></a>
+</div>
+<ul class="simple">
+<li><p>这部分设计看起来其实并不复杂，但是非常重要，其实所有的东西都是 <code class="docutils literal notranslate"><span class="pre">会则简单，不会则难</span></code></p></li>
+<li><p>使用 RT9013-33GB 为MCU即 <cite>STM32</cite> 供电和 <cite>ESP32S3</cite>，为长供电,ESP32S3 的 EN 引脚接入 STM32 进行低功耗使能控制。</p></li>
+<li><p><cite>EN1</cite> 控制一个 RT9013-33GB 为 <cite>LCD</cite> 和 <cite>指纹模块</cite> 供电</p></li>
+<li><p><cite>EN2</cite> 控制一个 LP3875EMP-3.3_NOPB 为 <cite>键盘灯</cite> 供电，一方面是需要电流较大，另一方面是避免复位或者上电时部分RGB灯会闪烁一下，究其原因是，STM32复位阶段输出电平会有一部分不可控的瞬间，这对于产品来说是必须要规避的。</p></li>
+<li><p>PD电源设计，在此感谢一位群友提供的PD电源方案 <cite>SW6208</cite>,在有SW6208的情况下，所有电源都改为从电池取电，而不再是从5V输入接口取电。</p></li>
+</ul>
+<ol class="arabic">
+<li><p>首先确定是使用STM32F405RGT6作为主控，同时使用STM32F405RGT6进行电源的控制，那么首先需要完成的就是STM32最小系统。</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/keyboard_hw12.jpg"><img alt="../../_images/keyboard_hw12.jpg" src="../../_images/keyboard_hw12.jpg" style="width: 800px;" /></a>
+</div>
+</li>
+</ol>
+<ol class="arabic" start="3">
+<li><p>之后将最小系统引脚根据功能分配到对应的功能，普通GPIO用于按键扫描，特殊GPIO用于特殊外设，具体分配过程省略。</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/keyboard_hw13.jpg"><img alt="../../_images/keyboard_hw13.jpg" src="../../_images/keyboard_hw13.jpg" style="width: 800px;" /></a>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/keyboard_hw14.jpg"><img alt="../../_images/keyboard_hw14.jpg" src="../../_images/keyboard_hw14.jpg" style="width: 800px;" /></a>
+</div>
+</li>
+<li><p>对于电磁兼容问题，在此主要需要注意USB走线的差分，以及PWM信号引脚需要加 ESD 二极管和电阻电容，以尽可能的减少干扰。</p></li>
+<li><p>PD电源设计</p></li>
+</ol>
+<div class="admonition hint">
+<p class="admonition-title">提示</p>
+<p>其实 <code class="docutils literal notranslate"><span class="pre">融通SW6208</span></code> 支持非常多的充电协议（SW6208 是一款高集成度的多协议双向快充移动电源专用多合一芯片，支持 A+A+B+C+L 口任意口快充。其集成了5A高效率开关充电，22.5W高效同步升压输出，PPS/PD/QC/AFC/FCP/SCP/PE/SFCP/低压直充等多种快充协议，电量计量，数码管/LED 灯显示以及相应的控制管理逻辑。外围只需少量的器件，即可组成完整的高性能双向快充移动电源解决方案。）</p>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">提示</p>
+<p>但是我在此只是用其PD充放电功能，究其原因是，我不想为了扩展其他的充放电功能，而在我的键盘上需要接出更多的USB接口，而是使用PD充电接口和USB共用一个TYPE-C接口，这样一来，键盘充电和键盘有线模式就只需要接一根USB线就好了，而选择使用 <cite>SW6208</cite> 的最主要的原因是，这是国产电源芯片中，为数不多的 <code class="docutils literal notranslate"><span class="pre">不需要定制</span></code> 就可以使用 <code class="docutils literal notranslate"><span class="pre">IIC</span></code> 进行通信控制的电源管理芯片，区别于硬件PD，具有通信功能能读取更准确的更多的信息，包括但不限于电池电量，温度等信息。</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/keyboard_hw17.jpg"><img alt="../../_images/keyboard_hw17.jpg" src="../../_images/keyboard_hw17.jpg" style="width: 800px;" /></a>
+</div>
+<p>锂电池保护使用了 <code class="docutils literal notranslate"><span class="pre">DW01+G</span></code>,PD电源方案在此要感谢群友提供的SW6208方案，不然我还真没找到合适的电源管理芯片，来满足我的需求（PD充放电，不需要定制，也能进行通信）。</p>
+</div>
+<ol class="arabic" start="6">
+<li><p>ESP32S3直接使用了 <cite>ESP32-S3-WROOM-1</cite> ,因此只需要提供电源就行，当然必要的在此提供了 ISP 下载电路</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/keyboard_hw18.jpg"><img alt="../../_images/keyboard_hw18.jpg" src="../../_images/keyboard_hw18.jpg" style="width: 800px;" /></a>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="pcb-layout">
+<h4><span class="section-number">2.2.3.2. </span>PCB Layout设计<a class="headerlink" href="#pcb-layout" title="永久链接至标题">¶</a></h4>
+<blockquote>
+<div><p>完成PCB布局和布线，最后展示如下。</p>
+<blockquote>
+<div><div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/keyboard_hw19.jpg"><img alt="../../_images/keyboard_hw19.jpg" src="../../_images/keyboard_hw19.jpg" style="width: 800px;" /></a>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/keyboard_hw20.jpg"><img alt="../../_images/keyboard_hw20.jpg" src="../../_images/keyboard_hw20.jpg" style="width: 800px;" /></a>
+</div>
+</div></blockquote>
+</div></blockquote>
+<div class="admonition hint">
+<p class="admonition-title">提示</p>
+<p>其中FPC接口必须位于右边，且考虑了机械部分结构设计，需要和轴体板的 FPC接口，在垂直的位置上保持一置，同时TYPE-C接口需要藏在亚克力中，因此需要突出。</p>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">提示</p>
+<p>单看此版PCB布局，在此我说明EPS32S3 目前的放置位置确实不是很合理，按ESP32的设计要求， <cite>ESP32模组应该放于板子左上角</cite> ，但是考虑控制板整个上方其实还是有轴体板在，而右方又有更多的走线，因为FPC线都在右边，因此此设计的左上角和中间并不会有很大的区别，同时电池位于左方，这样来看，可能只有这个地方相对比较合理了，故只能将其定位于中间了，其它设计请不要效仿。</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="keyboard_sw.html" class="btn btn-neutral float-right" title="3. 软件设计指南(LLQ-82)" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="keyboard.html" class="btn btn-neutral float-left" title="1. 机械键盘介绍(LLQ-82)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2021/10/15,SEASKY.
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

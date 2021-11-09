@@ -16,6 +16,17 @@
 
     seasky_works/SailorProject/SailorProject.rst
     seasky_works/SailorProject/readme.rst
+
+.. toctree::
+    :maxdepth: 0
+    :caption: KeyBoard<LLQ-82>
+    :numbered:
+    
+    seasky_works/KeyBoard/keyboard.rst
+    seasky_works/KeyBoard/keyboard_hw.rst
+    seasky_works/KeyBoard/keyboard_sw.rst
+
+
 .. toctree::
     :maxdepth: 0
     :caption: SEASKY模块说明
