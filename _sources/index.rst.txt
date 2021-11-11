@@ -25,6 +25,7 @@
     seasky_works/KeyBoard/keyboard.rst
     seasky_works/KeyBoard/keyboard_hw.rst
     seasky_works/KeyBoard/keyboard_sw.rst
+    seasky_works/KeyBoard/keyboard_struct.rst
 
 
 .. toctree::

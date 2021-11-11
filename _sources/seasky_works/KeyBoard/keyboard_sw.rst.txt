@@ -9,5 +9,457 @@
 功能设计
 ********
 
+    .. figure:: ./image/software.png
+        :width: 800 px
+        :align: center
 
+
+功能分解
+********
+
+* HID键盘功能
+
+  #. 按键消抖以及长按、短按、弹起状态识别
+  #. 六键无冲按键事件报文生成，考虑按键冲突
+  #. HID复合设备
+  
+* 密码管理功能
+
+   #. 按键消抖长按、短按、连续按、弹起状态识别
+   #. LCD显示屏驱动以及GUI界面
+   #. 指纹模块驱动编写
+
+* 代码环境搭建
+
+   #. STM32F405RGT6+FreeRTOS+CubeMx
+
+
+部分重要设计说明
+****************
+
+对于键盘来说HID虽然比较高深，但是我并不认为它是键盘的核心所在，因为毕竟如何高深，USB也不过是一种通信手段而已，更重要的是如何处理按键事件、并在最后通过USB通信上报按键事件。
+
+按键状态识别算法
+================
+
+
+.. hint::   一般来说按键事件都或多或少的伴随着按键抖动的问题，而按键抖动的时间一般为ms级别，其中机械轴体的抖动要比普通按键小一些，因此比较常规的方法是，中断方式判断第一次按键按下，然后等待5-20ms之后再次确定按键电平是否为按键按下，则标记按键状态为真实按下，但是此方法效率较低，且不容易处理多个按键，那么我在此提出一种按键扫描算法，它可以在高效率处理 ``按键消抖`` 的同时，获取按键按下的状态，包括按键的 ``长按`` 、``短按`` 、``连续按`` 、以及 ``按键弹起`` ，算法应当在定时器中周期运行，而不需要依赖任何的延时。
+
+    .. figure:: ./image/keyboard_sw0.jpg
+        :width: 800 px
+        :align: center
+
+        普通按键按下电压波形
+        
+.. note:: 对于按键抖动的问题是否可以从硬件上完美解决，我认为简单的加电容是不可以解决的，如果只依靠电容来达到比较完美的按键按下波形或许确实可以达到，但是达到那种程度的波形，极大程度上会造成电平触发的延时问题，而且复用率极低，同时不如算法来的稳定，其中按键按下的状态本质上就是有抖动存在的，它并不是一个始终连接的线路，并且依靠改变输出电平触发，所以硬件消抖只可能滤掉特定带宽的抖动来适用不同场合的轴体和按键，其复用率，扩展性较差，而且不能从根本上处理问题，或许这才是很少使用硬件消抖的原因，
+
+
+.. figure:: ./image/keyboard_sw1.jpg
+    :width: 800 px
+    :align: center
+
+    按键扫描算法简图.
+
+其中 ``KEY_TIME`` 记录检测按键按下电平次数， ``KEY_RES`` 记录按键弹起电平次数，同时次数自增具有最大值限制，此部分不在流程图中显示， ``KEY_TIME`` 记录次数超过短按判断次数时，认为按键按下，首次进入将按键标记为短按状态，并将 ``KEY_RES`` 清零， ``KEY_CLICK`` 自增1，当 ``KEY_TIME`` 记录次数超过长按判断次数时认为按键为长按，首次进入标记为长按状态，并将 ``KEY_CLICK`` 、 ``KEY_RES`` 清零，当 ``KEY_RES`` 大于按键弹起判断时间时，将按键标记为按键弹起， ``KEY_TIME`` 清零，当 ``KEY_RES`` 大于连续按超时时间时获取按键按下次数 ``KEY_NUM_STATE=KEY_CLICK`` ，并将 ``KEY_CLICK`` 清零。按键扫描在定时器或任务中进行，其它线程只需关心 ``KEY_STATE`` 和 ``KEY_NUM_STATE``。
+
+.. note:: 对于按键算法图中的按键状态的赋值操作都只有在非此状态时可以赋值，部分细节处理过程并未在流程图中展示，而且键盘的按键算法省略了按键次数的统计。
+
+
+.. code-block:: c
+  :caption: 编码器按键信息结构体
+  :linenos:
+  :emphasize-lines: 9,10
+
+    typedef enum
+    {
+        KEY_TASK_UPSPRING,	   //按键弹起
+        KEY_TASK_PRESS,		   //按键按下
+        KEY_TASK_PRESS_L_TIME, //按键长按
+    } key_task_states;
+    typedef struct
+    {
+        key_task_states states;	 //按键状态
+        uint8_t click_state_num; //连续短按次数
+        uint16_t time_count;	 //按键按下时间计数
+        uint16_t res_count;		 //按键弹起时间计数
+        uint8_t click_num;		 //按键状态为短按计数
+    } key_task_time_info;
+    typedef struct
+    {
+        GPIO_TypeDef *key_gpio;		 //定义的按键GPIO
+        uint16_t key_gpio_pin;		 //定义的按键GPIO
+        key_task_time_info key_info; //按键算法信息
+    } mx_key_task_info;
+
+.. important:: 经过按键算法处理，我们可以得到需要使用的按键消息 ``states`` 和 ``click_state_num`` 这两个可供使用的变量，其中 ``states`` 表示按键为长按、短按、弹起三种状态，而 ``click_state_num`` 为连续按结束（最后一次按下后弹起超过0.5s后更新连续的短按次数）之后得到的连续按下次数，对于按键长按不计入次数、并且视为退出连续按。
+
+
+.. code-block:: c
+  :caption: 按键扫描算法
+  :linenos:
+
+    for (key_count = 0; key_count < MAX_KEY_NUM; key_count++)
+    {
+        //读取按键电平
+        key[key_count] = key_task_scan(key_enc_info.key_t[key_count]);
+        if (key[key_count] == KEY_TASK_PRESS_S)
+        {
+            //按键按下计数
+            if (key_enc_info.key_t[key_count].key_info.time_count < KEY_PRESS_MAX_COUNT)
+            {
+                key_enc_info.key_t[key_count].key_info.time_count++;
+            }
+        }
+        else
+        {
+            //按键弹起计数
+            if (key_enc_info.key_t[key_count].key_info.res_count < KEY_RES_MAX_COUNT)
+            {
+                key_enc_info.key_t[key_count].key_info.res_count++;
+            }
+        }
+        //到达长按时间
+        if (key_enc_info.key_t[key_count].key_info.time_count >= KEY_TASK_TIME_L_COUNT)
+        {
+            if (key_enc_info.key_t[key_count].key_info.states == KEY_TASK_PRESS)
+            {
+                key_enc_info.key_t[key_count].key_info.states = KEY_TASK_PRESS_L_TIME;
+                key_enc_info.key_t[key_count].key_info.click_num = 0;
+                key_enc_info.key_t[key_count].key_info.click_state_num = 0;
+                //按键复位计数清零
+                key_enc_info.key_t[key_count].key_info.res_count = 0;
+            }
+        }
+        //短按时间
+        else if (key_enc_info.key_t[key_count].key_info.time_count >= KEY_TASK_TIME_P_COUNT)
+        {
+            //首次更新按键事件
+            if (key_enc_info.key_t[key_count].key_info.states == KEY_TASK_UPSPRING)
+            {
+                key_enc_info.key_t[key_count].key_info.states = KEY_TASK_PRESS;
+                //记录按键按下次数
+                if (key_enc_info.key_t[key_count].key_info.click_num < KEY_MAX_NUM)
+                {
+                    key_enc_info.key_t[key_count].key_info.click_num++;
+                }
+                //按键复位计数清零
+                key_enc_info.key_t[key_count].key_info.res_count = 0;
+            }
+        }
+        //按键复位弹起
+        if (key_enc_info.key_t[key_count].key_info.res_count >= KEY_RES_COUNT)
+        {
+            if (key_enc_info.key_t[key_count].key_info.states != KEY_TASK_UPSPRING)
+            {
+                key_enc_info.key_t[key_count].key_info.states = KEY_TASK_UPSPRING; //按键弹起复位
+                //按键按下计数清零
+                key_enc_info.key_t[key_count].key_info.time_count = 0; //按键计数清零
+            }
+        }
+        //连续按超时
+        if (key_enc_info.key_t[key_count].key_info.res_count >= KEY_RES_NUM_COUNT)
+        {
+            if (key_enc_info.key_t[key_count].key_info.click_num != 0)
+            {
+                key_enc_info.key_t[key_count].key_info.click_state_num = key_enc_info.key_t[key_count].key_info.click_num;
+                key_enc_info.key_t[key_count].key_info.click_num = 0;
+            }
+        }
+    }
+    osDelayUntil(&peroid, KEY_TASK_TIME_CYCLE); //任务延时
+
+.. note:: 对于矩阵按键扫描并不能直接读取GPIO电平来处理，需要进行一些简单的处理，来模拟成80个按键的真实电平，具体的实现方式是行列扫描，此处定义 ``6行`` ``14列``矩阵键盘，其中 ``6行`` 对于6个输出GPIO， ``14列`` 对应14个输入GPIO,之后是6行中控制一行输出高电平，其余行输出低电平，然后再读取对应行的14个输入GPIO电平确定本行按下的按键，其余行操作类似，只是各行的切换需要一定的延时，不能同时操作，那么具体操作如下：
+    * 开一个定时器定时 50us以上
+    * 在定时器中操作如下
+
+      * 循环读取对应行中14列按键的状态，并标记状态
+      * 如果行控制增加到大于按键扫描周期定义时间(定义时间>=行数*定时器周期,如75us周期扫描6行，可以定义为6即为450us扫描周期，为方便计算，定义为8即600us周期)，根据记录80个按键状态进行按键按下计数、和按键复位计数，以及调用按键算法，该部分和上文所述按键算法类似，只是为了区分行列按键在数组定义上有所区别。
+      * 行控制自增1
+      * 控制对应行为高电平输出，其余行输出低电平，当下一次定时器中断时读取本行按键状态，即控制输出电平与读取电平时间相差一个定时器周期的时间。
+
+
+.. note:: 对于上述80配列按键扫描算法，我定义的实际计算一轮80配列按键需要时间为600us，并且定义短按计数次数为10，即进行6ms的按键消抖，也就是说6ms内可以比较准确的得出80个按键的扫描结果，这个也对应于下面的HID报文周期
+
+六键无冲处理
+============
+
+.. note:: 对于键盘来说通过修改HID描述符实现全键无冲应该不算是一件很难得事，在此我为了无线HID和有线HID报文得尽可能统一，使用了HID复合设备，其中包括鼠标、键盘、媒体，其中键盘是常规的六键无冲方案，报文4ms周期性发送，没必要太高，哪些打着响应1ms级别键盘的应该也只是上报时间是1ms周期（严重一点如果你的按键扫描结果是每100ms更新一次，那么每1ms上报一次报文就毫无意义可言），然而这个周期其实1ms-20ms之内我认为并没有实质性的区别。
+
+    
+.. hint:: 键盘真正需要做好的是在5-20ms内准确获取矩阵按键内每个按键的状态（要准确获取按键的状态，无论是从硬件上还是软件上都至少需要5-20ms，进行按键消抖），这才是关键，本方案会在6ms准确的计算出所有按键的状态，如果5-20ms内按键扫描准确无误，那么下一次上报的会是你更新后的六个按键，在此我不相信有人真的可以在5-20ms内同时操作6个以上按键，注意是六个普通按键，组合键的 ``CTRL`` 、``SHIFT`` 等特殊按键是不计算在内的，这部分按键是独立字节上报的，报文可以直接对应键值，而对于游戏要求需要全键无冲其实只是为了组合键，来满足必须同时按下六个以上普通按键的要求。
+
+
+.. tip:: 对于六键无冲处理，需要定义 ``uint8_t used_it[6]`` 和 ``uint8_t used_key[6]``,其中 ``used_it[6]`` 用于标记对应报文是否使用，``used_key[6]`` 则用于存储上报键值，循环中首先检测 ``used_it[6]`` ，即判断报文是否在使用，如果在使用，则后续判断 ``used_key[6]`` 对应的按键是否还保持按下状态，当该按键为释放弹起状态时标记 ``used_it[6]`` 为0， 然后后续根据按键按下情况依次将新按键键值送入  ``used_it[6]`` 为0的 ``used_key[6]``，当然还需要判断一下六个缓冲中都不包含此键值，特殊按键为移位操作，特殊处理。
+
+.. code-block:: c
+  :caption: 六键无冲报文处理
+  :linenos:
+
+    void key_update(uint8_t *pTxbuf, key_info_t *key_cfg)
+    {
+        static uint8_t res_hid = 0;
+        static uint16_t res_hid_l_press[6] = {0};
+        uint8_t i;
+        for (i = 0; i < 8; i++)
+            pTxbuf[i] = 0;
+        //重复，一帧有效，一帧弹起，如果不发送弹起，高频率发送无法准确控制频率
+        /*特殊按键特殊处理,特殊按键不需要长短按区分，否则电脑可能有滞带键提示*/
+        key_info_get(key_cfg);
+        if (key_cfg->keyboard.byte0_off.Left_Control == 1)
+        {
+            pTxbuf[0] |= 1 << Left_Control;
+            key_cfg->keyboard.byte0_off.Left_Control_used_it = 1;
+        }
+        if (key_cfg->keyboard.byte0_off.Left_Shift == 1)
+        {
+            pTxbuf[0] |= 1 << Left_Shift;
+            key_cfg->keyboard.byte0_off.Left_Shift_used_it = 1;
+        }
+        if (key_cfg->keyboard.byte0_off.Left_Alt == 1)
+        {
+            pTxbuf[0] |= 1 << Left_Alt;
+            key_cfg->keyboard.byte0_off.Left_Alt_used_it = 1;
+        }
+        if (key_cfg->keyboard.byte0_off.Left_GUI == 1)
+        {
+            pTxbuf[0] |= 1 << Left_GUI;
+            key_cfg->keyboard.byte0_off.Left_Alt_used_it = 1;
+        }
+        if (key_cfg->keyboard.byte0_off.Right_Control == 1)
+        {
+            pTxbuf[0] |= 1 << Right_Control;
+            key_cfg->keyboard.byte0_off.Left_Alt_used_it = 1;
+        }
+        if (key_cfg->keyboard.byte0_off.Right_Shift == 1)
+        {
+            pTxbuf[0] |= 1 << Right_Shift;
+            key_cfg->keyboard.byte0_off.Left_Alt_used_it = 1;
+        }
+        if (key_cfg->keyboard.byte0_off.Right_Alt == 1)
+        {
+            pTxbuf[0] |= 1 << Right_Alt;
+            key_cfg->keyboard.byte0_off.Left_Alt_used_it = 1;
+        }
+        if (key_cfg->keyboard.byte0_off.Right_GUI == 1)
+        {
+            pTxbuf[0] |= 1 << Right_GUI;
+            key_cfg->keyboard.byte0_off.Left_Alt_used_it = 1;
+        }
+        pTxbuf[1] = 0;
+        if (res_hid == 0)
+        {
+            /*BYTE2--BYTE7 普通按键 需要区分长按短按*/
+            for (i = 0; i < 6; i++)
+            {
+                if ((key_cfg->keyboard.used_it[i] == 0) && (key_cfg->keyboard.keypad_status[i] == KEYBOARD_PRESS))
+                {
+                    pTxbuf[i + 2] = key_cfg->keyboard.keypad[i];
+                    key_cfg->keyboard.used_it[i] = 1;
+                    res_hid_l_press[i] = 0;
+                }
+                if (key_cfg->keyboard.keypad_status[i] == KEYBOARD_PRESS_L_TIME)
+                {
+                    if (res_hid_l_press[i] >= TIME_PRESS_L_HID_COUNT)
+                    {
+                        pTxbuf[i + 2] = key_cfg->keyboard.keypad[i];
+                        res_hid_l_press[i] = 0;
+                    }
+                    res_hid_l_press[i]++;
+                }
+            }
+        }
+        res_hid++;
+        if (res_hid > 1)
+        {
+            res_hid = 0;
+        }
+    }
+
+.. code-block:: c
+  :caption: 六键无冲报文生成
+  :linenos:
+  
+    void key_info_get(key_info_t *key_cfg)
+    {
+        uint8_t i, point = 0;
+        /*记录正在使用的按键*/
+        static uint8_t used_it[6] = {KEY_NO_USER, KEY_NO_USER, KEY_NO_USER, KEY_NO_USER, KEY_NO_USER, KEY_NO_USER};
+        static uint8_t used_key[6] = {KEY_NO_USER, KEY_NO_USER, KEY_NO_USER, KEY_NO_USER, KEY_NO_USER, KEY_NO_USER};
+        /*按键松手处理*/
+        for (i = 0; i < 6; i++)
+        {
+            /*如果此缓冲区还在使用*/
+            if (used_it[i] == KEY_USER)
+            {
+                /*检查按键是否松手*/
+                if (key_cfg->key_is_press[used_key[i]].press_it.states == KEY_UPSPRING)
+                {
+                    /*如果已经松手，清空缓冲区，六键无冲释放*/
+                    used_it[i] = KEY_NO_USER;
+                    used_key[i] = KEY_NO_USER;
+                    key_cfg->keyboard.keypad[i] = 0;
+                    key_cfg->keyboard.keypad_status[i] = 0;
+                    key_cfg->keyboard.used_it[i] = 0;
+                }
+            }
+        }
+
+        /*特殊按键*/
+        if (key_cfg->key_is_press[KEY_LEFT_ALT].press_it.states != KEY_UPSPRING)
+        {
+            key_cfg->keyboard.byte0_off.Left_Alt = 1;
+        }
+        else
+        {
+            key_cfg->keyboard.byte0_off.Left_Alt = 0;
+            key_cfg->keyboard.byte0_off.Left_Alt_used_it = 0;
+        }
+        key_cfg->keyboard.byte0_off.Left_Alt_Status = key_cfg->key_is_press[KEY_LEFT_ALT].press_it.states;
+        if (key_cfg->key_is_press[KEY_LEFT_CONTROL].press_it.states != KEY_UPSPRING)
+        {
+            key_cfg->keyboard.byte0_off.Left_Control = 1;
+        }
+        else
+        {
+            key_cfg->keyboard.byte0_off.Left_Control = 0;
+            key_cfg->keyboard.byte0_off.Left_Control_used_it = 0;
+        }
+        key_cfg->keyboard.byte0_off.Left_Control_Status = key_cfg->key_is_press[KEY_LEFT_CONTROL].press_it.states;
+        if (key_cfg->key_is_press[KEY_LEFT_WIN].press_it.states != KEY_UPSPRING)
+        {
+            key_cfg->keyboard.byte0_off.Left_GUI = 1;
+        }
+        else
+        {
+            key_cfg->keyboard.byte0_off.Left_GUI = 0;
+            key_cfg->keyboard.byte0_off.Left_GUI_used_it = 0;
+        }
+        key_cfg->keyboard.byte0_off.Left_GUI_Status = key_cfg->key_is_press[KEY_LEFT_WIN].press_it.states;
+        if (key_cfg->key_is_press[KEY_LEFT_SHIFT].press_it.states != KEY_UPSPRING)
+        {
+            key_cfg->keyboard.byte0_off.Left_Shift = 1;
+        }
+        else
+        {
+            key_cfg->keyboard.byte0_off.Left_Shift = 0;
+            key_cfg->keyboard.byte0_off.Left_Shift_used_it = 0;
+        }
+        key_cfg->keyboard.byte0_off.Left_Shift_Status = key_cfg->key_is_press[KEY_LEFT_SHIFT].press_it.states;
+        if (key_cfg->key_is_press[KEY_RIGHT_ALT].press_it.states != KEY_UPSPRING)
+        {
+            key_cfg->keyboard.byte0_off.Right_Alt = 1;
+        }
+        else
+        {
+            key_cfg->keyboard.byte0_off.Right_Alt = 0;
+            key_cfg->keyboard.byte0_off.Right_Alt_used_it = 0;
+        }
+        key_cfg->keyboard.byte0_off.Right_Alt_Status = key_cfg->key_is_press[KEY_RIGHT_ALT].press_it.states;
+        if (key_cfg->key_is_press[KEY_RIGHT_CONTROL].press_it.states != KEY_UPSPRING)
+        {
+            key_cfg->keyboard.byte0_off.Right_Control = 1;
+        }
+        else
+        {
+            key_cfg->keyboard.byte0_off.Right_Control = 0;
+            key_cfg->keyboard.byte0_off.Right_Control_used_it = 0;
+        }
+        key_cfg->keyboard.byte0_off.Right_Control_Status = key_cfg->key_is_press[KEY_RIGHT_CONTROL].press_it.states;
+        if (key_cfg->key_is_press[KEY_RIGHT_WIN].press_it.states != KEY_UPSPRING)
+        {
+            key_cfg->keyboard.byte0_off.Right_GUI = 1;
+        }
+        else
+        {
+            key_cfg->keyboard.byte0_off.Right_GUI = 0;
+            key_cfg->keyboard.byte0_off.Right_GUI_used_it = 0;
+        }
+        key_cfg->keyboard.byte0_off.Right_GUI_Status = key_cfg->key_is_press[KEY_RIGHT_WIN].press_it.states;
+        if (key_cfg->key_is_press[KEY_RIGHT_SHIFT].press_it.states != KEY_UPSPRING)
+        {
+            key_cfg->keyboard.byte0_off.Right_Shift = 1;
+        }
+        else
+        {
+            key_cfg->keyboard.byte0_off.Right_Shift = 0;
+            key_cfg->keyboard.byte0_off.Right_Shift_used_it = 0;
+        }
+        key_cfg->keyboard.byte0_off.Right_Shift_Status = key_cfg->key_is_press[KEY_RIGHT_SHIFT].press_it.states;
+
+        /*六键无冲按键处理*/
+        for (i = 0; i < MAX_KEY; i++)
+        {
+            if ((i != KEY_LEFT_ALT) && (i != KEY_LEFT_CONTROL) && (i != KEY_LEFT_WIN) && (i != KEY_LEFT_SHIFT) && (i != KEY_RIGHT_ALT) && (i != KEY_RIGHT_CONTROL) && (i != KEY_RIGHT_WIN) && (i != KEY_RIGHT_SHIFT))
+            {
+                if (key_cfg->key_is_press[i].press_it.states != KEY_UPSPRING)
+                {
+                    //如果该按键按下，遍历6个缓冲区，如果未使用，则使用此缓冲区
+                    for (point = 0; point < 6; point++)
+                    {
+                        /*如果六个缓冲区都未包含此按键*/
+                        if ((used_key[0] != i) && (used_key[1] != i) && (used_key[2] != i) && (used_key[3] != i) && (used_key[4] != i) && (used_key[5] != i))
+                        {
+                            if (used_it[point] == KEY_NO_USER)
+                            {
+                                used_it[point] = KEY_USER; //标记此按键已经使用
+                                used_key[point] = i;	   //记录使用此缓冲区的按键
+                                key_cfg->keyboard.keypad[point] = key_cfg->key_is_press[i].key_char;
+                                key_cfg->keyboard.keypad_status[point] = key_cfg->key_is_press[i].press_it.states;
+                                point = 6; //如果找到未使用的缓冲区，直接退出循环
+                            }
+                        }
+                        /*以下部分加入长短按识别*/
+                        else if (used_key[0] == i)
+                        {
+                            key_cfg->keyboard.keypad_status[0] = key_cfg->key_is_press[i].press_it.states;
+                        }
+                        else if (used_key[1] == i)
+                        {
+                            key_cfg->keyboard.keypad_status[1] = key_cfg->key_is_press[i].press_it.states;
+                        }
+                        else if (used_key[2] == i)
+                        {
+                            key_cfg->keyboard.keypad_status[2] = key_cfg->key_is_press[i].press_it.states;
+                        }
+                        else if (used_key[3] == i)
+                        {
+                            key_cfg->keyboard.keypad_status[3] = key_cfg->key_is_press[i].press_it.states;
+                        }
+                        else if (used_key[4] == i)
+                        {
+                            key_cfg->keyboard.keypad_status[4] = key_cfg->key_is_press[i].press_it.states;
+                        }
+                        else if (used_key[5] == i)
+                        {
+                            key_cfg->keyboard.keypad_status[5] = key_cfg->key_is_press[i].press_it.states;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+
+HID复合设备
+============
+
+标准的USB设备有5种USB描述符：设备描述符、配置描述符、字符串描述符、接口描述符、端点描述符，要详细说明这些比较复杂，这里我们更关系USB中的HID设备，对于HID还有HID特有的描述符。
+
+以下是STM32CubeMx基础之上实现HID复合设备流程
+
+1. 配置CubeMX 你可以直接生成一个HID设备，不过只包含鼠标功能
+2. 生成的鼠标HID工程默认只包含一个输出端点，在此需要修改设备描述符添加一个输入端点、用于PC向键盘汇报LED灯状态
+3. 添加输入端点、配置HID中断、回调等
+4. 修改HID描述符中HID报告描述符定义长度
+5. 修改HID报告描述符添加键盘(包括LED)、鼠标、媒体的HID报告描述符
+6. 为三个报告描述符添加 Report ID
+7. 根据 Report ID封装HID上报函数
+
+
+指纹模块驱动、LVGL显示、密码管理功能实现
+============================================
+
+
+...
 

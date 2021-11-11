@@ -3,6 +3,11 @@
 ======================================
 
 
+.. figure:: ./image/keyboard0.jpg
+    :width: 800 px
+    :align: center
+    
+
 前言
 **********
 
