@@ -42,7 +42,7 @@
     
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
-    <link rel="next" title="4. 机械键盘介绍(LLQ-82)" href="keyboard_struct.html" />
+    <link rel="next" title="4. 机械键盘结构设计(LLQ-82)" href="keyboard_struct.html" />
     <link rel="prev" title="2. 硬件设计指南(LLQ-82)" href="keyboard_hw.html" /> 
 </head>
 
@@ -112,12 +112,14 @@
 <li class="toctree-l3"><a class="reference internal" href="#id4">3.3.1. 按键状态识别算法</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id5">3.3.2. 六键无冲处理</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#hid">3.3.3. HID复合设备</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#lvgl">3.3.4. 指纹模块驱动、LVGL显示、密码管理功能实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">3.3.4. 指纹模块驱动</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">3.3.5. 显示屏驱动</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">3.3.6. 键盘上报字符串</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="keyboard_struct.html">4. 机械键盘介绍(LLQ-82)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keyboard_struct.html">4. 机械键盘结构设计(LLQ-82)</a></li>
 </ul>
 <p class="caption"><span class="caption-text">SEASKY模块说明</span></p>
 <ul>
@@ -237,26 +239,26 @@
 <div class="admonition hint">
 <p class="admonition-title">提示</p>
 <p>一般来说按键事件都或多或少的伴随着按键抖动的问题，而按键抖动的时间一般为ms级别，其中机械轴体的抖动要比普通按键小一些，因此比较常规的方法是，中断方式判断第一次按键按下，然后等待5-20ms之后再次确定按键电平是否为按键按下，则标记按键状态为真实按下，但是此方法效率较低，且不容易处理多个按键，那么我在此提出一种按键扫描算法，它可以在高效率处理 <code class="docutils literal notranslate"><span class="pre">按键消抖</span></code> 的同时，获取按键按下的状态，包括按键的 <code class="docutils literal notranslate"><span class="pre">长按</span></code> 、<code class="docutils literal notranslate"><span class="pre">短按</span></code> 、<code class="docutils literal notranslate"><span class="pre">连续按</span></code> 、以及 <code class="docutils literal notranslate"><span class="pre">按键弹起</span></code> ，算法应当在定时器中周期运行，而不需要依赖任何的延时。</p>
-<div class="figure align-center" id="id6">
+<div class="figure align-center" id="id9">
 <a class="reference internal image-reference" href="../../_images/keyboard_sw0.jpg"><img alt="../../_images/keyboard_sw0.jpg" src="../../_images/keyboard_sw0.jpg" style="width: 800px;" /></a>
-<p class="caption"><span class="caption-text">普通按键按下电压波形</span><a class="headerlink" href="#id6" title="永久链接至图片">¶</a></p>
+<p class="caption"><span class="caption-text">普通按键按下电压波形</span><a class="headerlink" href="#id9" title="永久链接至图片">¶</a></p>
 </div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">注解</p>
 <p>对于按键抖动的问题是否可以从硬件上完美解决，我认为简单的加电容是不可以解决的，如果只依靠电容来达到比较完美的按键按下波形或许确实可以达到，但是达到那种程度的波形，极大程度上会造成电平触发的延时问题，而且复用率极低，同时不如算法来的稳定，其中按键按下的状态本质上就是有抖动存在的，它并不是一个始终连接的线路，并且依靠改变输出电平触发，所以硬件消抖只可能滤掉特定带宽的抖动来适用不同场合的轴体和按键，其复用率，扩展性较差，而且不能从根本上处理问题，或许这才是很少使用硬件消抖的原因，</p>
 </div>
-<div class="figure align-center" id="id7">
-<a class="reference internal image-reference" href="../../_images/keyboard_sw1.jpg"><img alt="../../_images/keyboard_sw1.jpg" src="../../_images/keyboard_sw1.jpg" style="width: 800px;" /></a>
-<p class="caption"><span class="caption-text">按键扫描算法简图.</span><a class="headerlink" href="#id7" title="永久链接至图片">¶</a></p>
+<div class="figure align-center" id="id10">
+<a class="reference internal image-reference" href="../../_images/keyboard_sw1.png"><img alt="../../_images/keyboard_sw1.png" src="../../_images/keyboard_sw1.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">按键扫描算法简图.</span><a class="headerlink" href="#id10" title="永久链接至图片">¶</a></p>
 </div>
-<p>其中 <code class="docutils literal notranslate"><span class="pre">KEY_TIME</span></code> 记录检测按键按下电平次数， <code class="docutils literal notranslate"><span class="pre">KEY_RES</span></code> 记录按键弹起电平次数，同时次数自增具有最大值限制，此部分不在流程图中显示， <code class="docutils literal notranslate"><span class="pre">KEY_TIME</span></code> 记录次数超过短按判断次数时，认为按键按下，首次进入将按键标记为短按状态，并将 <code class="docutils literal notranslate"><span class="pre">KEY_RES</span></code> 清零， <code class="docutils literal notranslate"><span class="pre">KEY_CLICK</span></code> 自增1，当 <code class="docutils literal notranslate"><span class="pre">KEY_TIME</span></code> 记录次数超过长按判断次数时认为按键为长按，首次进入标记为长按状态，并将 <code class="docutils literal notranslate"><span class="pre">KEY_CLICK</span></code> 、 <code class="docutils literal notranslate"><span class="pre">KEY_RES</span></code> 清零，当 <code class="docutils literal notranslate"><span class="pre">KEY_RES</span></code> 大于按键弹起判断时间时，将按键标记为按键弹起， <code class="docutils literal notranslate"><span class="pre">KEY_TIME</span></code> 清零，当 <code class="docutils literal notranslate"><span class="pre">KEY_RES</span></code> 大于连续按超时时间时获取按键按下次数 <code class="docutils literal notranslate"><span class="pre">KEY_NUM_STATE=KEY_CLICK</span></code> ，并将 <code class="docutils literal notranslate"><span class="pre">KEY_CLICK</span></code> 清零。按键扫描在定时器或任务中进行，其它线程只需关心 <code class="docutils literal notranslate"><span class="pre">KEY_STATE</span></code> 和 <code class="docutils literal notranslate"><span class="pre">KEY_NUM_STATE</span></code>。</p>
+<p>其中 <code class="docutils literal notranslate"><span class="pre">time_count</span></code> 记录检测按键按下电平次数， <code class="docutils literal notranslate"><span class="pre">res_count</span></code> 记录按键弹起电平次数，同时次数自增具有最大值限制，此部分不在流程图中显示， <code class="docutils literal notranslate"><span class="pre">time_count</span></code> 记录次数超过短按判断次数时，认为按键按下，首次进入将按键标记为短按状态，并将 <code class="docutils literal notranslate"><span class="pre">res_count</span></code> 清零， <code class="docutils literal notranslate"><span class="pre">click_num</span></code> 自增1，当 <code class="docutils literal notranslate"><span class="pre">time_count</span></code> 记录次数超过长按判断次数时认为按键为长按，首次进入标记为长按状态，并将 <code class="docutils literal notranslate"><span class="pre">click_num</span></code> 、 <code class="docutils literal notranslate"><span class="pre">res_count</span></code> 清零，当 <code class="docutils literal notranslate"><span class="pre">res_count</span></code> 大于按键弹起判断时间时，将按键标记为按键弹起， <code class="docutils literal notranslate"><span class="pre">time_count</span></code> 清零，当 <code class="docutils literal notranslate"><span class="pre">res_count</span></code> 大于连续按超时时间时获取按键按下次数 <code class="docutils literal notranslate"><span class="pre">click_state_num=click_num</span></code> ，并将 <code class="docutils literal notranslate"><span class="pre">click_num</span></code> 清零。按键扫描在定时器或任务中进行，其它线程只需关心 <code class="docutils literal notranslate"><span class="pre">states</span></code> 和 <code class="docutils literal notranslate"><span class="pre">click_state_num</span></code>。</p>
 <div class="admonition note">
 <p class="admonition-title">注解</p>
 <p>对于按键算法图中的按键状态的赋值操作都只有在非此状态时可以赋值，部分细节处理过程并未在流程图中展示，而且键盘的按键算法省略了按键次数的统计。</p>
 </div>
-<div class="literal-block-wrapper docutils container" id="id8">
-<div class="code-block-caption"><span class="caption-text">编码器按键信息结构体</span><a class="headerlink" href="#id8" title="永久链接至代码">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text">编码器按键信息结构体</span><a class="headerlink" href="#id11" title="永久链接至代码">¶</a></div>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>  <span class="k">typedef</span> <span class="k">enum</span>
 <span class="linenos"> 2</span>  <span class="p">{</span>
 <span class="linenos"> 3</span>      <span class="n">KEY_TASK_UPSPRING</span><span class="p">,</span>         <span class="c1">//按键弹起</span>
@@ -284,8 +286,8 @@
 <p class="admonition-title">重要</p>
 <p>经过按键算法处理，我们可以得到需要使用的按键消息 <code class="docutils literal notranslate"><span class="pre">states</span></code> 和 <code class="docutils literal notranslate"><span class="pre">click_state_num</span></code> 这两个可供使用的变量，其中 <code class="docutils literal notranslate"><span class="pre">states</span></code> 表示按键为长按、短按、弹起三种状态，而 <code class="docutils literal notranslate"><span class="pre">click_state_num</span></code> 为连续按结束（最后一次按下后弹起超过0.5s后更新连续的短按次数）之后得到的连续按下次数，对于按键长按不计入次数、并且视为退出连续按。</p>
 </div>
-<div class="literal-block-wrapper docutils container" id="id9">
-<div class="code-block-caption"><span class="caption-text">按键扫描算法</span><a class="headerlink" href="#id9" title="永久链接至代码">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id12">
+<div class="code-block-caption"><span class="caption-text">按键扫描算法</span><a class="headerlink" href="#id12" title="永久链接至代码">¶</a></div>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>  <span class="k">for</span> <span class="p">(</span><span class="n">key_count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">key_count</span> <span class="o">&lt;</span> <span class="n">MAX_KEY_NUM</span><span class="p">;</span> <span class="n">key_count</span><span class="o">++</span><span class="p">)</span>
 <span class="linenos"> 2</span>  <span class="p">{</span>
 <span class="linenos"> 3</span>      <span class="c1">//读取按键电平</span>
@@ -334,27 +336,28 @@
 <span class="linenos">46</span>              <span class="n">key_enc_info</span><span class="p">.</span><span class="kt">key_t</span><span class="p">[</span><span class="n">key_count</span><span class="p">].</span><span class="n">key_info</span><span class="p">.</span><span class="n">res_count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 <span class="linenos">47</span>          <span class="p">}</span>
 <span class="linenos">48</span>      <span class="p">}</span>
-<span class="linenos">49</span>      <span class="c1">//按键复位弹起</span>
-<span class="linenos">50</span>      <span class="k">if</span> <span class="p">(</span><span class="n">key_enc_info</span><span class="p">.</span><span class="kt">key_t</span><span class="p">[</span><span class="n">key_count</span><span class="p">].</span><span class="n">key_info</span><span class="p">.</span><span class="n">res_count</span> <span class="o">&gt;=</span> <span class="n">KEY_RES_COUNT</span><span class="p">)</span>
+<span class="linenos">49</span>      <span class="c1">//连续按超时</span>
+<span class="linenos">50</span>      <span class="k">if</span> <span class="p">(</span><span class="n">key_enc_info</span><span class="p">.</span><span class="kt">key_t</span><span class="p">[</span><span class="n">key_count</span><span class="p">].</span><span class="n">key_info</span><span class="p">.</span><span class="n">res_count</span> <span class="o">&gt;=</span> <span class="n">KEY_RES_NUM_COUNT</span><span class="p">)</span>
 <span class="linenos">51</span>      <span class="p">{</span>
-<span class="linenos">52</span>          <span class="k">if</span> <span class="p">(</span><span class="n">key_enc_info</span><span class="p">.</span><span class="kt">key_t</span><span class="p">[</span><span class="n">key_count</span><span class="p">].</span><span class="n">key_info</span><span class="p">.</span><span class="n">states</span> <span class="o">!=</span> <span class="n">KEY_TASK_UPSPRING</span><span class="p">)</span>
+<span class="linenos">52</span>          <span class="k">if</span> <span class="p">(</span><span class="n">key_enc_info</span><span class="p">.</span><span class="kt">key_t</span><span class="p">[</span><span class="n">key_count</span><span class="p">].</span><span class="n">key_info</span><span class="p">.</span><span class="n">click_num</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
 <span class="linenos">53</span>          <span class="p">{</span>
-<span class="linenos">54</span>              <span class="n">key_enc_info</span><span class="p">.</span><span class="kt">key_t</span><span class="p">[</span><span class="n">key_count</span><span class="p">].</span><span class="n">key_info</span><span class="p">.</span><span class="n">states</span> <span class="o">=</span> <span class="n">KEY_TASK_UPSPRING</span><span class="p">;</span> <span class="c1">//按键弹起复位</span>
-<span class="linenos">55</span>              <span class="c1">//按键按下计数清零</span>
-<span class="linenos">56</span>              <span class="n">key_enc_info</span><span class="p">.</span><span class="kt">key_t</span><span class="p">[</span><span class="n">key_count</span><span class="p">].</span><span class="n">key_info</span><span class="p">.</span><span class="n">time_count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//按键计数清零</span>
+<span class="linenos">54</span>              <span class="n">key_enc_info</span><span class="p">.</span><span class="kt">key_t</span><span class="p">[</span><span class="n">key_count</span><span class="p">].</span><span class="n">key_info</span><span class="p">.</span><span class="n">click_state_num</span> <span class="o">=</span>
+<span class="linenos">55</span>                  <span class="n">key_enc_info</span><span class="p">.</span><span class="kt">key_t</span><span class="p">[</span><span class="n">key_count</span><span class="p">].</span><span class="n">key_info</span><span class="p">.</span><span class="n">click_num</span><span class="p">;</span>
+<span class="linenos">56</span>              <span class="n">key_enc_info</span><span class="p">.</span><span class="kt">key_t</span><span class="p">[</span><span class="n">key_count</span><span class="p">].</span><span class="n">key_info</span><span class="p">.</span><span class="n">click_num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 <span class="linenos">57</span>          <span class="p">}</span>
 <span class="linenos">58</span>      <span class="p">}</span>
-<span class="linenos">59</span>      <span class="c1">//连续按超时</span>
-<span class="linenos">60</span>      <span class="k">if</span> <span class="p">(</span><span class="n">key_enc_info</span><span class="p">.</span><span class="kt">key_t</span><span class="p">[</span><span class="n">key_count</span><span class="p">].</span><span class="n">key_info</span><span class="p">.</span><span class="n">res_count</span> <span class="o">&gt;=</span> <span class="n">KEY_RES_NUM_COUNT</span><span class="p">)</span>
+<span class="linenos">59</span>      <span class="c1">//按键复位弹起</span>
+<span class="linenos">60</span>      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">key_enc_info</span><span class="p">.</span><span class="kt">key_t</span><span class="p">[</span><span class="n">key_count</span><span class="p">].</span><span class="n">key_info</span><span class="p">.</span><span class="n">res_count</span> <span class="o">&gt;=</span> <span class="n">KEY_RES_COUNT</span><span class="p">)</span>
 <span class="linenos">61</span>      <span class="p">{</span>
-<span class="linenos">62</span>          <span class="k">if</span> <span class="p">(</span><span class="n">key_enc_info</span><span class="p">.</span><span class="kt">key_t</span><span class="p">[</span><span class="n">key_count</span><span class="p">].</span><span class="n">key_info</span><span class="p">.</span><span class="n">click_num</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="linenos">62</span>          <span class="k">if</span> <span class="p">(</span><span class="n">key_enc_info</span><span class="p">.</span><span class="kt">key_t</span><span class="p">[</span><span class="n">key_count</span><span class="p">].</span><span class="n">key_info</span><span class="p">.</span><span class="n">states</span> <span class="o">!=</span> <span class="n">KEY_TASK_UPSPRING</span><span class="p">)</span>
 <span class="linenos">63</span>          <span class="p">{</span>
-<span class="linenos">64</span>              <span class="n">key_enc_info</span><span class="p">.</span><span class="kt">key_t</span><span class="p">[</span><span class="n">key_count</span><span class="p">].</span><span class="n">key_info</span><span class="p">.</span><span class="n">click_state_num</span> <span class="o">=</span> <span class="n">key_enc_info</span><span class="p">.</span><span class="kt">key_t</span><span class="p">[</span><span class="n">key_count</span><span class="p">].</span><span class="n">key_info</span><span class="p">.</span><span class="n">click_num</span><span class="p">;</span>
-<span class="linenos">65</span>              <span class="n">key_enc_info</span><span class="p">.</span><span class="kt">key_t</span><span class="p">[</span><span class="n">key_count</span><span class="p">].</span><span class="n">key_info</span><span class="p">.</span><span class="n">click_num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos">66</span>          <span class="p">}</span>
-<span class="linenos">67</span>      <span class="p">}</span>
-<span class="linenos">68</span>  <span class="p">}</span>
-<span class="linenos">69</span>  <span class="n">osDelayUntil</span><span class="p">(</span><span class="o">&amp;</span><span class="n">peroid</span><span class="p">,</span> <span class="n">KEY_TASK_TIME_CYCLE</span><span class="p">);</span> <span class="c1">//任务延时</span>
+<span class="linenos">64</span>              <span class="n">key_enc_info</span><span class="p">.</span><span class="kt">key_t</span><span class="p">[</span><span class="n">key_count</span><span class="p">].</span><span class="n">key_info</span><span class="p">.</span><span class="n">states</span> <span class="o">=</span> <span class="n">KEY_TASK_UPSPRING</span><span class="p">;</span> <span class="c1">//按键弹起复位</span>
+<span class="linenos">65</span>              <span class="c1">//按键按下计数清零</span>
+<span class="linenos">66</span>              <span class="n">key_enc_info</span><span class="p">.</span><span class="kt">key_t</span><span class="p">[</span><span class="n">key_count</span><span class="p">].</span><span class="n">key_info</span><span class="p">.</span><span class="n">time_count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//按键计数清零</span>
+<span class="linenos">67</span>          <span class="p">}</span>
+<span class="linenos">68</span>      <span class="p">}</span>
+<span class="linenos">69</span>  <span class="p">}</span>
+<span class="linenos">70</span>  <span class="n">osDelayUntil</span><span class="p">(</span><span class="o">&amp;</span><span class="n">peroid</span><span class="p">,</span> <span class="n">KEY_TASK_TIME_CYCLE</span><span class="p">);</span> <span class="c1">//任务延时</span>
 </pre></div>
 </div>
 </div>
@@ -391,251 +394,251 @@
 <p class="admonition-title">小技巧</p>
 <p>对于六键无冲处理，需要定义 <code class="docutils literal notranslate"><span class="pre">uint8_t</span> <span class="pre">used_it[6]</span></code> 和 <code class="docutils literal notranslate"><span class="pre">uint8_t</span> <span class="pre">used_key[6]</span></code>,其中 <code class="docutils literal notranslate"><span class="pre">used_it[6]</span></code> 用于标记对应报文是否使用，<code class="docutils literal notranslate"><span class="pre">used_key[6]</span></code> 则用于存储上报键值，循环中首先检测 <code class="docutils literal notranslate"><span class="pre">used_it[6]</span></code> ，即判断报文是否在使用，如果在使用，则后续判断 <code class="docutils literal notranslate"><span class="pre">used_key[6]</span></code> 对应的按键是否还保持按下状态，当该按键为释放弹起状态时标记 <code class="docutils literal notranslate"><span class="pre">used_it[6]</span></code> 为0， 然后后续根据按键按下情况依次将新按键键值送入  <code class="docutils literal notranslate"><span class="pre">used_it[6]</span></code> 为0的 <code class="docutils literal notranslate"><span class="pre">used_key[6]</span></code>，当然还需要判断一下六个缓冲中都不包含此键值，特殊按键为移位操作，特殊处理。</p>
 </div>
-<div class="literal-block-wrapper docutils container" id="id10">
-<div class="code-block-caption"><span class="caption-text">六键无冲报文处理</span><a class="headerlink" href="#id10" title="永久链接至代码">¶</a></div>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>  <span class="kt">void</span> <span class="nf">key_update</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">pTxbuf</span><span class="p">,</span> <span class="n">key_info_t</span> <span class="o">*</span><span class="n">key_cfg</span><span class="p">)</span>
-<span class="linenos"> 2</span>  <span class="p">{</span>
-<span class="linenos"> 3</span>      <span class="k">static</span> <span class="kt">uint8_t</span> <span class="n">res_hid</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos"> 4</span>      <span class="k">static</span> <span class="kt">uint16_t</span> <span class="n">res_hid_l_press</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
-<span class="linenos"> 5</span>      <span class="kt">uint8_t</span> <span class="n">i</span><span class="p">;</span>
-<span class="linenos"> 6</span>      <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
-<span class="linenos"> 7</span>          <span class="n">pTxbuf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos"> 8</span>      <span class="c1">//重复，一帧有效，一帧弹起，如果不发送弹起，高频率发送无法准确控制频率</span>
-<span class="linenos"> 9</span>      <span class="cm">/*特殊按键特殊处理,特殊按键不需要长短按区分，否则电脑可能有滞带键提示*/</span>
-<span class="linenos">10</span>      <span class="n">key_info_get</span><span class="p">(</span><span class="n">key_cfg</span><span class="p">);</span>
-<span class="linenos">11</span>      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Control</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-<span class="linenos">12</span>      <span class="p">{</span>
-<span class="linenos">13</span>          <span class="n">pTxbuf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">|=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">Left_Control</span><span class="p">;</span>
-<span class="linenos">14</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Control_used_it</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="linenos">15</span>      <span class="p">}</span>
-<span class="linenos">16</span>      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Shift</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-<span class="linenos">17</span>      <span class="p">{</span>
-<span class="linenos">18</span>          <span class="n">pTxbuf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">|=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">Left_Shift</span><span class="p">;</span>
-<span class="linenos">19</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Shift_used_it</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="linenos">20</span>      <span class="p">}</span>
-<span class="linenos">21</span>      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Alt</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-<span class="linenos">22</span>      <span class="p">{</span>
-<span class="linenos">23</span>          <span class="n">pTxbuf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">|=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">Left_Alt</span><span class="p">;</span>
-<span class="linenos">24</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Alt_used_it</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="linenos">25</span>      <span class="p">}</span>
-<span class="linenos">26</span>      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_GUI</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-<span class="linenos">27</span>      <span class="p">{</span>
-<span class="linenos">28</span>          <span class="n">pTxbuf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">|=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">Left_GUI</span><span class="p">;</span>
-<span class="linenos">29</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Alt_used_it</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="linenos">30</span>      <span class="p">}</span>
-<span class="linenos">31</span>      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Control</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-<span class="linenos">32</span>      <span class="p">{</span>
-<span class="linenos">33</span>          <span class="n">pTxbuf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">|=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">Right_Control</span><span class="p">;</span>
-<span class="linenos">34</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Alt_used_it</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="linenos">35</span>      <span class="p">}</span>
-<span class="linenos">36</span>      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Shift</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-<span class="linenos">37</span>      <span class="p">{</span>
-<span class="linenos">38</span>          <span class="n">pTxbuf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">|=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">Right_Shift</span><span class="p">;</span>
-<span class="linenos">39</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Alt_used_it</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="linenos">40</span>      <span class="p">}</span>
-<span class="linenos">41</span>      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Alt</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-<span class="linenos">42</span>      <span class="p">{</span>
-<span class="linenos">43</span>          <span class="n">pTxbuf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">|=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">Right_Alt</span><span class="p">;</span>
-<span class="linenos">44</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Alt_used_it</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="linenos">45</span>      <span class="p">}</span>
-<span class="linenos">46</span>      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_GUI</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-<span class="linenos">47</span>      <span class="p">{</span>
-<span class="linenos">48</span>          <span class="n">pTxbuf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">|=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">Right_GUI</span><span class="p">;</span>
-<span class="linenos">49</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Alt_used_it</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="linenos">50</span>      <span class="p">}</span>
-<span class="linenos">51</span>      <span class="n">pTxbuf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos">52</span>      <span class="k">if</span> <span class="p">(</span><span class="n">res_hid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
-<span class="linenos">53</span>      <span class="p">{</span>
-<span class="linenos">54</span>          <span class="cm">/*BYTE2--BYTE7 普通按键 需要区分长按短按*/</span>
-<span class="linenos">55</span>          <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
-<span class="linenos">56</span>          <span class="p">{</span>
-<span class="linenos">57</span>              <span class="k">if</span> <span class="p">((</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">used_it</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad_status</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">KEYBOARD_PRESS</span><span class="p">))</span>
-<span class="linenos">58</span>              <span class="p">{</span>
-<span class="linenos">59</span>                  <span class="n">pTxbuf</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
-<span class="linenos">60</span>                  <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">used_it</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="linenos">61</span>                  <span class="n">res_hid_l_press</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos">62</span>              <span class="p">}</span>
-<span class="linenos">63</span>              <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad_status</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">KEYBOARD_PRESS_L_TIME</span><span class="p">)</span>
-<span class="linenos">64</span>              <span class="p">{</span>
-<span class="linenos">65</span>                  <span class="k">if</span> <span class="p">(</span><span class="n">res_hid_l_press</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">TIME_PRESS_L_HID_COUNT</span><span class="p">)</span>
-<span class="linenos">66</span>                  <span class="p">{</span>
-<span class="linenos">67</span>                      <span class="n">pTxbuf</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
-<span class="linenos">68</span>                      <span class="n">res_hid_l_press</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos">69</span>                  <span class="p">}</span>
-<span class="linenos">70</span>                  <span class="n">res_hid_l_press</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
-<span class="linenos">71</span>              <span class="p">}</span>
-<span class="linenos">72</span>          <span class="p">}</span>
-<span class="linenos">73</span>      <span class="p">}</span>
-<span class="linenos">74</span>      <span class="n">res_hid</span><span class="o">++</span><span class="p">;</span>
-<span class="linenos">75</span>      <span class="k">if</span> <span class="p">(</span><span class="n">res_hid</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
-<span class="linenos">76</span>      <span class="p">{</span>
-<span class="linenos">77</span>          <span class="n">res_hid</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos">78</span>      <span class="p">}</span>
-<span class="linenos">79</span>  <span class="p">}</span>
+<div class="literal-block-wrapper docutils container" id="id13">
+<div class="code-block-caption"><span class="caption-text">六键无冲报文处理</span><a class="headerlink" href="#id13" title="永久链接至代码">¶</a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>  <span class="kt">void</span> <span class="nf">key_update</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">pTxbuf</span><span class="p">,</span> <span class="n">key_info_t</span> <span class="o">*</span><span class="n">key_cfg</span><span class="p">)</span>
+  <span class="p">{</span>
+      <span class="k">static</span> <span class="kt">uint8_t</span> <span class="n">res_hid</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="k">static</span> <span class="kt">uint16_t</span> <span class="n">res_hid_l_press</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+      <span class="kt">uint8_t</span> <span class="n">i</span><span class="p">;</span>
+      <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+          <span class="n">pTxbuf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="c1">//重复，一帧有效，一帧弹起，如果不发送弹起，高频率发送无法准确控制频率</span>
+      <span class="cm">/*特殊按键特殊处理,特殊按键不需要长短按区分，否则电脑可能有滞带键提示*/</span>
+      <span class="n">key_info_get</span><span class="p">(</span><span class="n">key_cfg</span><span class="p">);</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Control</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="p">{</span>
+          <span class="n">pTxbuf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">|=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">Left_Control</span><span class="p">;</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Control_used_it</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Shift</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="p">{</span>
+          <span class="n">pTxbuf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">|=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">Left_Shift</span><span class="p">;</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Shift_used_it</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Alt</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="p">{</span>
+          <span class="n">pTxbuf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">|=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">Left_Alt</span><span class="p">;</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Alt_used_it</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_GUI</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="p">{</span>
+          <span class="n">pTxbuf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">|=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">Left_GUI</span><span class="p">;</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Alt_used_it</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Control</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="p">{</span>
+          <span class="n">pTxbuf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">|=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">Right_Control</span><span class="p">;</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Alt_used_it</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Shift</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="p">{</span>
+          <span class="n">pTxbuf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">|=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">Right_Shift</span><span class="p">;</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Alt_used_it</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Alt</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="p">{</span>
+          <span class="n">pTxbuf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">|=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">Right_Alt</span><span class="p">;</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Alt_used_it</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_GUI</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="p">{</span>
+          <span class="n">pTxbuf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">|=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">Right_GUI</span><span class="p">;</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Alt_used_it</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="n">pTxbuf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">res_hid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+      <span class="p">{</span>
+          <span class="cm">/*BYTE2--BYTE7 普通按键 需要区分长按短按*/</span>
+          <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+          <span class="p">{</span>
+              <span class="k">if</span> <span class="p">((</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">used_it</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad_status</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">KEYBOARD_PRESS</span><span class="p">))</span>
+              <span class="p">{</span>
+                  <span class="n">pTxbuf</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+                  <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">used_it</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                  <span class="n">res_hid_l_press</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+              <span class="p">}</span>
+              <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad_status</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">KEYBOARD_PRESS_L_TIME</span><span class="p">)</span>
+              <span class="p">{</span>
+                  <span class="k">if</span> <span class="p">(</span><span class="n">res_hid_l_press</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">TIME_PRESS_L_HID_COUNT</span><span class="p">)</span>
+                  <span class="p">{</span>
+                      <span class="n">pTxbuf</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+                      <span class="n">res_hid_l_press</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                  <span class="p">}</span>
+                  <span class="n">res_hid_l_press</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+              <span class="p">}</span>
+          <span class="p">}</span>
+      <span class="p">}</span>
+      <span class="n">res_hid</span><span class="o">++</span><span class="p">;</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">res_hid</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="p">{</span>
+          <span class="n">res_hid</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="p">}</span>
+  <span class="p">}</span>
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id11">
-<div class="code-block-caption"><span class="caption-text">六键无冲报文生成</span><a class="headerlink" href="#id11" title="永久链接至代码">¶</a></div>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span>  <span class="kt">void</span> <span class="nf">key_info_get</span><span class="p">(</span><span class="n">key_info_t</span> <span class="o">*</span><span class="n">key_cfg</span><span class="p">)</span>
-<span class="linenos">  2</span>  <span class="p">{</span>
-<span class="linenos">  3</span>      <span class="kt">uint8_t</span> <span class="n">i</span><span class="p">,</span> <span class="n">point</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos">  4</span>      <span class="cm">/*记录正在使用的按键*/</span>
-<span class="linenos">  5</span>      <span class="k">static</span> <span class="kt">uint8_t</span> <span class="n">used_it</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">KEY_NO_USER</span><span class="p">,</span> <span class="n">KEY_NO_USER</span><span class="p">,</span> <span class="n">KEY_NO_USER</span><span class="p">,</span> <span class="n">KEY_NO_USER</span><span class="p">,</span> <span class="n">KEY_NO_USER</span><span class="p">,</span> <span class="n">KEY_NO_USER</span><span class="p">};</span>
-<span class="linenos">  6</span>      <span class="k">static</span> <span class="kt">uint8_t</span> <span class="n">used_key</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">KEY_NO_USER</span><span class="p">,</span> <span class="n">KEY_NO_USER</span><span class="p">,</span> <span class="n">KEY_NO_USER</span><span class="p">,</span> <span class="n">KEY_NO_USER</span><span class="p">,</span> <span class="n">KEY_NO_USER</span><span class="p">,</span> <span class="n">KEY_NO_USER</span><span class="p">};</span>
-<span class="linenos">  7</span>      <span class="cm">/*按键松手处理*/</span>
-<span class="linenos">  8</span>      <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
-<span class="linenos">  9</span>      <span class="p">{</span>
-<span class="linenos"> 10</span>          <span class="cm">/*如果此缓冲区还在使用*/</span>
-<span class="linenos"> 11</span>          <span class="k">if</span> <span class="p">(</span><span class="n">used_it</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">KEY_USER</span><span class="p">)</span>
-<span class="linenos"> 12</span>          <span class="p">{</span>
-<span class="linenos"> 13</span>              <span class="cm">/*检查按键是否松手*/</span>
-<span class="linenos"> 14</span>              <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">used_key</span><span class="p">[</span><span class="n">i</span><span class="p">]].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span> <span class="o">==</span> <span class="n">KEY_UPSPRING</span><span class="p">)</span>
-<span class="linenos"> 15</span>              <span class="p">{</span>
-<span class="linenos"> 16</span>                  <span class="cm">/*如果已经松手，清空缓冲区，六键无冲释放*/</span>
-<span class="linenos"> 17</span>                  <span class="n">used_it</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">KEY_NO_USER</span><span class="p">;</span>
-<span class="linenos"> 18</span>                  <span class="n">used_key</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">KEY_NO_USER</span><span class="p">;</span>
-<span class="linenos"> 19</span>                  <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos"> 20</span>                  <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad_status</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos"> 21</span>                  <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">used_it</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos"> 22</span>              <span class="p">}</span>
-<span class="linenos"> 23</span>          <span class="p">}</span>
-<span class="linenos"> 24</span>      <span class="p">}</span>
-<span class="linenos"> 25</span>
-<span class="linenos"> 26</span>      <span class="cm">/*特殊按键*/</span>
-<span class="linenos"> 27</span>      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_LEFT_ALT</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span> <span class="o">!=</span> <span class="n">KEY_UPSPRING</span><span class="p">)</span>
-<span class="linenos"> 28</span>      <span class="p">{</span>
-<span class="linenos"> 29</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Alt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="linenos"> 30</span>      <span class="p">}</span>
-<span class="linenos"> 31</span>      <span class="k">else</span>
-<span class="linenos"> 32</span>      <span class="p">{</span>
-<span class="linenos"> 33</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Alt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos"> 34</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Alt_used_it</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos"> 35</span>      <span class="p">}</span>
-<span class="linenos"> 36</span>      <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Alt_Status</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_LEFT_ALT</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
-<span class="linenos"> 37</span>      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_LEFT_CONTROL</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span> <span class="o">!=</span> <span class="n">KEY_UPSPRING</span><span class="p">)</span>
-<span class="linenos"> 38</span>      <span class="p">{</span>
-<span class="linenos"> 39</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Control</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="linenos"> 40</span>      <span class="p">}</span>
-<span class="linenos"> 41</span>      <span class="k">else</span>
-<span class="linenos"> 42</span>      <span class="p">{</span>
-<span class="linenos"> 43</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Control</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos"> 44</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Control_used_it</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos"> 45</span>      <span class="p">}</span>
-<span class="linenos"> 46</span>      <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Control_Status</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_LEFT_CONTROL</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
-<span class="linenos"> 47</span>      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_LEFT_WIN</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span> <span class="o">!=</span> <span class="n">KEY_UPSPRING</span><span class="p">)</span>
-<span class="linenos"> 48</span>      <span class="p">{</span>
-<span class="linenos"> 49</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_GUI</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="linenos"> 50</span>      <span class="p">}</span>
-<span class="linenos"> 51</span>      <span class="k">else</span>
-<span class="linenos"> 52</span>      <span class="p">{</span>
-<span class="linenos"> 53</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_GUI</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos"> 54</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_GUI_used_it</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos"> 55</span>      <span class="p">}</span>
-<span class="linenos"> 56</span>      <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_GUI_Status</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_LEFT_WIN</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
-<span class="linenos"> 57</span>      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_LEFT_SHIFT</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span> <span class="o">!=</span> <span class="n">KEY_UPSPRING</span><span class="p">)</span>
-<span class="linenos"> 58</span>      <span class="p">{</span>
-<span class="linenos"> 59</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Shift</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="linenos"> 60</span>      <span class="p">}</span>
-<span class="linenos"> 61</span>      <span class="k">else</span>
-<span class="linenos"> 62</span>      <span class="p">{</span>
-<span class="linenos"> 63</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Shift</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos"> 64</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Shift_used_it</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos"> 65</span>      <span class="p">}</span>
-<span class="linenos"> 66</span>      <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Shift_Status</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_LEFT_SHIFT</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
-<span class="linenos"> 67</span>      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_RIGHT_ALT</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span> <span class="o">!=</span> <span class="n">KEY_UPSPRING</span><span class="p">)</span>
-<span class="linenos"> 68</span>      <span class="p">{</span>
-<span class="linenos"> 69</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Alt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="linenos"> 70</span>      <span class="p">}</span>
-<span class="linenos"> 71</span>      <span class="k">else</span>
-<span class="linenos"> 72</span>      <span class="p">{</span>
-<span class="linenos"> 73</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Alt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos"> 74</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Alt_used_it</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos"> 75</span>      <span class="p">}</span>
-<span class="linenos"> 76</span>      <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Alt_Status</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_RIGHT_ALT</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
-<span class="linenos"> 77</span>      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_RIGHT_CONTROL</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span> <span class="o">!=</span> <span class="n">KEY_UPSPRING</span><span class="p">)</span>
-<span class="linenos"> 78</span>      <span class="p">{</span>
-<span class="linenos"> 79</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Control</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="linenos"> 80</span>      <span class="p">}</span>
-<span class="linenos"> 81</span>      <span class="k">else</span>
-<span class="linenos"> 82</span>      <span class="p">{</span>
-<span class="linenos"> 83</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Control</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos"> 84</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Control_used_it</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos"> 85</span>      <span class="p">}</span>
-<span class="linenos"> 86</span>      <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Control_Status</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_RIGHT_CONTROL</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
-<span class="linenos"> 87</span>      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_RIGHT_WIN</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span> <span class="o">!=</span> <span class="n">KEY_UPSPRING</span><span class="p">)</span>
-<span class="linenos"> 88</span>      <span class="p">{</span>
-<span class="linenos"> 89</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_GUI</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="linenos"> 90</span>      <span class="p">}</span>
-<span class="linenos"> 91</span>      <span class="k">else</span>
-<span class="linenos"> 92</span>      <span class="p">{</span>
-<span class="linenos"> 93</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_GUI</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos"> 94</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_GUI_used_it</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos"> 95</span>      <span class="p">}</span>
-<span class="linenos"> 96</span>      <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_GUI_Status</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_RIGHT_WIN</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
-<span class="linenos"> 97</span>      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_RIGHT_SHIFT</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span> <span class="o">!=</span> <span class="n">KEY_UPSPRING</span><span class="p">)</span>
-<span class="linenos"> 98</span>      <span class="p">{</span>
-<span class="linenos"> 99</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Shift</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="linenos">100</span>      <span class="p">}</span>
-<span class="linenos">101</span>      <span class="k">else</span>
-<span class="linenos">102</span>      <span class="p">{</span>
-<span class="linenos">103</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Shift</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos">104</span>          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Shift_used_it</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos">105</span>      <span class="p">}</span>
-<span class="linenos">106</span>      <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Shift_Status</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_RIGHT_SHIFT</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
-<span class="linenos">107</span>
-<span class="linenos">108</span>      <span class="cm">/*六键无冲按键处理*/</span>
-<span class="linenos">109</span>      <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">MAX_KEY</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
-<span class="linenos">110</span>      <span class="p">{</span>
-<span class="linenos">111</span>          <span class="k">if</span> <span class="p">((</span><span class="n">i</span> <span class="o">!=</span> <span class="n">KEY_LEFT_ALT</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="n">KEY_LEFT_CONTROL</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="n">KEY_LEFT_WIN</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="n">KEY_LEFT_SHIFT</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="n">KEY_RIGHT_ALT</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="n">KEY_RIGHT_CONTROL</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="n">KEY_RIGHT_WIN</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="n">KEY_RIGHT_SHIFT</span><span class="p">))</span>
-<span class="linenos">112</span>          <span class="p">{</span>
-<span class="linenos">113</span>              <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span> <span class="o">!=</span> <span class="n">KEY_UPSPRING</span><span class="p">)</span>
-<span class="linenos">114</span>              <span class="p">{</span>
-<span class="linenos">115</span>                  <span class="c1">//如果该按键按下，遍历6个缓冲区，如果未使用，则使用此缓冲区</span>
-<span class="linenos">116</span>                  <span class="k">for</span> <span class="p">(</span><span class="n">point</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">point</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">;</span> <span class="n">point</span><span class="o">++</span><span class="p">)</span>
-<span class="linenos">117</span>                  <span class="p">{</span>
-<span class="linenos">118</span>                      <span class="cm">/*如果六个缓冲区都未包含此按键*/</span>
-<span class="linenos">119</span>                      <span class="k">if</span> <span class="p">((</span><span class="n">used_key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">used_key</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">used_key</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">used_key</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">!=</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">used_key</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">!=</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">used_key</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">!=</span> <span class="n">i</span><span class="p">))</span>
-<span class="linenos">120</span>                      <span class="p">{</span>
-<span class="linenos">121</span>                          <span class="k">if</span> <span class="p">(</span><span class="n">used_it</span><span class="p">[</span><span class="n">point</span><span class="p">]</span> <span class="o">==</span> <span class="n">KEY_NO_USER</span><span class="p">)</span>
-<span class="linenos">122</span>                          <span class="p">{</span>
-<span class="linenos">123</span>                              <span class="n">used_it</span><span class="p">[</span><span class="n">point</span><span class="p">]</span> <span class="o">=</span> <span class="n">KEY_USER</span><span class="p">;</span> <span class="c1">//标记此按键已经使用</span>
-<span class="linenos">124</span>                              <span class="n">used_key</span><span class="p">[</span><span class="n">point</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>       <span class="c1">//记录使用此缓冲区的按键</span>
-<span class="linenos">125</span>                              <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad</span><span class="p">[</span><span class="n">point</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">key_char</span><span class="p">;</span>
-<span class="linenos">126</span>                              <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad_status</span><span class="p">[</span><span class="n">point</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
-<span class="linenos">127</span>                              <span class="n">point</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span> <span class="c1">//如果找到未使用的缓冲区，直接退出循环</span>
-<span class="linenos">128</span>                          <span class="p">}</span>
-<span class="linenos">129</span>                      <span class="p">}</span>
-<span class="linenos">130</span>                      <span class="cm">/*以下部分加入长短按识别*/</span>
-<span class="linenos">131</span>                      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">used_key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
-<span class="linenos">132</span>                      <span class="p">{</span>
-<span class="linenos">133</span>                          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad_status</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
-<span class="linenos">134</span>                      <span class="p">}</span>
-<span class="linenos">135</span>                      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">used_key</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
-<span class="linenos">136</span>                      <span class="p">{</span>
-<span class="linenos">137</span>                          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad_status</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
-<span class="linenos">138</span>                      <span class="p">}</span>
-<span class="linenos">139</span>                      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">used_key</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
-<span class="linenos">140</span>                      <span class="p">{</span>
-<span class="linenos">141</span>                          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad_status</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
-<span class="linenos">142</span>                      <span class="p">}</span>
-<span class="linenos">143</span>                      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">used_key</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
-<span class="linenos">144</span>                      <span class="p">{</span>
-<span class="linenos">145</span>                          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad_status</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
-<span class="linenos">146</span>                      <span class="p">}</span>
-<span class="linenos">147</span>                      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">used_key</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
-<span class="linenos">148</span>                      <span class="p">{</span>
-<span class="linenos">149</span>                          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad_status</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
-<span class="linenos">150</span>                      <span class="p">}</span>
-<span class="linenos">151</span>                      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">used_key</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
-<span class="linenos">152</span>                      <span class="p">{</span>
-<span class="linenos">153</span>                          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad_status</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
-<span class="linenos">154</span>                      <span class="p">}</span>
-<span class="linenos">155</span>                  <span class="p">}</span>
-<span class="linenos">156</span>              <span class="p">}</span>
-<span class="linenos">157</span>          <span class="p">}</span>
-<span class="linenos">158</span>      <span class="p">}</span>
-<span class="linenos">159</span>  <span class="p">}</span>
+<div class="literal-block-wrapper docutils container" id="id14">
+<div class="code-block-caption"><span class="caption-text">六键无冲报文生成</span><a class="headerlink" href="#id14" title="永久链接至代码">¶</a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>  <span class="kt">void</span> <span class="nf">key_info_get</span><span class="p">(</span><span class="n">key_info_t</span> <span class="o">*</span><span class="n">key_cfg</span><span class="p">)</span>
+  <span class="p">{</span>
+      <span class="kt">uint8_t</span> <span class="n">i</span><span class="p">,</span> <span class="n">point</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="cm">/*记录正在使用的按键*/</span>
+      <span class="k">static</span> <span class="kt">uint8_t</span> <span class="n">used_it</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">KEY_NO_USER</span><span class="p">,</span> <span class="n">KEY_NO_USER</span><span class="p">,</span> <span class="n">KEY_NO_USER</span><span class="p">,</span> <span class="n">KEY_NO_USER</span><span class="p">,</span> <span class="n">KEY_NO_USER</span><span class="p">,</span> <span class="n">KEY_NO_USER</span><span class="p">};</span>
+      <span class="k">static</span> <span class="kt">uint8_t</span> <span class="n">used_key</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">KEY_NO_USER</span><span class="p">,</span> <span class="n">KEY_NO_USER</span><span class="p">,</span> <span class="n">KEY_NO_USER</span><span class="p">,</span> <span class="n">KEY_NO_USER</span><span class="p">,</span> <span class="n">KEY_NO_USER</span><span class="p">,</span> <span class="n">KEY_NO_USER</span><span class="p">};</span>
+      <span class="cm">/*按键松手处理*/</span>
+      <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+      <span class="p">{</span>
+          <span class="cm">/*如果此缓冲区还在使用*/</span>
+          <span class="k">if</span> <span class="p">(</span><span class="n">used_it</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">KEY_USER</span><span class="p">)</span>
+          <span class="p">{</span>
+              <span class="cm">/*检查按键是否松手*/</span>
+              <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">used_key</span><span class="p">[</span><span class="n">i</span><span class="p">]].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span> <span class="o">==</span> <span class="n">KEY_UPSPRING</span><span class="p">)</span>
+              <span class="p">{</span>
+                  <span class="cm">/*如果已经松手，清空缓冲区，六键无冲释放*/</span>
+                  <span class="n">used_it</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">KEY_NO_USER</span><span class="p">;</span>
+                  <span class="n">used_key</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">KEY_NO_USER</span><span class="p">;</span>
+                  <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                  <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad_status</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                  <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">used_it</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+              <span class="p">}</span>
+          <span class="p">}</span>
+      <span class="p">}</span>
+
+      <span class="cm">/*特殊按键*/</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_LEFT_ALT</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span> <span class="o">!=</span> <span class="n">KEY_UPSPRING</span><span class="p">)</span>
+      <span class="p">{</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Alt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">else</span>
+      <span class="p">{</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Alt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Alt_used_it</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Alt_Status</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_LEFT_ALT</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_LEFT_CONTROL</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span> <span class="o">!=</span> <span class="n">KEY_UPSPRING</span><span class="p">)</span>
+      <span class="p">{</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Control</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">else</span>
+      <span class="p">{</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Control</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Control_used_it</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Control_Status</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_LEFT_CONTROL</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_LEFT_WIN</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span> <span class="o">!=</span> <span class="n">KEY_UPSPRING</span><span class="p">)</span>
+      <span class="p">{</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_GUI</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">else</span>
+      <span class="p">{</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_GUI</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_GUI_used_it</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_GUI_Status</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_LEFT_WIN</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_LEFT_SHIFT</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span> <span class="o">!=</span> <span class="n">KEY_UPSPRING</span><span class="p">)</span>
+      <span class="p">{</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Shift</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">else</span>
+      <span class="p">{</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Shift</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Shift_used_it</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Left_Shift_Status</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_LEFT_SHIFT</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_RIGHT_ALT</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span> <span class="o">!=</span> <span class="n">KEY_UPSPRING</span><span class="p">)</span>
+      <span class="p">{</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Alt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">else</span>
+      <span class="p">{</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Alt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Alt_used_it</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Alt_Status</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_RIGHT_ALT</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_RIGHT_CONTROL</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span> <span class="o">!=</span> <span class="n">KEY_UPSPRING</span><span class="p">)</span>
+      <span class="p">{</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Control</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">else</span>
+      <span class="p">{</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Control</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Control_used_it</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Control_Status</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_RIGHT_CONTROL</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_RIGHT_WIN</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span> <span class="o">!=</span> <span class="n">KEY_UPSPRING</span><span class="p">)</span>
+      <span class="p">{</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_GUI</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">else</span>
+      <span class="p">{</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_GUI</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_GUI_used_it</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_GUI_Status</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_RIGHT_WIN</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_RIGHT_SHIFT</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span> <span class="o">!=</span> <span class="n">KEY_UPSPRING</span><span class="p">)</span>
+      <span class="p">{</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Shift</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">else</span>
+      <span class="p">{</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Shift</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Shift_used_it</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">byte0_off</span><span class="p">.</span><span class="n">Right_Shift_Status</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">KEY_RIGHT_SHIFT</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
+
+      <span class="cm">/*六键无冲按键处理*/</span>
+      <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">MAX_KEY</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+      <span class="p">{</span>
+          <span class="k">if</span> <span class="p">((</span><span class="n">i</span> <span class="o">!=</span> <span class="n">KEY_LEFT_ALT</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="n">KEY_LEFT_CONTROL</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="n">KEY_LEFT_WIN</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="n">KEY_LEFT_SHIFT</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="n">KEY_RIGHT_ALT</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="n">KEY_RIGHT_CONTROL</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="n">KEY_RIGHT_WIN</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="n">KEY_RIGHT_SHIFT</span><span class="p">))</span>
+          <span class="p">{</span>
+              <span class="k">if</span> <span class="p">(</span><span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span> <span class="o">!=</span> <span class="n">KEY_UPSPRING</span><span class="p">)</span>
+              <span class="p">{</span>
+                  <span class="c1">//如果该按键按下，遍历6个缓冲区，如果未使用，则使用此缓冲区</span>
+                  <span class="k">for</span> <span class="p">(</span><span class="n">point</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">point</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">;</span> <span class="n">point</span><span class="o">++</span><span class="p">)</span>
+                  <span class="p">{</span>
+                      <span class="cm">/*如果六个缓冲区都未包含此按键*/</span>
+                      <span class="k">if</span> <span class="p">((</span><span class="n">used_key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">used_key</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">used_key</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">used_key</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">!=</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">used_key</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">!=</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">used_key</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">!=</span> <span class="n">i</span><span class="p">))</span>
+                      <span class="p">{</span>
+                          <span class="k">if</span> <span class="p">(</span><span class="n">used_it</span><span class="p">[</span><span class="n">point</span><span class="p">]</span> <span class="o">==</span> <span class="n">KEY_NO_USER</span><span class="p">)</span>
+                          <span class="p">{</span>
+                              <span class="n">used_it</span><span class="p">[</span><span class="n">point</span><span class="p">]</span> <span class="o">=</span> <span class="n">KEY_USER</span><span class="p">;</span> <span class="c1">//标记此按键已经使用</span>
+                              <span class="n">used_key</span><span class="p">[</span><span class="n">point</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>       <span class="c1">//记录使用此缓冲区的按键</span>
+                              <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad</span><span class="p">[</span><span class="n">point</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">key_char</span><span class="p">;</span>
+                              <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad_status</span><span class="p">[</span><span class="n">point</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
+                              <span class="n">point</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span> <span class="c1">//如果找到未使用的缓冲区，直接退出循环</span>
+                          <span class="p">}</span>
+                      <span class="p">}</span>
+                      <span class="cm">/*以下部分加入长短按识别*/</span>
+                      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">used_key</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
+                      <span class="p">{</span>
+                          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad_status</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
+                      <span class="p">}</span>
+                      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">used_key</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
+                      <span class="p">{</span>
+                          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad_status</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
+                      <span class="p">}</span>
+                      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">used_key</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
+                      <span class="p">{</span>
+                          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad_status</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
+                      <span class="p">}</span>
+                      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">used_key</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
+                      <span class="p">{</span>
+                          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad_status</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
+                      <span class="p">}</span>
+                      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">used_key</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
+                      <span class="p">{</span>
+                          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad_status</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
+                      <span class="p">}</span>
+                      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">used_key</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
+                      <span class="p">{</span>
+                          <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">keyboard</span><span class="p">.</span><span class="n">keypad_status</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_cfg</span><span class="o">-&gt;</span><span class="n">key_is_press</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">press_it</span><span class="p">.</span><span class="n">states</span><span class="p">;</span>
+                      <span class="p">}</span>
+                  <span class="p">}</span>
+              <span class="p">}</span>
+          <span class="p">}</span>
+      <span class="p">}</span>
+  <span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -654,9 +657,102 @@
 <li><p>根据 Report ID封装HID上报函数</p></li>
 </ol>
 </div>
-<div class="section" id="lvgl">
-<h3><span class="section-number">3.3.4. </span>指纹模块驱动、LVGL显示、密码管理功能实现<a class="headerlink" href="#lvgl" title="永久链接至标题">¶</a></h3>
-<p>…</p>
+<div class="section" id="id6">
+<h3><span class="section-number">3.3.4. </span>指纹模块驱动<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<p>本方案使用了BM2166指纹模块，模块提供了简单的DEMO</p>
+<div class="admonition important">
+<p class="admonition-title">重要</p>
+<p>简单的DEMO仅仅可以用于测试模块是否正常，其demo中大量的 <cite>delay</cite> 延时函数极大的占用了MCU的CPU资源，如何理解CPU的多线程管理原理、RTOS的任务调度、和RTOS的 <cite>伪延时</cite>、以及STM32系统的中断，在此不难搭建出更高效、稳定、以及更低占用的指纹模块驱动方案。</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">重要</p>
+<p>单核心的CPU其实只有一个线程，也就是真实情况下它也是单线程的，而多线程的概念只是由操作系统模拟出的多线程、在此用一个简单的示例解释CPU是如何进行多线程的，在此我们有四个应用程序，并将其分别命名为应用1、应用2、应用3、应用4，那么如果没有操作系统，你应该如何去分配CPU去执行这四个功能？</p>
+<ul class="simple">
+<li><p>当然如果所有任务都可以充分利用CPU资源，而不会浪费CPU资源的话、在此可以应用1、应用2、应用3、应用4依次处理。</p></li>
+<li><p>然而CPU一般处理速度都会远大于应用需要的处理速度，对于没有操作系统而言的系统但凡使用了延时、以及while循环等待的系统都存在系统资源的浪费。</p></li>
+<li><p>继续我们假设 <code class="docutils literal notranslate"><span class="pre">应用1</span></code> ~ <code class="docutils literal notranslate"><span class="pre">应用4</span></code> 分别需要的系统占用为 10%、20%、30%和50%，其中每个应用都需要延时、我们应该如何去处理这些应用？</p></li>
+<li><p>在此我们不难求出 <cite>10</cite>、 <cite>20</cite> 、 <cite>30</cite> 、 <cite>50</cite> 、的最大公约数为 <cite>10</cite> ，而所有应用之和为 <cite>100</cite> ，因此我们可以设计一个周期为 <cite>100/10</cite> 的计数周期，来进行多线程的模拟。</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">cpu_task</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="kt">uint8_t</span> <span class="n">tack_count</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">switch</span><span class="p">(</span><span class="n">tack_count</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">case</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">:</span><span class="n">run_task1</span><span class="p">();</span><span class="k">break</span><span class="p">;</span>
+            <span class="k">case</span> <span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">:</span>
+            <span class="k">case</span> <span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">:</span><span class="n">run_task2</span><span class="p">();</span><span class="k">break</span><span class="p">;</span>
+            <span class="k">case</span> <span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">:</span>
+            <span class="k">case</span> <span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">:</span>
+            <span class="k">case</span> <span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="o">:</span><span class="n">run_task3</span><span class="p">();</span><span class="k">break</span><span class="p">;</span>
+            <span class="k">case</span> <span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="o">:</span>
+            <span class="k">case</span> <span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="o">:</span>
+            <span class="k">case</span> <span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">:</span>
+            <span class="k">case</span> <span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">:</span><span class="n">run_task4</span><span class="p">();</span><span class="k">break</span><span class="p">;</span>
+            <span class="k">case</span> <span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="o">:</span><span class="n">tack_count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">tack_count</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>在此结合嵌入式程序而言，涉及外设的通信以及响应等一般都在毫秒级别，同时当外设响应后CPU的数据处理过程往往只是us级到ms级别区间，因此上述方案还需要进行一定程度优化,我们设计一个定时执行的函数，并且假设定时为0.1ms。</p></li>
+<li><p>对于你的应用程序，我推荐你可以使用第二种定时器方式，提供应用程序的轮询，因为这样你可以开多个定时器以分配为不同级别的应用程序轮询，而不会造成任何的CPU资源浪费，这种伪并行的方式，在我在按键扫描算法中很容易体现。</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">timer_irq</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="kt">uint8_t</span> <span class="n">tack_count</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">switch</span><span class="p">(</span><span class="n">tack_count</span><span class="p">)</span>
+    <span class="p">{</span>
+
+        <span class="k">case</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">:</span><span class="n">run_task1</span><span class="p">();</span><span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">case</span> <span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">:</span><span class="n">run_task2</span><span class="p">();</span><span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">case</span> <span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">case</span> <span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="o">:</span><span class="n">run_task3</span><span class="p">();</span><span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">case</span> <span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">case</span> <span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">:</span>
+        <span class="k">case</span> <span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">:</span><span class="n">run_task4</span><span class="p">();</span><span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="o">:</span><span class="n">tack_count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">tack_count</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>那么上述程序的含义就是1ms内,0.1ms的时间处理 <cite>应用1</cite> 、0.2ms的时间处理 <cite>应用2</cite> 、0.3ms的时间处理 <cite>应用3</cite> 、0.5ms的时间处理 <cite>应用4</cite>,在此所有应用的结果处理都需要在0.1ms内完成，同时处理完成之后CPU会立即释放，并去等待其余的应用,那么实际等效下来就是每1ms,CPU会同时处理这四个应用程序,并得出执行结果。</p></li>
+</ul>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p>在此我们尝试构建状态机来进行模块串口消息的处理,所有的指令都有消息回传，在发送消息后、CPU资源需要释放，等待模块处理完成并回传消息，在此原模块为插入超时等待模块返回，而无法释放CPU资源，因此消息方式必须得到改善</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p>改善的消息方式为使用串口DMA发送指纹模块控制消息，使用串口空闲中断DMA双缓冲接收进行消息回传处理,构建消息处理状态机 <cite>BM_ACK_NO</cite> , <cite>BM_ACK_WAIT</cite> , <cite>BM_ACK_OK</cite></p>
+<ul class="simple">
+<li><p><cite>BM_ACK_NO</cite> &gt;&gt; 发送消息，并将状态切换为 <cite>BM_ACK_WAIT</cite> &gt;&gt; 释放CPU资源 &gt;&gt; 串口空闲中断 &gt;&gt; 切换状态为 <cite>BM_ACK_OK</cite> &gt;&gt;处理回传数据,切换状态为 <cite>BM_ACK_NO</cite> &gt;&gt; 下一轮数据收发</p></li>
+</ul>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p>在指纹识别、指纹录入过程中牵涉到多条命令的协同处理，在此也需要构建状态机，进行命名的切换处理，合理的利用状态机不但可以理清应用逻辑，还可以很好的规范程序框架。</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">重要</p>
+<p>在此我们需要牢记，无论是工作还是代码、一种高效率的工作方式都不会去一直等待对方做好后处理，而是构建一个协同的状态机，当对方完成了此项工作，会将对应状态标记完成，而你要做的只是当你完成其它任务以及在你以固定的周期频率去检查它是否完成，如果未完成那么你继续去完成你的其它工作，如果完成了，你则快速的在它完成的基础之上完成后续工作。</p>
+</div>
+</div>
+<div class="section" id="id7">
+<h3><span class="section-number">3.3.5. </span>显示屏驱动<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<p>商家提供了屏幕的驱动程序，只需要简单适配SPI驱动就可以实现刷屏，不过为了提高刷屏效率，在此需要简单修改驱动程序，以适应DMA方式刷屏，图形界面使用LVGL</p>
+</div>
+<div class="section" id="id8">
+<h3><span class="section-number">3.3.6. </span>键盘上报字符串<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
+<p>这个比较简单，因为以及实现按键的HID上报，在此只需要将ASSIC编码转为键盘的编码，并依次上报即可，上报时短暂剥夺按键上报权力，字符串上报完成后恢复，在此主要需要注意的是，键盘编码有很多共用的如大小写，而共用区分需要通过 <cite>SHIFT</cite> 的值区分。</p>
 </div>
 </div>
 </div>
@@ -667,7 +763,7 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="keyboard_struct.html" class="btn btn-neutral float-right" title="4. 机械键盘介绍(LLQ-82)" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="keyboard_struct.html" class="btn btn-neutral float-right" title="4. 机械键盘结构设计(LLQ-82)" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="keyboard_hw.html" class="btn btn-neutral float-left" title="2. 硬件设计指南(LLQ-82)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
     </div>
 

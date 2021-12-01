@@ -54,13 +54,13 @@
 .. note:: 对于按键抖动的问题是否可以从硬件上完美解决，我认为简单的加电容是不可以解决的，如果只依靠电容来达到比较完美的按键按下波形或许确实可以达到，但是达到那种程度的波形，极大程度上会造成电平触发的延时问题，而且复用率极低，同时不如算法来的稳定，其中按键按下的状态本质上就是有抖动存在的，它并不是一个始终连接的线路，并且依靠改变输出电平触发，所以硬件消抖只可能滤掉特定带宽的抖动来适用不同场合的轴体和按键，其复用率，扩展性较差，而且不能从根本上处理问题，或许这才是很少使用硬件消抖的原因，
 
 
-.. figure:: ./image/keyboard_sw1.jpg
+.. figure:: ./image/keyboard_sw1.png
     :width: 800 px
     :align: center
 
     按键扫描算法简图.
 
-其中 ``KEY_TIME`` 记录检测按键按下电平次数， ``KEY_RES`` 记录按键弹起电平次数，同时次数自增具有最大值限制，此部分不在流程图中显示， ``KEY_TIME`` 记录次数超过短按判断次数时，认为按键按下，首次进入将按键标记为短按状态，并将 ``KEY_RES`` 清零， ``KEY_CLICK`` 自增1，当 ``KEY_TIME`` 记录次数超过长按判断次数时认为按键为长按，首次进入标记为长按状态，并将 ``KEY_CLICK`` 、 ``KEY_RES`` 清零，当 ``KEY_RES`` 大于按键弹起判断时间时，将按键标记为按键弹起， ``KEY_TIME`` 清零，当 ``KEY_RES`` 大于连续按超时时间时获取按键按下次数 ``KEY_NUM_STATE=KEY_CLICK`` ，并将 ``KEY_CLICK`` 清零。按键扫描在定时器或任务中进行，其它线程只需关心 ``KEY_STATE`` 和 ``KEY_NUM_STATE``。
+其中 ``time_count`` 记录检测按键按下电平次数， ``res_count`` 记录按键弹起电平次数，同时次数自增具有最大值限制，此部分不在流程图中显示， ``time_count`` 记录次数超过短按判断次数时，认为按键按下，首次进入将按键标记为短按状态，并将 ``res_count`` 清零， ``click_num`` 自增1，当 ``time_count`` 记录次数超过长按判断次数时认为按键为长按，首次进入标记为长按状态，并将 ``click_num`` 、 ``res_count`` 清零，当 ``res_count`` 大于按键弹起判断时间时，将按键标记为按键弹起， ``time_count`` 清零，当 ``res_count`` 大于连续按超时时间时获取按键按下次数 ``click_state_num=click_num`` ，并将 ``click_num`` 清零。按键扫描在定时器或任务中进行，其它线程只需关心 ``states`` 和 ``click_state_num``。
 
 .. note:: 对于按键算法图中的按键状态的赋值操作都只有在非此状态时可以赋值，部分细节处理过程并未在流程图中展示，而且键盘的按键算法省略了按键次数的统计。
 
@@ -146,23 +146,24 @@
                 key_enc_info.key_t[key_count].key_info.res_count = 0;
             }
         }
+        //连续按超时
+        if (key_enc_info.key_t[key_count].key_info.res_count >= KEY_RES_NUM_COUNT)
+        {
+            if (key_enc_info.key_t[key_count].key_info.click_num != 0)
+            {
+                key_enc_info.key_t[key_count].key_info.click_state_num =
+                    key_enc_info.key_t[key_count].key_info.click_num;
+                key_enc_info.key_t[key_count].key_info.click_num = 0;
+            }
+        }
         //按键复位弹起
-        if (key_enc_info.key_t[key_count].key_info.res_count >= KEY_RES_COUNT)
+        else if (key_enc_info.key_t[key_count].key_info.res_count >= KEY_RES_COUNT)
         {
             if (key_enc_info.key_t[key_count].key_info.states != KEY_TASK_UPSPRING)
             {
                 key_enc_info.key_t[key_count].key_info.states = KEY_TASK_UPSPRING; //按键弹起复位
                 //按键按下计数清零
                 key_enc_info.key_t[key_count].key_info.time_count = 0; //按键计数清零
-            }
-        }
-        //连续按超时
-        if (key_enc_info.key_t[key_count].key_info.res_count >= KEY_RES_NUM_COUNT)
-        {
-            if (key_enc_info.key_t[key_count].key_info.click_num != 0)
-            {
-                key_enc_info.key_t[key_count].key_info.click_state_num = key_enc_info.key_t[key_count].key_info.click_num;
-                key_enc_info.key_t[key_count].key_info.click_num = 0;
             }
         }
     }
@@ -193,7 +194,6 @@
 
 .. code-block:: c
   :caption: 六键无冲报文处理
-  :linenos:
 
     void key_update(uint8_t *pTxbuf, key_info_t *key_cfg)
     {
@@ -277,7 +277,6 @@
 
 .. code-block:: c
   :caption: 六键无冲报文生成
-  :linenos:
   
     void key_info_get(key_info_t *key_cfg)
     {
@@ -457,9 +456,93 @@ HID复合设备
 7. 根据 Report ID封装HID上报函数
 
 
-指纹模块驱动、LVGL显示、密码管理功能实现
-============================================
+指纹模块驱动
+================
+
+本方案使用了BM2166指纹模块，模块提供了简单的DEMO
+
+.. important:: 简单的DEMO仅仅可以用于测试模块是否正常，其demo中大量的 `delay` 延时函数极大的占用了MCU的CPU资源，如何理解CPU的多线程管理原理、RTOS的任务调度、和RTOS的 `伪延时`、以及STM32系统的中断，在此不难搭建出更高效、稳定、以及更低占用的指纹模块驱动方案。
+
+.. important:: 单核心的CPU其实只有一个线程，也就是真实情况下它也是单线程的，而多线程的概念只是由操作系统模拟出的多线程、在此用一个简单的示例解释CPU是如何进行多线程的，在此我们有四个应用程序，并将其分别命名为应用1、应用2、应用3、应用4，那么如果没有操作系统，你应该如何去分配CPU去执行这四个功能？
+
+    - 当然如果所有任务都可以充分利用CPU资源，而不会浪费CPU资源的话、在此可以应用1、应用2、应用3、应用4依次处理。
+    - 然而CPU一般处理速度都会远大于应用需要的处理速度，对于没有操作系统而言的系统但凡使用了延时、以及while循环等待的系统都存在系统资源的浪费。
+    - 继续我们假设 ``应用1`` ~ ``应用4`` 分别需要的系统占用为 10%、20%、30%和50%，其中每个应用都需要延时、我们应该如何去处理这些应用？
+    - 在此我们不难求出 `10`、 `20` 、 `30` 、 `50` 、的最大公约数为 `10` ，而所有应用之和为 `100` ，因此我们可以设计一个周期为 `100/10` 的计数周期，来进行多线程的模拟。
+
+    .. code-block:: c
+    
+        void cpu_task(void)
+        {
+            static uint8_t tack_count=1;
+            while(1)
+            {
+                switch(tack_count)
+                {
+                    case (1):run_task1();break;
+                    case (2):
+                    case (3):run_task2();break;
+                    case (4):
+                    case (5):
+                    case (6):run_task3();break;
+                    case (7):
+                    case (8):
+                    case (9):
+                    case (10):run_task4();break;
+                    case (11):tack_count = 0;break;
+                }
+                tack_count++;
+        }
+
+    - 在此结合嵌入式程序而言，涉及外设的通信以及响应等一般都在毫秒级别，同时当外设响应后CPU的数据处理过程往往只是us级到ms级别区间，因此上述方案还需要进行一定程度优化,我们设计一个定时执行的函数，并且假设定时为0.1ms。
+    - 对于你的应用程序，我推荐你可以使用第二种定时器方式，提供应用程序的轮询，因为这样你可以开多个定时器以分配为不同级别的应用程序轮询，而不会造成任何的CPU资源浪费，这种伪并行的方式，在我在按键扫描算法中很容易体现。
+    
+    .. code-block:: c
+
+        void timer_irq(void)
+        {
+            static uint8_t tack_count=1;
+            switch(tack_count)
+            {
+
+                case (1):run_task1();break;
+                case (2):
+                case (3):run_task2();break;
+                case (4):
+                case (5):
+                case (6):run_task3();break;
+                case (7):
+                case (8):
+                case (9):
+                case (10):run_task4();break;
+                case (11):tack_count = 0;break;
+            }
+            tack_count++;
+        }
+
+    - 那么上述程序的含义就是1ms内,0.1ms的时间处理 `应用1` 、0.2ms的时间处理 `应用2` 、0.3ms的时间处理 `应用3` 、0.5ms的时间处理 `应用4`,在此所有应用的结果处理都需要在0.1ms内完成，同时处理完成之后CPU会立即释放，并去等待其余的应用,那么实际等效下来就是每1ms,CPU会同时处理这四个应用程序,并得出执行结果。
+
+.. tip::
+    在此我们尝试构建状态机来进行模块串口消息的处理,所有的指令都有消息回传，在发送消息后、CPU资源需要释放，等待模块处理完成并回传消息，在此原模块为插入超时等待模块返回，而无法释放CPU资源，因此消息方式必须得到改善
+
+.. tip::
+    改善的消息方式为使用串口DMA发送指纹模块控制消息，使用串口空闲中断DMA双缓冲接收进行消息回传处理,构建消息处理状态机 `BM_ACK_NO` , `BM_ACK_WAIT` , `BM_ACK_OK` 
+
+    - `BM_ACK_NO` >> 发送消息，并将状态切换为 `BM_ACK_WAIT` >> 释放CPU资源 >> 串口空闲中断 >> 切换状态为 `BM_ACK_OK` >>处理回传数据,切换状态为 `BM_ACK_NO` >> 下一轮数据收发
+.. tip::
+    在指纹识别、指纹录入过程中牵涉到多条命令的协同处理，在此也需要构建状态机，进行命名的切换处理，合理的利用状态机不但可以理清应用逻辑，还可以很好的规范程序框架。
+
+.. important:: 在此我们需要牢记，无论是工作还是代码、一种高效率的工作方式都不会去一直等待对方做好后处理，而是构建一个协同的状态机，当对方完成了此项工作，会将对应状态标记完成，而你要做的只是当你完成其它任务以及在你以固定的周期频率去检查它是否完成，如果未完成那么你继续去完成你的其它工作，如果完成了，你则快速的在它完成的基础之上完成后续工作。
+
+显示屏驱动
+================
+
+商家提供了屏幕的驱动程序，只需要简单适配SPI驱动就可以实现刷屏，不过为了提高刷屏效率，在此需要简单修改驱动程序，以适应DMA方式刷屏，图形界面使用LVGL
 
 
-...
+键盘上报字符串
+========================
+
+这个比较简单，因为以及实现按键的HID上报，在此只需要将ASSIC编码转为键盘的编码，并依次上报即可，上报时短暂剥夺按键上报权力，字符串上报完成后恢复，在此主要需要注意的是，键盘编码有很多共用的如大小写，而共用区分需要通过 `SHIFT` 的值区分。
+
 
