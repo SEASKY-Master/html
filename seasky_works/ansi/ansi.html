@@ -1,0 +1,440 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>1. ANSI终端颜色编码 &mdash; SEASKY  文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="1. Sailor Project" href="../SailorProject/SailorProject.html" />
+    <link rel="prev" title="1. reStructuredText快速入门" href="../../rst_sphinx/rst_sphinx.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SEASKY
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">实用开发工具</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../rst_sphinx/rst_sphinx.html">1. reStructuredText快速入门</a></li>
+</ul>
+<p class="caption"><span class="caption-text">ANSI颜色编码</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. ANSI终端颜色编码</a></li>
+</ul>
+<p class="caption"><span class="caption-text">串口示波器&lt;Sailor Project&gt;</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../SailorProject/SailorProject.html">1. Sailor Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SailorProject/readme.html">2. 项目日志</a></li>
+</ul>
+<p class="caption"><span class="caption-text">KeyBoard&lt;LLQ-82&gt;</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../KeyBoard/keyboard.html">1. 机械键盘介绍(LLQ-82)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../KeyBoard/keyboard_hw.html">2. 硬件设计指南(LLQ-82)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../KeyBoard/keyboard_sw.html">3. 软件设计指南(LLQ-82)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../KeyBoard/keyboard_struct.html">4. 机械键盘结构设计(LLQ-82)</a></li>
+</ul>
+<p class="caption"><span class="caption-text">SEASKY模块说明</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../uart_protocol.html">1. SEASKY串口通信协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bmi088.html">2. SEASKY-BMI088技术手册</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SEASKY</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li><span class="section-number">1. </span>ANSI终端颜色编码</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/seasky_works/ansi/ansi.rst.txt" rel="nofollow"> 查看页面源码</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ansi">
+<h1><span class="section-number">1. </span>ANSI终端颜色编码<a class="headerlink" href="#ansi" title="永久链接至标题">¶</a></h1>
+<div class="admonition important">
+<p class="admonition-title">重要</p>
+<p>百度 <code class="docutils literal notranslate"><span class="pre">ANSI终端颜色编码</span></code> 可以看到很多相关的内容，其中或许详细、或许粗略，不过多搜索几篇应该就能看懂，但是终归是找不到一款集成到的很方便生成ANSI编码的代码，在此我对ANSI编码做了以下处理，可以很方便的生成颜色编码，并嵌入LINUX调试中去，字符串编码生成使用了宏运算，运行时不会占用</p>
+</div>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">ANSI 头文件</span><a class="headerlink" href="#id1" title="永久链接至代码">¶</a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#ifndef _BSP_ANSI_CODE_H_</span>
+<span class="cp">#define _BSP_ANSI_CODE_H_</span>
+
+<span class="cp">#define ANSI_toStr(code) #code</span>
+
+<span class="cp">#define ANSI_ESC     &quot;\x1B&quot;</span>
+<span class="cp">#define ANSI_CSI     &quot;[&quot;</span>
+
+
+<span class="cp">#define ANSI_END                        0   </span><span class="c1">//清除格式</span>
+<span class="cp">#define ANSI_BOLD                       1   </span><span class="c1">//加粗</span>
+<span class="cp">#define ANSI_BLINK                      5   </span><span class="c1">//缓慢闪烁、低于每分钟150次</span>
+<span class="c1">//30–37 前景色 8bit控制方式</span>
+<span class="cp">#define ANSI_TEXT_COLOR_BLACK           30  </span><span class="c1">//黑色</span>
+<span class="cp">#define ANSI_TEXT_COLOR_RED             31  </span><span class="c1">//红色</span>
+<span class="cp">#define ANSI_TEXT_COLOR_GREEN           32  </span><span class="c1">//绿色</span>
+<span class="cp">#define ANSI_TEXT_COLOR_YELLOW          33  </span><span class="c1">//黄色</span>
+<span class="cp">#define ANSI_TEXT_COLOR_BLUE            34  </span><span class="c1">//蓝色</span>
+<span class="cp">#define ANSI_TEXT_COLOR_MAGENTA         35  </span><span class="c1">//紫色</span>
+<span class="cp">#define ANSI_TEXT_COLOR_CYAN            36  </span><span class="c1">//青色</span>
+<span class="cp">#define ANSI_TEXT_COLOR_WHITE           37  </span><span class="c1">//白色</span>
+<span class="cp">#define ANSI_TEXT_COLOR_DEFAULT         39  </span><span class="c1">//默认颜色</span>
+<span class="c1">//40–47 背景色 8bit控制方式</span>
+<span class="cp">#define ANSI_BACK_COLOR_BLACK           40  </span><span class="c1">//黑色</span>
+<span class="cp">#define ANSI_BACK_COLOR_RED             41  </span><span class="c1">//红色</span>
+<span class="cp">#define ANSI_BACK_COLOR_GREEN           42  </span><span class="c1">//绿色</span>
+<span class="cp">#define ANSI_BACK_COLOR_YELLOW          43  </span><span class="c1">//黄色</span>
+<span class="cp">#define ANSI_BACK_COLOR_BLUE            44  </span><span class="c1">//蓝色</span>
+<span class="cp">#define ANSI_BACK_COLOR_MAGENTA         45  </span><span class="c1">//紫色</span>
+<span class="cp">#define ANSI_BACK_COLOR_CYAN            46  </span><span class="c1">//青色</span>
+<span class="cp">#define ANSI_BACK_COLOR_WHITE           47  </span><span class="c1">//白色</span>
+<span class="cp">#define ANSI_BACK_COLOR_DEFAULT         49  </span><span class="c1">//默认颜色</span>
+
+
+<span class="c1">// 特殊方式设置，封装一下，不提供常规方式调用</span>
+<span class="cp">#define ANSI_TEXT_COLOR_RGB             &quot;38;2&quot;  </span><span class="c1">//设置前景色、下一个参数是 5;n 或2;r;g;b</span>
+<span class="cp">#define ANSI_BACK_COLOR_RGB             &quot;48;2&quot;  </span><span class="c1">//设置背景色、下一个参数是 5;n 或2;r;g;b</span>
+<span class="cp">#define ANSI_TEXT_COLOR_256             &quot;38;5&quot;</span>
+<span class="cp">#define ANSI_BACK_COLOR_256             &quot;48;5&quot;</span>
+
+
+<span class="cp">#define ANSI_TYPE_STR(ANSI_CODE1)                                      \</span>
+<span class="cp">            ANSI_toStr(ANSI_CODE1)</span>
+
+
+<span class="cp">#define ANSI_CLEAR   ANSI_ESC ANSI_CSI ANSI_TYPE_STR(ANSI_END)</span>
+
+<span class="cm">/********************************************************************************************************************/</span>
+<span class="cm">/****************************************************生成ANSI编码****************************************************/</span>
+<span class="cm">/********************************************************************************************************************/</span>
+<span class="cp">#define ANSI_TYPE1(ANSI_CODE1)                                      \</span>
+<span class="cp">            ANSI_toStr(ANSI_CODE1)</span>
+<span class="cp">#define ANSI_TYPE2(ANSI_CODE1,ANSI_CODE2)                           \</span>
+<span class="cp">            ANSI_TYPE1(ANSI_CODE1)  &quot;;&quot; ANSI_TYPE1(ANSI_CODE2)</span>
+<span class="cp">#define ANSI_TYPE3(ANSI_CODE1,ANSI_CODE2,ANSI_CODE3)                \</span>
+<span class="cp">            ANSI_TYPE2(ANSI_CODE1,ANSI_CODE2)   &quot;;&quot; ANSI_TYPE1(ANSI_CODE3)</span>
+<span class="cp">#define ANSI_TYPE4(ANSI_CODE1,ANSI_CODE2,ANSI_CODE3,ANSI_CODE4)     \</span>
+<span class="cp">            ANSI_TYPE2(ANSI_CODE1,ANSI_CODE2)   &quot;;&quot; ANSI_TYPE2(ANSI_CODE3,ANSI_CODE4)</span>
+
+<span class="cp">#define MAKE_RGB_CODE(ANSI_COLOR_TYPE,RGB_R,RGB_B,RGB_G)            \</span>
+<span class="cp">            ANSI_COLOR_TYPE  &quot;;&quot;  ANSI_TYPE3(RGB_R,RGB_B,RGB_G)</span>
+<span class="cp">#define MAKC_256_CODE(ANSI_COLOR_TYPE,COLOR)                        \</span>
+<span class="cp">            ANSI_COLOR_TYPE  &quot;;&quot;  ANSI_TYPE1(COLOR)</span>
+
+<span class="cp">#define ANSI_RBG_TEXT_TYPE1(RGB_R,RGB_B,RGB_G)                                                          \</span>
+<span class="cp">            MAKE_RGB_CODE(ANSI_TEXT_COLOR_RGB,RGB_R,RGB_B,RGB_G)</span>
+<span class="cp">#define ANSI_RBG_TEXT_TYPE2(ANSI_CODE1,RGB_R,RGB_B,RGB_G)                                               \</span>
+<span class="cp">            ANSI_TYPE1(ANSI_CODE1)  &quot;;&quot; ANSI_RBG_TEXT_TYPE1(RGB_R,RGB_B,RGB_G)</span>
+<span class="cp">#define ANSI_RBG_TEXT_TYPE3(ANSI_CODE1,ANSI_CODE2,RGB_R,RGB_B,RGB_G)                                    \</span>
+<span class="cp">            ANSI_TYPE2(ANSI_CODE1,ANSI_CODE2) &quot;;&quot; ANSI_RBG_TEXT_TYPE1(RGB_R,RGB_B,RGB_G)</span>
+
+<span class="cp">#define ANSI_RBG_BACK_TYPE1(RGB_R,RGB_B,RGB_G)                                                          \</span>
+<span class="cp">            MAKE_RGB_CODE(ANSI_BACK_COLOR_RGB,RGB_R,RGB_B,RGB_G)</span>
+<span class="cp">#define ANSI_RBG_BACK_TYPE2(ANSI_CODE1,RGB_R,RGB_B,RGB_G)                                               \</span>
+<span class="cp">            ANSI_TYPE1(ANSI_CODE1)  &quot;;&quot; ANSI_RBG_BACK_TYPE1(RGB_R,RGB_B,RGB_G)</span>
+<span class="cp">#define ANSI_RBG_BACK_TYPE3(ANSI_CODE1,ANSI_CODE2,RGB_R,RGB_B,RGB_G)                                    \</span>
+<span class="cp">            ANSI_TYPE2(ANSI_CODE1,ANSI_CODE2) &quot;;&quot; ANSI_RBG_BACK_TYPE1(RGB_R,RGB_B,RGB_G)</span>
+
+<span class="cp">#define ANSI_256_TEXT_TYPE1(COLOR_256)                                                                  \</span>
+<span class="cp">            MAKC_256_CODE(ANSI_TEXT_COLOR_256,COLOR_256)</span>
+<span class="cp">#define ANSI_256_TEXT_TYPE2(ANSI_CODE1,COLOR_256)                                                       \</span>
+<span class="cp">            ANSI_TYPE1(ANSI_CODE1)  &quot;;&quot;   ANSI_256_TEXT_TYPE1(COLOR_256)</span>
+<span class="cp">#define ANSI_256_TEXT_TYPE3(ANSI_CODE1,ANSI_CODE2,COLOR_256)                                            \</span>
+<span class="cp">            ANSI_TYPE2(ANSI_CODE1,ANSI_CODE2) &quot;;&quot;  ANSI_256_TEXT_TYPE1(COLOR_256)</span>
+
+<span class="cp">#define ANSI_256_BACK_TYPE1(COLOR_256)                                                                  \</span>
+<span class="cp">            MAKC_256_CODE(ANSI_BACK_COLOR_256,COLOR_256)</span>
+<span class="cp">#define ANSI_256_BACK_TYPE2(ANSI_CODE1,COLOR_256)                                                       \</span>
+<span class="cp">            ANSI_TYPE1(ANSI_CODE1)  &quot;;&quot;   ANSI_256_BACK_TYPE1(COLOR_256)</span>
+<span class="cp">#define ANSI_256_BACK_TYPE3(ANSI_CODE1,ANSI_CODE2,COLOR_256)                                            \</span>
+<span class="cp">            ANSI_TYPE2(ANSI_CODE1,ANSI_CODE2) &quot;;&quot;  ANSI_256_BACK_TYPE1(COLOR_256)</span>
+
+<span class="cp">#define  ANSI_RBG_TEXT_BACK_TYPE1(RGB_R1,RGB_B1,RGB_G1,RGB_R2,RGB_B2,RGB_G2)                                           \</span>
+<span class="cp">            ANSI_RBG_TEXT_TYPE1(RGB_R1,RGB_B1,RGB_G1)   &quot;;&quot; ANSI_RBG_BACK_TYPE1(RGB_R2,RGB_B2,RGB_G2)</span>
+<span class="cp">#define  ANSI_RBG_TEXT_BACK_TYPE2(ANSI_CODE1,RGB_R1,RGB_B1,RGB_G1,RGB_R2,RGB_B2,RGB_G2)                                \</span>
+<span class="cp">            ANSI_TYPE1(ANSI_CODE1)  &quot;;&quot;  ANSI_RBG_TEXT_BACK_TYPE1(RGB_R1,RGB_B1,RGB_G1,RGB_R2,RGB_B2,RGB_G2)</span>
+<span class="cp">#define  ANSI_RBG_TEXT_BACK_TYPE3(ANSI_CODE1,ANSI_CODE2,RGB_R1,RGB_B1,RGB_G1,RGB_R2,RGB_B2,RGB_G2)                     \</span>
+<span class="cp">            ANSI_TYPE2(ANSI_CODE1,ANSI_CODE2)  &quot;;&quot;  ANSI_RBG_TEXT_BACK_TYPE1(RGB_R1,RGB_B1,RGB_G1,RGB_R2,RGB_B2,RGB_G2)</span>
+
+<span class="cp">#define ANSI_256_TEXT_BACK_TYPE1(COLOR1_256,COLOR2_256)                                                 \</span>
+<span class="cp">            ANSI_256_TEXT_TYPE1(COLOR1_256) &quot;;&quot; ANSI_256_BACK_TYPE1(COLOR2_256)</span>
+<span class="cp">#define ANSI_256_TEXT_BACK_TYPE2(ANSI_CODE1,COLOR1_256,COLOR2_256)                                      \</span>
+<span class="cp">            ANSI_TYPE1(ANSI_CODE1)  &quot;;&quot; ANSI_256_TEXT_BACK_TYPE1(COLOR1_256,COLOR2_256)</span>
+<span class="cp">#define ANSI_256_TEXT_BACK_TYPE3(ANSI_CODE1,ANSI_CODE2,COLOR1_256,COLOR2_256)                           \</span>
+<span class="cp">            ANSI_TYPE2(ANSI_CODE1,ANSI_CODE2)  &quot;;&quot; ANSI_256_TEXT_BACK_TYPE1(COLOR1_256,COLOR2_256)</span>
+
+<span class="cm">/********************************************************************************************************************/</span>
+
+
+<span class="cm">/***</span>
+<span class="cm">* @Author: Seasky.Liu</span>
+<span class="cm">* @Description:</span>
+<span class="cm">*     常规方式调用</span>
+<span class="cm">*          ANSI_CODE_TYPE1 可设置1个ANSI参数</span>
+<span class="cm">*              如  \x1B[0m  清除格式;\x1B[1m 加粗;\x1B[5m 闪烁;\x1B[31m 红色字体</span>
+<span class="cm">*          ANSI_CODE_TYPE2 可设置2个ANSI参数</span>
+<span class="cm">*               如  \x1B[1;31m   红色加粗</span>
+<span class="cm">*          ANSI_CODE_TYPE3 可设置3个ANSI参数</span>
+<span class="cm">*               如  \x1B[1;5;31m 红色加粗闪烁</span>
+<span class="cm">*          ...</span>
+<span class="cm">*/</span>
+<span class="cp">#define ANSI_CLEAR_CODE_TYPE                                                                \</span>
+<span class="cp">            ANSI_CLEAR                                                                      &quot;m&quot;</span>
+<span class="cp">#define ANSI_CODE_TYPE1(ansi_code1)                                                         \</span>
+<span class="cp">            ANSI_ESC ANSI_CSI  ANSI_TYPE1(ansi_code1)                                       &quot;m&quot;</span>
+<span class="cp">#define ANSI_CODE_TYPE2(ansi_code1,ansi_code2)                                              \</span>
+<span class="cp">            ANSI_ESC ANSI_CSI  ANSI_TYPE2(ansi_code1,ansi_code2)                            &quot;m&quot;</span>
+<span class="cp">#define ANSI_CODE_TYPE3(ansi_code1,ansi_code2,ansi_code3)                                    \</span>
+<span class="cp">            ANSI_ESC ANSI_CSI  ANSI_TYPE3(ansi_code1,ansi_code2,ansi_code3)                 &quot;m&quot;</span>
+<span class="cp">#define ANSI_CODE_TYPE4(ansi_code1,ansi_code2,ansi_code3,ansi_code4)                        \</span>
+<span class="cp">            ANSI_ESC ANSI_CSI  ANSI_TYPE4(ansi_code1,ansi_code2,ansi_code3,ansi_code4)      &quot;m&quot;</span>
+
+<span class="cm">/***</span>
+<span class="cm">* @Author: Seasky.Liu</span>
+<span class="cm">* @Description:</span>
+<span class="cm">*      设置文本前景色方式</span>
+<span class="cm">*          ANSI_TEXT_RGB_CODE_TYPE1    设置文本前景色</span>
+<span class="cm">*          ANSI_TEXT_RGB_CODE_TYPE2    ansi_code1+设置文本前景色</span>
+<span class="cm">*          ....</span>
+<span class="cm">*/</span>
+<span class="cp">#define ANSI_TEXT_RGB_CODE_TYPE1(r,g,b)                                                     \</span>
+<span class="cp">            ANSI_ESC ANSI_CSI  ANSI_RBG_TEXT_TYPE1(r,g,b)                                   &quot;m&quot;</span>
+<span class="cp">#define ANSI_TEXT_RGB_CODE_TYPE2(ansi_code1,r,g,b)                                          \</span>
+<span class="cp">            ANSI_ESC ANSI_CSI  ANSI_RBG_TEXT_TYPE2(ansi_code1,r,g,b)                        &quot;m&quot;</span>
+<span class="cp">#define ANSI_TEXT_RGB_CODE_TYPE3(ansi_code1,ansi_code2,r,g,b)                               \</span>
+<span class="cp">            ANSI_ESC ANSI_CSI  ANSI_RBG_TEXT_TYPE3(ansi_code1,ansi_code2,r,g,b)             &quot;m&quot;</span>
+
+<span class="cp">#define ANSI_BACK_RGB_CODE_TYPE1(r,g,b)                                                     \</span>
+<span class="cp">            ANSI_ESC ANSI_CSI  ANSI_RBG_BACK_TYPE1(r,g,b)                                   &quot;m&quot;</span>
+<span class="cp">#define ANSI_BACK_RGB_CODE_TYPE2(ansi_code1,r,g,b)                                          \</span>
+<span class="cp">            ANSI_ESC ANSI_CSI  ANSI_RBG_BACK_TYPE2(ansi_code1,r,g,b)                        &quot;m&quot;</span>
+<span class="cp">#define ANSI_BACK_RGB_CODE_TYPE3(ansi_code1,ansi_code2,r,g,b)                               \</span>
+<span class="cp">            ANSI_ESC ANSI_CSI  ANSI_RBG_BACK_TYPE3(ansi_code1,ansi_code2,r,g,b)             &quot;m&quot;</span>
+
+<span class="cp">#define ANSI_TEXT_256_CODE_TYPE1(color)                                                     \</span>
+<span class="cp">            ANSI_ESC ANSI_CSI  ANSI_256_TEXT_TYPE1(r,g,b)                                   &quot;m&quot;</span>
+<span class="cp">#define ANSI_TEXT_256_CODE_TYPE2(ansi_code1,color)                                          \</span>
+<span class="cp">            ANSI_ESC ANSI_CSI  ANSI_256_TEXT_TYPE2(ansi_code1,color)                        &quot;m&quot;</span>
+<span class="cp">#define ANSI_TEXT_256_CODE_TYPE3(ansi_code1,ansi_code2,color)                               \</span>
+<span class="cp">            ANSI_ESC ANSI_CSI  ANSI_256_TEXT_TYPE3(ansi_code1,ansi_code2,color)             &quot;m&quot;</span>
+
+<span class="cp">#define ANSI_BACK_256_CODE_TYPE1(color)                                                     \</span>
+<span class="cp">            ANSI_ESC ANSI_CSI  ANSI_256_BACK_TYPE1(r,g,b)                                   &quot;m&quot;</span>
+<span class="cp">#define ANSI_BACK_256_CODE_TYPE2(ansi_code1,color)                                          \</span>
+<span class="cp">            ANSI_ESC ANSI_CSI  ANSI_256_BACK_TYPE2(ansi_code1,color)                        &quot;m&quot;</span>
+<span class="cp">#define ANSI_BACK_256_CODE_TYPE3(ansi_code1,ansi_code2,color)                               \</span>
+<span class="cp">            ANSI_ESC ANSI_CSI  ANSI_256_BACK_TYPE3(ansi_code1,ansi_code2,color)             &quot;m&quot;</span>
+
+
+<span class="cp">#define ANSI_RBG_TEXT_BACK_CODE_TYPE1(r1,g1,b1,r2,g2,b2)                                            \</span>
+<span class="cp">        ANSI_ESC ANSI_CSI  ANSI_RBG_TEXT_BACK_TYPE1(r1,g1,b1,r2,g2,b2)                           &quot;m&quot;</span>
+<span class="cp">#define ANSI_RBG_TEXT_BACK_CODE_TYPE2(ansi_code1,r1,g1,b1,r2,g2,b2)                                 \</span>
+<span class="cp">        ANSI_ESC ANSI_CSI  ANSI_RBG_TEXT_BACK_TYPE2(ansi_code1,r1,g1,b1,r2,g2,b2)                &quot;m&quot;</span>
+<span class="cp">#define ANSI_RBG_TEXT_BACK_CODE_TYPE3(ansi_code1,ansi_code2,r1,g1,b1,r2,g2,b2)                       \</span>
+<span class="cp">        ANSI_ESC ANSI_CSI  ANSI_RBG_TEXT_BACK_TYPE3(ansi_code1,ansi_code2,r1,g1,b1,r2,g2,b2)     &quot;m&quot;</span>
+
+<span class="cp">#define ANSI_256_TEXT_BACK_CODE_TYPE1(color1,color2)                                                \</span>
+<span class="cp">        ANSI_ESC ANSI_CSI  ANSI_256_TEXT_BACK_TYPE1(color1,color2)                               &quot;m&quot;</span>
+<span class="cp">#define ANSI_256_TEXT_BACK_CODE_TYPE2(ansi_code1,color1,color2)                                     \</span>
+<span class="cp">        ANSI_ESC ANSI_CSI  ANSI_256_TEXT_BACK_TYPE2(ansi_code1,color1,color2)                    &quot;m&quot;</span>
+<span class="cp">#define ANSI_256_TEXT_BACK_CODE_TYPE3(ansi_code1,ansi_code2,color1,color2)                          \</span>
+<span class="cp">        ANSI_ESC ANSI_CSI  ANSI_256_TEXT_BACK_TYPE3(ansi_code1,ansi_code2,color1,color2)         &quot;m&quot;</span>
+
+<span class="cp">#endif</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">简单演示</span><a class="headerlink" href="#id2" title="永久链接至代码">¶</a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>  <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+  <span class="p">{</span>
+      <span class="n">printf</span><span class="p">(</span><span class="n">ANSI_RBG_TEXT_BACK_CODE_TYPE2</span><span class="p">(</span><span class="n">ANSI_BLINK</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">)</span> <span class="s">&quot;ansi_test!&quot;</span> <span class="n">ANSI_CLEAR_CODE_TYPE</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../SailorProject/SailorProject.html" class="btn btn-neutral float-right" title="1. Sailor Project" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../../rst_sphinx/rst_sphinx.html" class="btn btn-neutral float-left" title="1. reStructuredText快速入门" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2021/10/15,SEASKY.
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

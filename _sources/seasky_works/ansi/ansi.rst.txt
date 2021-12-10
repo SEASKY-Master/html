@@ -1,0 +1,204 @@
+================================
+ANSI终端颜色编码
+================================
+
+
+
+.. important:: 百度 ``ANSI终端颜色编码`` 可以看到很多相关的内容，其中或许详细、或许粗略，不过多搜索几篇应该就能看懂，但是终归是找不到一款集成到的很方便生成ANSI编码的代码，在此我对ANSI编码做了以下处理，可以很方便的生成颜色编码，并嵌入LINUX调试中去，字符串编码生成使用了宏运算，运行时不会占用
+
+
+.. code-block:: c
+    :caption: ANSI 头文件
+
+    #ifndef _BSP_ANSI_CODE_H_
+    #define _BSP_ANSI_CODE_H_
+
+    #define ANSI_toStr(code) #code
+
+    #define ANSI_ESC     "\x1B"
+    #define ANSI_CSI     "[" 
+
+
+    #define ANSI_END                        0   //清除格式
+    #define ANSI_BOLD                       1   //加粗
+    #define ANSI_BLINK                      5   //缓慢闪烁、低于每分钟150次
+    //30–37 前景色 8bit控制方式
+    #define ANSI_TEXT_COLOR_BLACK           30  //黑色
+    #define ANSI_TEXT_COLOR_RED             31  //红色
+    #define ANSI_TEXT_COLOR_GREEN           32  //绿色      
+    #define ANSI_TEXT_COLOR_YELLOW          33  //黄色
+    #define ANSI_TEXT_COLOR_BLUE            34  //蓝色
+    #define ANSI_TEXT_COLOR_MAGENTA         35  //紫色
+    #define ANSI_TEXT_COLOR_CYAN            36  //青色
+    #define ANSI_TEXT_COLOR_WHITE           37  //白色 
+    #define ANSI_TEXT_COLOR_DEFAULT         39  //默认颜色
+    //40–47 背景色 8bit控制方式
+    #define ANSI_BACK_COLOR_BLACK           40  //黑色
+    #define ANSI_BACK_COLOR_RED             41  //红色
+    #define ANSI_BACK_COLOR_GREEN           42  //绿色      
+    #define ANSI_BACK_COLOR_YELLOW          43  //黄色
+    #define ANSI_BACK_COLOR_BLUE            44  //蓝色
+    #define ANSI_BACK_COLOR_MAGENTA         45  //紫色
+    #define ANSI_BACK_COLOR_CYAN            46  //青色
+    #define ANSI_BACK_COLOR_WHITE           47  //白色 
+    #define ANSI_BACK_COLOR_DEFAULT         49  //默认颜色
+
+
+    // 特殊方式设置，封装一下，不提供常规方式调用
+    #define ANSI_TEXT_COLOR_RGB             "38;2"  //设置前景色、下一个参数是 5;n 或2;r;g;b
+    #define ANSI_BACK_COLOR_RGB             "48;2"  //设置背景色、下一个参数是 5;n 或2;r;g;b
+    #define ANSI_TEXT_COLOR_256             "38;5"  
+    #define ANSI_BACK_COLOR_256             "48;5"
+
+
+    #define ANSI_TYPE_STR(ANSI_CODE1)                                      \
+                ANSI_toStr(ANSI_CODE1)
+
+
+    #define ANSI_CLEAR   ANSI_ESC ANSI_CSI ANSI_TYPE_STR(ANSI_END)
+
+    /********************************************************************************************************************/
+    /****************************************************生成ANSI编码****************************************************/
+    /********************************************************************************************************************/
+    #define ANSI_TYPE1(ANSI_CODE1)                                      \
+                ANSI_toStr(ANSI_CODE1)
+    #define ANSI_TYPE2(ANSI_CODE1,ANSI_CODE2)                           \
+                ANSI_TYPE1(ANSI_CODE1)  ";" ANSI_TYPE1(ANSI_CODE2)  
+    #define ANSI_TYPE3(ANSI_CODE1,ANSI_CODE2,ANSI_CODE3)                \
+                ANSI_TYPE2(ANSI_CODE1,ANSI_CODE2)   ";" ANSI_TYPE1(ANSI_CODE3)   
+    #define ANSI_TYPE4(ANSI_CODE1,ANSI_CODE2,ANSI_CODE3,ANSI_CODE4)     \
+                ANSI_TYPE2(ANSI_CODE1,ANSI_CODE2)   ";" ANSI_TYPE2(ANSI_CODE3,ANSI_CODE4)
+                
+    #define MAKE_RGB_CODE(ANSI_COLOR_TYPE,RGB_R,RGB_B,RGB_G)            \
+                ANSI_COLOR_TYPE  ";"  ANSI_TYPE3(RGB_R,RGB_B,RGB_G)
+    #define MAKC_256_CODE(ANSI_COLOR_TYPE,COLOR)                        \
+                ANSI_COLOR_TYPE  ";"  ANSI_TYPE1(COLOR)
+
+    #define ANSI_RBG_TEXT_TYPE1(RGB_R,RGB_B,RGB_G)                                                          \
+                MAKE_RGB_CODE(ANSI_TEXT_COLOR_RGB,RGB_R,RGB_B,RGB_G)
+    #define ANSI_RBG_TEXT_TYPE2(ANSI_CODE1,RGB_R,RGB_B,RGB_G)                                               \
+                ANSI_TYPE1(ANSI_CODE1)  ";" ANSI_RBG_TEXT_TYPE1(RGB_R,RGB_B,RGB_G) 
+    #define ANSI_RBG_TEXT_TYPE3(ANSI_CODE1,ANSI_CODE2,RGB_R,RGB_B,RGB_G)                                    \
+                ANSI_TYPE2(ANSI_CODE1,ANSI_CODE2) ";" ANSI_RBG_TEXT_TYPE1(RGB_R,RGB_B,RGB_G)
+
+    #define ANSI_RBG_BACK_TYPE1(RGB_R,RGB_B,RGB_G)                                                          \
+                MAKE_RGB_CODE(ANSI_BACK_COLOR_RGB,RGB_R,RGB_B,RGB_G)
+    #define ANSI_RBG_BACK_TYPE2(ANSI_CODE1,RGB_R,RGB_B,RGB_G)                                               \
+                ANSI_TYPE1(ANSI_CODE1)  ";" ANSI_RBG_BACK_TYPE1(RGB_R,RGB_B,RGB_G) 
+    #define ANSI_RBG_BACK_TYPE3(ANSI_CODE1,ANSI_CODE2,RGB_R,RGB_B,RGB_G)                                    \
+                ANSI_TYPE2(ANSI_CODE1,ANSI_CODE2) ";" ANSI_RBG_BACK_TYPE1(RGB_R,RGB_B,RGB_G)
+
+    #define ANSI_256_TEXT_TYPE1(COLOR_256)                                                                  \
+                MAKC_256_CODE(ANSI_TEXT_COLOR_256,COLOR_256)            
+    #define ANSI_256_TEXT_TYPE2(ANSI_CODE1,COLOR_256)                                                       \
+                ANSI_TYPE1(ANSI_CODE1)  ";"   ANSI_256_TEXT_TYPE1(COLOR_256)        
+    #define ANSI_256_TEXT_TYPE3(ANSI_CODE1,ANSI_CODE2,COLOR_256)                                            \
+                ANSI_TYPE2(ANSI_CODE1,ANSI_CODE2) ";"  ANSI_256_TEXT_TYPE1(COLOR_256)       
+
+    #define ANSI_256_BACK_TYPE1(COLOR_256)                                                                  \
+                MAKC_256_CODE(ANSI_BACK_COLOR_256,COLOR_256)            
+    #define ANSI_256_BACK_TYPE2(ANSI_CODE1,COLOR_256)                                                       \
+                ANSI_TYPE1(ANSI_CODE1)  ";"   ANSI_256_BACK_TYPE1(COLOR_256)        
+    #define ANSI_256_BACK_TYPE3(ANSI_CODE1,ANSI_CODE2,COLOR_256)                                            \
+                ANSI_TYPE2(ANSI_CODE1,ANSI_CODE2) ";"  ANSI_256_BACK_TYPE1(COLOR_256)      
+
+    #define  ANSI_RBG_TEXT_BACK_TYPE1(RGB_R1,RGB_B1,RGB_G1,RGB_R2,RGB_B2,RGB_G2)                                           \
+                ANSI_RBG_TEXT_TYPE1(RGB_R1,RGB_B1,RGB_G1)   ";" ANSI_RBG_BACK_TYPE1(RGB_R2,RGB_B2,RGB_G2)
+    #define  ANSI_RBG_TEXT_BACK_TYPE2(ANSI_CODE1,RGB_R1,RGB_B1,RGB_G1,RGB_R2,RGB_B2,RGB_G2)                                \
+                ANSI_TYPE1(ANSI_CODE1)  ";"  ANSI_RBG_TEXT_BACK_TYPE1(RGB_R1,RGB_B1,RGB_G1,RGB_R2,RGB_B2,RGB_G2) 
+    #define  ANSI_RBG_TEXT_BACK_TYPE3(ANSI_CODE1,ANSI_CODE2,RGB_R1,RGB_B1,RGB_G1,RGB_R2,RGB_B2,RGB_G2)                     \
+                ANSI_TYPE2(ANSI_CODE1,ANSI_CODE2)  ";"  ANSI_RBG_TEXT_BACK_TYPE1(RGB_R1,RGB_B1,RGB_G1,RGB_R2,RGB_B2,RGB_G2) 
+
+    #define ANSI_256_TEXT_BACK_TYPE1(COLOR1_256,COLOR2_256)                                                 \
+                ANSI_256_TEXT_TYPE1(COLOR1_256) ";" ANSI_256_BACK_TYPE1(COLOR2_256)
+    #define ANSI_256_TEXT_BACK_TYPE2(ANSI_CODE1,COLOR1_256,COLOR2_256)                                      \
+                ANSI_TYPE1(ANSI_CODE1)  ";" ANSI_256_TEXT_BACK_TYPE1(COLOR1_256,COLOR2_256) 
+    #define ANSI_256_TEXT_BACK_TYPE3(ANSI_CODE1,ANSI_CODE2,COLOR1_256,COLOR2_256)                           \
+                ANSI_TYPE2(ANSI_CODE1,ANSI_CODE2)  ";" ANSI_256_TEXT_BACK_TYPE1(COLOR1_256,COLOR2_256) 
+
+    /********************************************************************************************************************/
+
+
+    /*** 
+    * @Author: Seasky.Liu
+    * @Description: 
+    *     常规方式调用
+    *          ANSI_CODE_TYPE1 可设置1个ANSI参数 
+    *              如  \x1B[0m  清除格式;\x1B[1m 加粗;\x1B[5m 闪烁;\x1B[31m 红色字体
+    *          ANSI_CODE_TYPE2 可设置2个ANSI参数
+    *               如  \x1B[1;31m   红色加粗
+    *          ANSI_CODE_TYPE3 可设置3个ANSI参数
+    *               如  \x1B[1;5;31m 红色加粗闪烁
+    *          ...
+    */
+    #define ANSI_CLEAR_CODE_TYPE                                                                \
+                ANSI_CLEAR                                                                      "m"                             
+    #define ANSI_CODE_TYPE1(ansi_code1)                                                         \
+                ANSI_ESC ANSI_CSI  ANSI_TYPE1(ansi_code1)                                       "m"
+    #define ANSI_CODE_TYPE2(ansi_code1,ansi_code2)                                              \
+                ANSI_ESC ANSI_CSI  ANSI_TYPE2(ansi_code1,ansi_code2)                            "m"
+    #define ANSI_CODE_TYPE3(ansi_code1,ansi_code2,ansi_code3)                                    \
+                ANSI_ESC ANSI_CSI  ANSI_TYPE3(ansi_code1,ansi_code2,ansi_code3)                 "m"
+    #define ANSI_CODE_TYPE4(ansi_code1,ansi_code2,ansi_code3,ansi_code4)                        \
+                ANSI_ESC ANSI_CSI  ANSI_TYPE4(ansi_code1,ansi_code2,ansi_code3,ansi_code4)      "m"
+
+    /*** 
+    * @Author: Seasky.Liu
+    * @Description: 
+    *      设置文本前景色方式
+    *          ANSI_TEXT_RGB_CODE_TYPE1    设置文本前景色
+    *          ANSI_TEXT_RGB_CODE_TYPE2    ansi_code1+设置文本前景色
+    *          ....
+    */
+    #define ANSI_TEXT_RGB_CODE_TYPE1(r,g,b)                                                     \
+                ANSI_ESC ANSI_CSI  ANSI_RBG_TEXT_TYPE1(r,g,b)                                   "m"
+    #define ANSI_TEXT_RGB_CODE_TYPE2(ansi_code1,r,g,b)                                          \
+                ANSI_ESC ANSI_CSI  ANSI_RBG_TEXT_TYPE2(ansi_code1,r,g,b)                        "m"
+    #define ANSI_TEXT_RGB_CODE_TYPE3(ansi_code1,ansi_code2,r,g,b)                               \
+                ANSI_ESC ANSI_CSI  ANSI_RBG_TEXT_TYPE3(ansi_code1,ansi_code2,r,g,b)             "m"
+
+    #define ANSI_BACK_RGB_CODE_TYPE1(r,g,b)                                                     \
+                ANSI_ESC ANSI_CSI  ANSI_RBG_BACK_TYPE1(r,g,b)                                   "m"
+    #define ANSI_BACK_RGB_CODE_TYPE2(ansi_code1,r,g,b)                                          \
+                ANSI_ESC ANSI_CSI  ANSI_RBG_BACK_TYPE2(ansi_code1,r,g,b)                        "m"
+    #define ANSI_BACK_RGB_CODE_TYPE3(ansi_code1,ansi_code2,r,g,b)                               \
+                ANSI_ESC ANSI_CSI  ANSI_RBG_BACK_TYPE3(ansi_code1,ansi_code2,r,g,b)             "m"
+
+    #define ANSI_TEXT_256_CODE_TYPE1(color)                                                     \
+                ANSI_ESC ANSI_CSI  ANSI_256_TEXT_TYPE1(r,g,b)                                   "m"
+    #define ANSI_TEXT_256_CODE_TYPE2(ansi_code1,color)                                          \
+                ANSI_ESC ANSI_CSI  ANSI_256_TEXT_TYPE2(ansi_code1,color)                        "m"
+    #define ANSI_TEXT_256_CODE_TYPE3(ansi_code1,ansi_code2,color)                               \
+                ANSI_ESC ANSI_CSI  ANSI_256_TEXT_TYPE3(ansi_code1,ansi_code2,color)             "m"
+
+    #define ANSI_BACK_256_CODE_TYPE1(color)                                                     \
+                ANSI_ESC ANSI_CSI  ANSI_256_BACK_TYPE1(r,g,b)                                   "m"
+    #define ANSI_BACK_256_CODE_TYPE2(ansi_code1,color)                                          \
+                ANSI_ESC ANSI_CSI  ANSI_256_BACK_TYPE2(ansi_code1,color)                        "m"
+    #define ANSI_BACK_256_CODE_TYPE3(ansi_code1,ansi_code2,color)                               \
+                ANSI_ESC ANSI_CSI  ANSI_256_BACK_TYPE3(ansi_code1,ansi_code2,color)             "m"
+
+
+    #define ANSI_RBG_TEXT_BACK_CODE_TYPE1(r1,g1,b1,r2,g2,b2)                                            \
+            ANSI_ESC ANSI_CSI  ANSI_RBG_TEXT_BACK_TYPE1(r1,g1,b1,r2,g2,b2)                           "m"
+    #define ANSI_RBG_TEXT_BACK_CODE_TYPE2(ansi_code1,r1,g1,b1,r2,g2,b2)                                 \
+            ANSI_ESC ANSI_CSI  ANSI_RBG_TEXT_BACK_TYPE2(ansi_code1,r1,g1,b1,r2,g2,b2)                "m"
+    #define ANSI_RBG_TEXT_BACK_CODE_TYPE3(ansi_code1,ansi_code2,r1,g1,b1,r2,g2,b2)                       \
+            ANSI_ESC ANSI_CSI  ANSI_RBG_TEXT_BACK_TYPE3(ansi_code1,ansi_code2,r1,g1,b1,r2,g2,b2)     "m"
+
+    #define ANSI_256_TEXT_BACK_CODE_TYPE1(color1,color2)                                                \
+            ANSI_ESC ANSI_CSI  ANSI_256_TEXT_BACK_TYPE1(color1,color2)                               "m"
+    #define ANSI_256_TEXT_BACK_CODE_TYPE2(ansi_code1,color1,color2)                                     \
+            ANSI_ESC ANSI_CSI  ANSI_256_TEXT_BACK_TYPE2(ansi_code1,color1,color2)                    "m"
+    #define ANSI_256_TEXT_BACK_CODE_TYPE3(ansi_code1,ansi_code2,color1,color2)                          \
+            ANSI_ESC ANSI_CSI  ANSI_256_TEXT_BACK_TYPE3(ansi_code1,ansi_code2,color1,color2)         "m"
+
+    #endif
+
+.. code-block:: c
+  :caption: 简单演示
+
+    int main(void)
+    {
+        printf(ANSI_RBG_TEXT_BACK_CODE_TYPE2(ANSI_BLINK,255,0,0,0,255,255) "ansi_test!" ANSI_CLEAR_CODE_TYPE "\n");
+    }

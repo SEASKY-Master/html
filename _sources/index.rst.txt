@@ -11,6 +11,13 @@
 
 .. toctree::
     :maxdepth: 0
+    :caption: ANSI颜色编码
+    :numbered:
+
+    seasky_works/ansi/ansi.rst
+
+.. toctree::
+    :maxdepth: 0
     :caption: 串口示波器<Sailor Project>
     :numbered:
 
