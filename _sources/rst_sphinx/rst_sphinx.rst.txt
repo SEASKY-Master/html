@@ -16,7 +16,7 @@ reStructuredText是扩展名为.rst的纯文本文件，含义为”重新构建
 
 - 编辑工具
 
-Sphinx ，它允许开发人员以纯文本格式编写文档，以便采用满足不同需求的格式轻松生成输出。它使用 reStructuredText标记语法来提供文档控制，可以将 Sphinx想像成为一种文档框架：它会抽象化比较单调的部分，并提供自动函数来解决一些常见问题，比如突出显示标题索引和特殊代码（在显示代码示例时），以及突出显示适当的语法。
+Sphinx ，它允许开发人员以纯文本格式编写文档，以便采用满足不同需求的格式轻松生成输出。它使用 reStructuredText标记语法来提供文档控制，可以将 Sphinx想像成为一种文档框架：它会抽象化比较单调的部分，并提供自动函数来解决一些常见问题，比如突出显示标题索引和特殊代码（在显示代码示例时），以及突出显示适当的语法 。
 
 
 reStructuredText vscode 环境配置
@@ -55,8 +55,8 @@ reStructuredText vscode 环境配置
       }
 
   - 终端输入 ::
-
-    sphinx-autobuild docs docs/build/html
+  
+        sphinx-autobuild docs docs/build/html
 
 - 导出html ::
 
@@ -266,6 +266,7 @@ next term
         some codes
 
     没有缩进, 这里不是代码, 是正常段落!
+
 - 解析渲染结果
 
 ::
@@ -330,12 +331,11 @@ next term
 
 支持三种表格,网格表格、简单表格、CSV表格
 
-- 网格表格
-::
+- 网格表格::
 
     .. table:: Grid Table Demo
       :name: table-gridtable
-
+      
       +------------------------+----------+----------+----------+
       | Header row, column 1   | Header 2 | Header 3 | Header 4 |
       | (header rows optional) |          |          |          |
@@ -346,7 +346,7 @@ next term
       +------------------------+----------+----------+----------+
 
 
-    可以使用 :ref:`table-gridtable` 引用（对应代码 ``:ref:`table-gridtable```）, 在Sphinx中还可以使用 :table:numref:`table-gridtable` 来引用。
+    可以使用 :ref:`table-gridtable` 引用（对应代码 ``:ref:`table-gridtable```）
 
 
 .. table:: Grid Table Demo
@@ -362,7 +362,7 @@ next term
    +------------------------+----------+----------+----------+
 
 
-可以使用 :ref:`table-gridtable` 引用（对应代码 ``:ref:`table-gridtable```）, 在Sphinx中还可以使用 :table:numref:`table-gridtable` 来引用。
+可以使用 :ref:`table-gridtable` 引用（对应代码 ``:ref:`table-gridtable```）
 
 
 - 简单表格
@@ -450,7 +450,10 @@ True   True   True
 
 你可以看到我, 我不是注释.
 
-.. NOTE:: 下面涉及的很多语法, 都和直接标记 ``.. `` 有关, 如脚注, 引文, 超链接, 指令, 注释等等.
+
+.. NOTE ::
+    
+    下面涉及的很多语法, 都和直接标记 `` .. `` 有关, 如脚注, 引文, 超链接, 指令, 注释等等.
 
 指令 (Directives)
 -----------------
@@ -516,6 +519,7 @@ Docutils支持以下指令:
 因为这些只是针对每个文件的，所以最好使用Sphinx的工具来设置默认角色。
 
 - 警告和提示
+  
 .. attention:: 注意``.. attention:: ``
 .. caution:: 小心``.. caution:: ``
 .. danger:: 危险``.. danger:: ``
@@ -612,17 +616,17 @@ Display 公式:
 
 .. hint::
 
-    - 当使用MathJax对数学公式渲染时, 可能不能达到预期效果, 请参考 :ref:`SecSphinxMathSupport` ;
+    - 当使用MathJax对数学公式渲染时, 可能不能达到预期效果, 请参考 : `SecSphinxMathSupport` ;
 
-    - 关于Sphinx中的如何使用Katex渲染公式, 参见 :ref:`SecSphinxMathSupport` .
+    - 关于Sphinx中的如何使用Katex渲染公式, 参见 : `SecSphinxMathSupport` .
 
-    - 关于Sphinx中的如何使用定义定理等环境, 参见 :ref:`SubSubSection_SphinxcontribProof` ;
+    - 关于Sphinx中的如何使用定义定理等环境, 参见 : `SubSubSection_SphinxcontribProof` ;
 
 
 
 .. seealso::
   更多内容参考reST手册, `这里 <http://docutils.sourceforge.net/docs/ref/rst/directives.html#math>`_ .
-  关于Sphinx中对数学公式的支持部分, 请参考 `Math support in Sphinx <http://www.sphinx-doc.org/en/stable/contents.html#document-ext/math>`_ . 或 :ref:`SecSphinxMathSupport` .
+  关于Sphinx中对数学公式的支持部分, 请参考 `Math support in Sphinx <http://www.sphinx-doc.org/en/stable/contents.html#document-ext/math>`_ . 或 :  `SecSphinxMathSupport` .
 
 
 图像
@@ -728,7 +732,7 @@ reST 标记代码:::
     ...
 
 
-2. 引用. 通过 ``:ref:`label``` , 接上例, 使用 ``:ref:`figure-datangfurongyuan``` 引用, 那么渲染结果为: :ref:`figure-datangfurongyuan`, 点击会跳到图像位置.
+2. 引用. 通过 ``:ref:`label``` , 接上例, 使用 `` : ref:`figure-datangfurongyuan``` 引用, 那么渲染结果为: : ref : `figure-datangfurongyuan`, 点击会跳到图像位置.
 
 .. tip:: 其它的交叉引用, 请参考手册 `交叉引用部分 <http://sphinx-doc-zh.readthedocs.io/en/latest/markup/inline.html#ref-role>`_,
 
@@ -787,7 +791,7 @@ Lorem ipsum [Ref]_ dolor sit amet.
 引文的用法与脚注用法相似, 但标签不是数字, 也不是以 ``#`` 开头.
 
 .. hint::
-    关于Sphinx中如何使用 ``bibtex`` 参考文献, 请参考 :ref:`SubSubSection_SphinxcontribBibtex` 小结.
+    关于Sphinx中如何使用 ``bibtex`` 参考文献, 请参考 : ref:`SubSubSection_SphinxcontribBibtex` 小结.
 
 替换 (Substitutions)
 -----------------------
@@ -825,7 +829,7 @@ reST源码:
 Sphinx扩展指令
 -----------------
 
-有关Sphinx的扩展指令, 如 **目录树** , **术语** , **特定语法着色** 等, 请移步本手册 :ref:`SphinxExtensionDirectives` 指南, 或参考Sphinx官方手册 `The TOC tree <http://www.sphinx-doc.org/en/stable/markup/toctree.html>`_ 部分.
+有关Sphinx的扩展指令, 如 **目录树** , **术语** , **特定语法着色** 等, 请移步本手册 : ref:`SphinxExtensionDirectives` 指南, 或参考Sphinx官方手册 `The TOC tree <http://www.sphinx-doc.org/en/stable/markup/toctree.html>`_ 部分.
 
 额外的主体元素
 ------------------

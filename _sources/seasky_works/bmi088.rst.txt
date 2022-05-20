@@ -444,3 +444,6 @@ CAN方式通信
           set_can_tx_bmi088(imu_rm.imu_ctr.flag);
       }
 
+
+
+pip install sphinx-doc --default-timeout=100 -i https://pypi.tuna.tsinghua.edu.cn/simple/ 

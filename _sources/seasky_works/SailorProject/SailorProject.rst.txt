@@ -11,8 +11,7 @@ Sailor Project
 
 - 下载地址
 
-  .. seealso:: - V0-0-3版本简约黑色主题 : `vSailorProject-V0-0-3-black <https://github.com/SEASKY-Master/vSailorProject/releases/download/v0.0.3/vSailorProject-V0-0-3-black.zip>`_ .
-  .. seealso:: - V0-0-3版本默认主题     : `vSailorProject-V0-0-3-normal <https://github.com/SEASKY-Master/vSailorProject/releases/download/v0.0.3/vSailorProject-V0-0-3-normal.zip>`_ .
+  .. seealso:: - 发布软件 : `vSailorProject <https://github.com/SEASKY-Master/vSailorProject/releases>`_ .
 
 代码完全开源
 ================
@@ -22,34 +21,32 @@ Sailor Project
   .. important::
       使用 `GPL` 开源协议，严禁用于商业用途
 
-
-
 软件截图
 ========
 
-  .. image:: ./image/serialport1.jpg
+  .. image:: ./../../images/serialport1.jpg
     :width: 800 px
     :align: center
 
-  .. image:: ./image/serialport2.jpg
+  .. image:: ./../../images/serialport2.jpg
     :width: 800 px
     :align: center
 
-  .. image:: ./image/serialport3.jpg
+  .. image:: ./../../images/serialport3.jpg
     :width: 800 px
     :align: center
 
-  .. image:: ./image/serialport4.jpg
+  .. image:: ./../../images/serialport4.jpg
     :width: 800 px
     :align: center
 
-  .. image:: ./image/serialport5.jpg
+  .. image:: ./../../images/serialport5.jpg
     :width: 800 px
     :align: center
 
   简约黑色主题
 
-  .. image:: ./image/serialport8.jpg
+  .. image:: ./../../images/serialport8.jpg
     :width: 800 px
     :align: center
 
@@ -60,12 +57,12 @@ Sailor Project功能说明
 功能
 *************
 
-  .. image::  ./image/serialport6.jpg
+  .. image::  ./../../images/serialport6.jpg
     :width: 800 px
     :align: center
   
   
-  .. image::  ./image/serialport7.jpg
+  .. image::  ./../../images/serialport7.jpg
     :width: 800 px
     :align: center
 
@@ -97,7 +94,7 @@ Sailor Project功能说明
 .. note::
     基础功能的使用较为简单，此处需要特别注意的是依照表格导入命令词条的功能，具体的操作可以参考下面 `TCPServer界面` 操作，不同的是，csv表格中的指引不同，串口为 ``SerialCommand``
 
-  .. image::  ./image/exc0.jpg
+  .. image::  ./../../images/exc0.jpg
     :width: 800 px
     :align: center
 
@@ -163,65 +160,65 @@ TCPServer界面
 - 支持部分窗口配置的保存和重启恢复（前提是你不会删除配置文件）
 - ...
 
-  .. image::  ./image/tcpserver1.jpg
+  .. image::  ./../../images/tcpserver1.jpg
     :width: 800 px
     :align: center
 
-  .. image::  ./image/tcpserver2.jpg
+  .. image::  ./../../images/tcpserver2.jpg
     :width: 800 px
     :align: center
 
-  .. image::  ./image/tcpserver3.jpg
+  .. image::  ./../../images/tcpserver3.jpg
     :width: 800 px
     :align: center
 
-  .. image::  ./image/tcpserver4.jpg
+  .. image::  ./../../images/tcpserver4.jpg
     :width: 800 px
     :align: center
 
-  .. image::  ./image/tcpserver5.jpg
-    :width: 800 px
-    :align: center
-
-
-  .. image::  ./image/tcpserver6.jpg
+  .. image::  ./../../images/tcpserver5.jpg
     :width: 800 px
     :align: center
 
 
-  .. image::  ./image/tcpserver7.jpg
+  .. image::  ./../../images/tcpserver6.jpg
     :width: 800 px
     :align: center
 
 
-  .. image::  ./image/tcpserver8.jpg
+  .. image::  ./../../images/tcpserver7.jpg
     :width: 800 px
     :align: center
 
 
-  .. image::  ./image/tcpserver9.jpg
+  .. image::  ./../../images/tcpserver8.jpg
     :width: 800 px
     :align: center
 
 
-  .. image::  ./image/tcpserver10.jpg
+  .. image::  ./../../images/tcpserver9.jpg
     :width: 800 px
     :align: center
 
 
-  .. image::  ./image/tcpserver11.jpg
+  .. image::  ./../../images/tcpserver10.jpg
     :width: 800 px
     :align: center
 
 
-  .. image::  ./image/tcpserver12.jpg
+  .. image::  ./../../images/tcpserver11.jpg
+    :width: 800 px
+    :align: center
+
+
+  .. image::  ./../../images/tcpserver12.jpg
     :width: 800 px
     :align: center
 
 .. important::
   注意：导入命令词条的功能，务必按照格式添加，非常规的csv表格可能会导致无法识别的现象，同时，由于没有采用复杂的解析算法，所以不建议使用过于复杂的csv表格格式,tcp为 ``TcpCommand`` 同时序号务必为升序
 
-  .. image::  ./image/exc1.jpg
+  .. image::  ./../../images/exc1.jpg
     :width: 800 px
     :align: center
 

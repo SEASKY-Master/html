@@ -6,7 +6,7 @@
 硬件设计框图
 ************
 
-   .. figure:: ./image/hardware.png
+   .. figure:: ./../../images/hardware.png
       :width: 800 px
       :align: center
 
@@ -24,11 +24,11 @@
 ========
 
    
-   .. figure:: ./image/gateron.jpg
+   .. figure:: ./../../images/gateron.jpg
       :width: 800 px
       :align: center
 
-   .. figure:: ./image/gateron2.jpg
+   .. figure:: ./../../images/gateron2.jpg
       :width: 800 px
       :align: center
 
@@ -40,11 +40,11 @@
 * 此处省略封装制作过程...
 * ...
 
-   .. figure:: ./image/pcb_lib1.jpg
+   .. figure:: ./../../images/pcb_lib1.jpg
       :width: 800 px
       :align: center
 
-   .. figure:: ./image/pcb_lib2.jpg
+   .. figure:: ./../../images/pcb_lib2.jpg
       :width: 800 px
       :align: center
 
@@ -60,13 +60,13 @@
 
    ``80配列`` + ``2编码器2按键`` + ``LCD显示`` 机械键盘轴体板方案设计，该设计通过 ``FPC40`` 接口引出所有通信和控制引脚，你可以尝试将它用于其它机械键盘主控上面，而不需要修改轴体板的设计 
    
-   .. figure:: ./image/sch.jpg
+   .. figure:: ./../../images/sch.jpg
       :width: 800 px
       :align: center
    
    按键扫描矩阵设计为 6*14 = 84 ，为了方便pcb布局，和软件设计，实际使用按键为80。
 
-   .. figure:: ./image/sch1.jpg
+   .. figure:: ./../../images/sch1.jpg
       :width: 800 px
       :align: center
    
@@ -81,29 +81,29 @@ PCB设计
 
    #. 进入  `keyboard-layout-editor <http://www.keyboard-layout-editor.com/>`_ 配置需要的键盘配列。
    
-      .. figure:: ./image/keyboard_hw1.jpg
+      .. figure:: ./../../images/keyboard_hw1.jpg
          :width: 800 px
          :align: center
 
-      .. figure:: ./image/keyboard_hw2.jpg
+      .. figure:: ./../../images/keyboard_hw2.jpg
          :width: 800 px
          :align: center
 
-      .. figure:: ./image/keyboard_hw3.jpg
+      .. figure:: ./../../images/keyboard_hw3.jpg
          :width: 800 px
          :align: center
 
    #. 进入另一个网站 `builder <http://builder.swillkb.com/>`_  生成需要的 ``DXF定位图纸``
    
-      .. figure:: ./image/keyboard_hw4.jpg
+      .. figure:: ./../../images/keyboard_hw4.jpg
          :width: 800 px
          :align: center
 
-      .. figure:: ./image/keyboard_hw5.jpg
+      .. figure:: ./../../images/keyboard_hw5.jpg
          :width: 800 px
          :align: center
 
-      .. figure:: ./image/keyboard_hw6.jpg
+      .. figure:: ./../../images/keyboard_hw6.jpg
          :width: 800 px
          :align: center
 
@@ -111,15 +111,15 @@ PCB设计
 
 2. 前面我们生成了需要的定位图纸，在此我们将其导入 `AD` 进行PCB元器件辅助定位， 
 
-   .. figure:: ./image/keyboard_hw7.jpg
+   .. figure:: ./../../images/keyboard_hw7.jpg
       :width: 800 px
       :align: center
 
-   .. figure:: ./image/keyboard_hw8.jpg
+   .. figure:: ./../../images/keyboard_hw8.jpg
       :width: 800 px
       :align: center
 
-   .. figure:: ./image/keyboard_hw9.jpg
+   .. figure:: ./../../images/keyboard_hw9.jpg
       :width: 800 px
       :align: center
 
@@ -132,11 +132,11 @@ PCB设计
 4. 完成PCB布局和布线，最后展示如下。
 
 
-   .. figure:: ./image/keyboard_hw10.jpg
+   .. figure:: ./../../images/keyboard_hw10.jpg
       :width: 800 px
       :align: center
 
-   .. figure:: ./image/keyboard_hw11.jpg
+   .. figure:: ./../../images/keyboard_hw11.jpg
       :width: 800 px
       :align: center
 
@@ -157,11 +157,11 @@ PCB设计
 
 .. important:: 虽然我可以通过一个简单的直接使能方式的电源设计我的电路，但是对于产品而言，这是不合理的，因此，我希望我的设计尽可能的接近于真实的产品，它应该更具有稳定性，对于机械键盘的设计，我可以毫不夸张的说，如果我是做一个DEMO方案的设计，从硬件到软件的设计，我基本可以在两周之内解决，其中包含PCB加工、焊接等所有的非设计阶段的时间，同时我甚至于可以拍摄出一些比较好的视频然后发布，而省略其中的BUG，我感觉这应该是绝大部分开源项目的老套路了吧！实际拿来基本用不了，或者说只能勉强用用。
   
-.. figure:: ./image/keyboard_hw15.jpg
+.. figure:: ./../../images/keyboard_hw15.jpg
    :width: 800 px
    :align: center
 
-.. figure:: ./image/keyboard_hw16.jpg
+.. figure:: ./../../images/keyboard_hw16.jpg
    :width: 800 px
    :align: center
 
@@ -173,17 +173,17 @@ PCB设计
 
 1. 首先确定是使用STM32F405RGT6作为主控，同时使用STM32F405RGT6进行电源的控制，那么首先需要完成的就是STM32最小系统。
 
-   .. figure:: ./image/keyboard_hw12.jpg
+   .. figure:: ./../../images/keyboard_hw12.jpg
       :width: 800 px
       :align: center
    
 3. 之后将最小系统引脚根据功能分配到对应的功能，普通GPIO用于按键扫描，特殊GPIO用于特殊外设，具体分配过程省略。
 
-   .. figure:: ./image/keyboard_hw13.jpg
+   .. figure:: ./../../images/keyboard_hw13.jpg
       :width: 800 px
       :align: center
 
-   .. figure:: ./image/keyboard_hw14.jpg
+   .. figure:: ./../../images/keyboard_hw14.jpg
       :width: 800 px
       :align: center
    
@@ -194,7 +194,7 @@ PCB设计
 
 .. hint:: 但是我在此只是用其PD充放电功能，究其原因是，我不想为了扩展其他的充放电功能，而在我的键盘上需要接出更多的USB接口，而是使用PD充电接口和USB共用一个TYPE-C接口，这样一来，键盘充电和键盘有线模式就只需要接一根USB线就好了，而选择使用 `SW6208` 的最主要的原因是，这是国产电源芯片中，为数不多的 ``不需要定制`` 就可以使用 ``IIC`` 进行通信控制的电源管理芯片，区别于硬件PD，具有通信功能能读取更准确的更多的信息，包括但不限于电池电量，温度等信息。
 
-   .. figure:: ./image/keyboard_hw17.jpg
+   .. figure:: ./../../images/keyboard_hw17.jpg
       :width: 800 px
       :align: center
    
@@ -202,7 +202,7 @@ PCB设计
 
 6. ESP32S3直接使用了 `ESP32-S3-WROOM-1` ,因此只需要提供电源就行，当然必要的在此提供了 ISP 下载电路
 
-   .. figure:: ./image/keyboard_hw18.jpg
+   .. figure:: ./../../images/keyboard_hw18.jpg
       :width: 800 px
       :align: center
 
@@ -212,11 +212,11 @@ PCB Layout设计
 
  完成PCB布局和布线，最后展示如下。
 
-   .. figure:: ./image/keyboard_hw19.jpg
+   .. figure:: ./../../images/keyboard_hw19.jpg
       :width: 800 px
       :align: center
    
-   .. figure:: ./image/keyboard_hw20.jpg
+   .. figure:: ./../../images/keyboard_hw20.jpg
       :width: 800 px
       :align: center
    

@@ -12,11 +12,11 @@
 直接上图
 ********
 
-.. figure:: ./image/keyboard_str.jpg
+.. figure:: ./../../images/keyboard_str.jpg
     :width: 800 px
     :align: center
 
-.. figure:: ./image/keyboard0.jpg
+.. figure:: ./../../images/keyboard0.jpg
     :width: 800 px
     :align: center
 

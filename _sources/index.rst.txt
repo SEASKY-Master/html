@@ -23,7 +23,8 @@
 
     seasky_works/SailorProject/SailorProject.rst
     seasky_works/SailorProject/readme.rst
-
+    seasky_works/uart_protocol_v2.rst
+    
 .. toctree::
     :maxdepth: 0
     :caption: KeyBoard<LLQ-82>

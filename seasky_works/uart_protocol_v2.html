@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3. SEASKY串口通信协议V2 &mdash; SEASKY  文档</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/translations.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="1. 机械键盘介绍(LLQ-82)" href="KeyBoard/keyboard.html" />
+    <link rel="prev" title="2. 项目日志" href="SailorProject/readme.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> SEASKY
+          </a>
+              <div class="version">
+                0.1.19
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">实用开发工具</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../rst_sphinx/rst_sphinx.html">1. reStructuredText快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">ANSI颜色编码</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ansi/ansi.html">1. ANSI终端颜色编码</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">串口示波器&lt;Sailor Project&gt;</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="SailorProject/SailorProject.html">1. Sailor Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SailorProject/readme.html">2. 项目日志</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">3. SEASKY串口通信协议V2</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">3.1. 串口配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">3.2. 接口协议说明</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">KeyBoard&lt;LLQ-82&gt;</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="KeyBoard/keyboard.html">1. 机械键盘介绍(LLQ-82)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="KeyBoard/keyboard_hw.html">2. 硬件设计指南(LLQ-82)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="KeyBoard/keyboard_sw.html">3. 软件设计指南(LLQ-82)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="KeyBoard/keyboard_struct.html">4. 机械键盘结构设计(LLQ-82)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SEASKY模块说明</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="uart_protocol.html">1. SEASKY串口通信协议</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bmi088.html">2. SEASKY-BMI088技术手册</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SEASKY</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><span class="section-number">3. </span>SEASKY串口通信协议V2</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/seasky_works/uart_protocol_v2.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="seaskyv2">
+<h1><span class="section-number">3. </span>SEASKY串口通信协议V2<a class="headerlink" href="#seaskyv2" title="永久链接至标题"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>串口通信协议，包含帧头CRC8校验以及数据的整包校验，可以实现不定长收发数据（例如RoboMaster中可用于和视觉双方通信，以及其他自研模块）</p>
+</div>
+<section id="id1">
+<h2><span class="section-number">3.1. </span>串口配置<a class="headerlink" href="#id1" title="永久链接至标题"></a></h2>
+<div class="line-block">
+<div class="line">通信方式是串口，配置为波特率 <code class="docutils literal notranslate"><span class="pre">115200</span></code>， <code class="docutils literal notranslate"><span class="pre">8</span></code>  位数据位， <code class="docutils literal notranslate"><span class="pre">1</span></code>  位停止位， <code class="docutils literal notranslate"><span class="pre">无</span></code> 硬件流控， <code class="docutils literal notranslate"><span class="pre">无</span></code> 校验位。</div>
+</div>
+</section>
+<section id="id2">
+<h2><span class="section-number">3.2. </span>接口协议说明<a class="headerlink" href="#id2" title="永久链接至标题"></a></h2>
+<div class="line-block">
+<div class="line">以下所有低位在前发送</div>
+</div>
+<ol class="arabic simple">
+<li><p>通信协议格式</p></li>
+</ol>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 19%" />
+<col style="width: 18%" />
+<col style="width: 13%" />
+<col style="width: 29%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>帧头</p></th>
+<th class="head"><p>设备类型</p></th>
+<th class="head"><p>设备ID</p></th>
+<th class="head"><p>数据ID</p></th>
+<th class="head"><p>帧尾</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>protocol_header(4-byte)</p></td>
+<td><p>equipment_type(2-byte)</p></td>
+<td><p>equipment_id (2-byte)</p></td>
+<td><p>data_id(2-byte)</p></td>
+<td><p>frame_tail(2-byte，CRC16，整包校验)</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="2">
+<li><p>帧头详细定义</p></li>
+</ol>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 48%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>帧头</p></th>
+<th class="head"><p>偏移位置</p></th>
+<th class="head"><p>字节大小</p></th>
+<th class="head"><p>内容</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>sof(CMD)</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>数据帧起始字节，固定值为 0xA5</p></td>
+</tr>
+<tr class="row-odd"><td><p>data_length</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>数据帧中 data 的长度</p></td>
+</tr>
+<tr class="row-even"><td><p>crc_check</p></td>
+<td><p>3</p></td>
+<td><p>1</p></td>
+<td><p>帧头CRC校验</p></td>
+</tr>
+</tbody>
+</table>
+<p><code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">数据包长度</span> <span class="pre">=</span> <span class="pre">data_length*4+(10+2);</span>
+<span class="pre">`</span></code></p>
+<ol class="arabic simple" start="3">
+<li><p><code class="docutils literal notranslate"><span class="pre">equipment_type</span></code> 设备类型-说明(字节偏移 4，字节大小 2)</p></li>
+</ol>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 36%" />
+<col style="width: 27%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>命令码</p></th>
+<th class="head"><p>数据段长度</p></th>
+<th class="head"><p>功能说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x0001(可修改)</p></td>
+<td><p>1</p></td>
+<td><p>视觉数据</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x0002</p></td>
+<td><p>2</p></td>
+<td><p>BMI088姿态数据</p></td>
+</tr>
+</tbody>
+</table>
+<ol class="arabic simple" start="4">
+<li><p><code class="docutils literal notranslate"><span class="pre">equipment_id</span></code> 设备ID-说明(字节偏移 6，字节大小 2)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data_id</span></code> 数据ID-说明(字节偏移 8，字节大小 2)</p></li>
+<li><p>数据段 <code class="docutils literal notranslate"><span class="pre">data</span></code>  (字节偏移 10， <code class="docutils literal notranslate"><span class="pre">n-byte</span></code> )</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">frame_tail</span></code> ( <code class="docutils literal notranslate"><span class="pre">CRC16</span></code> ，整包校验)</p></li>
+<li><p>准备使用</p></li>
+</ol>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">初始化协议所需内存</span><a class="headerlink" href="#id3" title="永久链接至代码"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w">  </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos"> 2</span><span class="w">  </span><span class="c1">/// 方式一 初始化,并初始化内存</span>
+<span class="linenos"> 3</span><span class="w">  </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos"> 4</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pProtocol&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos"> 5</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;uLen&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos"> 6</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">init_protocol</span><span class="p">(</span><span class="n">protocol_struct</span><span class="o">*</span><span class="w"> </span><span class="n">pProtocol</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">uLen</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="w">  </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos"> 9</span><span class="w">  </span><span class="c1">/// 方式二 外部预先分配好内存空间</span>
+<span class="linenos">10</span><span class="w">  </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos">11</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pProtocol&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">12</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pFrameSt&quot;&gt;uint32_t*&lt;/param&gt;</span>
+<span class="linenos">13</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pMessageSt&quot;&gt;uint8_t*&lt;/param&gt;</span>
+<span class="linenos">14</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;uLen&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">15</span><span class="w">  </span><span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+<span class="linenos">16</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">init_protocol_pointer</span><span class="p">(</span><span class="n">protocol_struct</span><span class="o">*</span><span class="w"> </span><span class="n">pProtocol</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">pFrameSt</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">pMessageSt</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">uLen</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<ol class="arabic simple" start="9">
+<li><p>使用待发送数据更新获取发送数据帧</p></li>
+</ol>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">根据待发送数据更新buff</span><a class="headerlink" href="#id4" title="永久链接至代码"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="w">  </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos">2</span><span class="w">  </span><span class="c1">/// 生成带发送的数据内容</span>
+<span class="linenos">3</span><span class="w">  </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos">4</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pProtocol&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">5</span><span class="w">  </span><span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+<span class="linenos">6</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">make_protocol</span><span class="p">(</span><span class="n">protocol_struct</span><span class="o">*</span><span class="w"> </span><span class="n">pProtocol</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<ol class="arabic simple" start="10">
+<li><p>接收数据</p></li>
+</ol>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">接收数据</span><a class="headerlink" href="#id5" title="永久链接至代码"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="w">  </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos">2</span><span class="w">  </span><span class="c1">/// 解析接收到的数据</span>
+<span class="linenos">3</span><span class="w">  </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos">4</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pProtocol&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">5</span><span class="w">  </span><span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+<span class="linenos">6</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">parse_protocol</span><span class="p">(</span><span class="n">protocol_struct</span><span class="o">*</span><span class="w"> </span><span class="n">pProtocol</span><span class="p">,</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">parseDataLen</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">提示</p>
+<p>解析数据前请准备好数据源，并传入数据源有效数据长度，你可以使用以下方式将自己的数据备份到解析缓冲区</p>
+</div>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">准备解析数据</span><a class="headerlink" href="#id6" title="永久链接至代码"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="w">  </span><span class="n">memcpy</span><span class="p">(</span><span class="n">pRxBuffer</span><span class="p">,</span><span class="n">pData</span><span class="p">,</span><span class="n">uLen</span><span class="p">);</span><span class="c1">//对于显示分配的内存</span>
+<span class="linenos">2</span><span class="w">  </span><span class="n">memcpy</span><span class="p">(</span><span class="n">pRxProtocol</span><span class="p">.</span><span class="n">message_st</span><span class="p">.</span><span class="n">pData</span><span class="p">,</span><span class="n">pData</span><span class="p">,</span><span class="n">uLen</span><span class="p">);</span><span class="c1">//对于隐式初始化分配内存可用</span>
+</pre></div>
+</div>
+</div>
+<ol class="arabic simple">
+<li><p>接收数据获取id，获取flags_register，rx_data</p></li>
+</ol>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">使用示例</span><a class="headerlink" href="#id7" title="永久链接至代码"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">get_protocol_info</span><span class="w"></span>
+<span class="linenos">2</span><span class="w">      </span><span class="p">(</span><span class="kt">uint8_t</span><span class="w">  </span><span class="o">*</span><span class="n">rx_buf</span><span class="p">,</span><span class="w">                        </span><span class="c1">//接收到的原始数据</span>
+<span class="linenos">3</span><span class="w">       </span><span class="kt">uint16_t</span><span class="w"> </span><span class="o">*</span><span class="n">rx_pos</span><span class="p">,</span><span class="w">                        </span><span class="c1">//原始数据指针</span>
+<span class="linenos">4</span><span class="w">       </span><span class="kt">uint16_t</span><span class="w"> </span><span class="o">*</span><span class="n">flags_register</span><span class="p">,</span><span class="w">   </span><span class="c1">//接收数据的16位寄存器地址</span>
+<span class="linenos">5</span><span class="w">       </span><span class="kt">float</span><span class="w">    </span><span class="o">*</span><span class="n">rx_data</span><span class="p">)</span><span class="w">               </span><span class="c1">//接收的float数据存储地址</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">提示</p>
+<p>使用说明，首先将接收数据存储于 <code class="docutils literal notranslate"><span class="pre">rx_buf[]</span></code>,每接收一个数据  <code class="docutils literal notranslate"><span class="pre">*rx_pos</span></code> 的值会加一，以便于存储下一个数据，原始数据缓冲的存储由中断方式完成，在linux或win上可能有所区别，调用此函数，函数中包含crc校验，数据解读等相关处理，最后会更新 <code class="docutils literal notranslate"><span class="pre">flags_register</span></code> 的值即为收到的16位寄存器的值， <code class="docutils literal notranslate"><span class="pre">rx_data[]</span></code> 即为收到的 <code class="docutils literal notranslate"><span class="pre">float</span></code> 数据；</p>
+</div>
+<ol class="arabic simple" start="8">
+<li><p><code class="docutils literal notranslate"><span class="pre">Seasky</span></code> 串口通信协议</p></li>
+</ol>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">bsp_protocol.c</span><a class="headerlink" href="#id8" title="永久链接至代码"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span><span class="w">  </span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="linenos">  2</span><span class="w">  </span><span class="cp">#ifndef __MICROLIB</span>
+<span class="linenos">  3</span><span class="w">  </span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;malloc.h &gt;</span><span class="cp"></span>
+<span class="linenos">  4</span><span class="w">  </span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;memory.h&gt;</span><span class="cp"></span>
+<span class="linenos">  5</span><span class="w">  </span><span class="cp">#endif</span>
+<span class="linenos">  6</span><span class="w">  </span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;bsp_protocol.h&quot;</span><span class="cp"></span>
+<span class="linenos">  7</span><span class="w">  </span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;./crc/bsp_crc8.h&quot;</span><span class="cp"></span>
+<span class="linenos">  8</span><span class="w">  </span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;./crc/bsp_crc16.h&quot;</span><span class="cp"></span>
+<span class="linenos">  9</span><span class="w">  </span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;bsp_protocol_class.h&quot;</span><span class="cp"></span>
+<span class="linenos"> 10</span>
+<span class="linenos"> 11</span><span class="w">  </span><span class="cp">#ifdef PROTOCOL_CPP_CLR_DEBUG</span>
+<span class="linenos"> 12</span>
+<span class="linenos"> 13</span><span class="w">  </span><span class="cp">#elif PROTOCOL_C_DEBUG</span>
+<span class="linenos"> 14</span><span class="w">  </span><span class="cp">#define bsp_debug_c(Format, ...)   printf(Format, ##__VA_ARGS__)</span>
+<span class="linenos"> 15</span><span class="w">  </span><span class="cp">#else</span>
+<span class="linenos"> 16</span><span class="w">  </span><span class="cp">#define bsp_debug_c(...)</span>
+<span class="linenos"> 17</span><span class="w">  </span><span class="cp">#endif </span><span class="c1">// !CPP_DEBUG</span>
+<span class="linenos"> 18</span>
+<span class="linenos"> 19</span><span class="w">  </span><span class="cp">#define PROTOCOL_DEBUG_PRINTF(Format,...)         bsp_debug_c(LOG_LEVEL_DEBUG,Format, ##__VA_ARGS__)</span>
+<span class="linenos"> 20</span><span class="w">  </span><span class="cp">#define PROTOCOL_INFO__PRINTF(Format,...)         bsp_debug_c(LOG_LEVEL_INFO_,Format, ##__VA_ARGS__)</span>
+<span class="linenos"> 21</span><span class="w">  </span><span class="cp">#define PROTOCOL_WARN__PRINTF(Format,...)         bsp_debug_c(LOG_LEVEL_WARN_,Format, ##__VA_ARGS__)</span>
+<span class="linenos"> 22</span><span class="w">  </span><span class="cp">#define PROTOCOL_ERROR_PRINTF(Format,...)         bsp_debug_c(LOG_LEVEL_ERROR,Format, ##__VA_ARGS__)</span>
+<span class="linenos"> 23</span><span class="w">  </span><span class="cp">#define PROTOCOL_FATAL_PRINTF(Format,...)         bsp_debug_c(LOG_LEVEL_FATAL,Format, ##__VA_ARGS__)</span>
+<span class="linenos"> 24</span>
+<span class="linenos"> 25</span><span class="w">  </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos"> 26</span><span class="w">  </span><span class="c1">/// 获取CRC8校验码</span>
+<span class="linenos"> 27</span><span class="w">  </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos"> 28</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pchMessage&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos"> 29</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;dwLength&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos"> 30</span><span class="w">  </span><span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+<span class="linenos"> 31</span><span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="nf">Get_CRC8_Check</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">pchMessage</span><span class="p">,</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">dwLength</span><span class="p">)</span><span class="w"></span>
+<span class="linenos"> 32</span><span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 33</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">crc_8</span><span class="p">(</span><span class="n">pchMessage</span><span class="p">,</span><span class="n">dwLength</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 34</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 35</span>
+<span class="linenos"> 36</span><span class="w">  </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos"> 37</span><span class="w">  </span><span class="c1">/// 检验CRC8数据段</span>
+<span class="linenos"> 38</span><span class="w">  </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos"> 39</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pchMessage&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos"> 40</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;dwLength&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos"> 41</span><span class="w">  </span><span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+<span class="linenos"> 42</span><span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="nf">CRC8_Check_Sum</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">pchMessage</span><span class="p">,</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">dwLength</span><span class="p">)</span><span class="w"></span>
+<span class="linenos"> 43</span><span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 44</span><span class="w">      </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">ucExpected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 45</span><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">pchMessage</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">(</span><span class="n">dwLength</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">2</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 46</span><span class="w">      </span><span class="n">ucExpected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Get_CRC8_Check</span><span class="p">(</span><span class="n">pchMessage</span><span class="p">,</span><span class="w"> </span><span class="n">dwLength</span><span class="mi">-1</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 47</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">ucExpected</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">pchMessage</span><span class="p">[</span><span class="n">dwLength</span><span class="mi">-1</span><span class="p">]</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 48</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 49</span>
+<span class="linenos"> 50</span>
+<span class="linenos"> 51</span><span class="w">  </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos"> 52</span><span class="w">  </span><span class="c1">/// 获取CRC16校验码</span>
+<span class="linenos"> 53</span><span class="w">  </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos"> 54</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pchMessage&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos"> 55</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;dwLength&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos"> 56</span><span class="w">  </span><span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+<span class="linenos"> 57</span><span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="nf">Get_CRC16_Check</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">pchMessage</span><span class="p">,</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">dwLength</span><span class="p">)</span><span class="w"></span>
+<span class="linenos"> 58</span><span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 59</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">crc_16</span><span class="p">(</span><span class="n">pchMessage</span><span class="p">,</span><span class="n">dwLength</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 60</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 61</span>
+<span class="linenos"> 62</span><span class="w">  </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos"> 63</span><span class="w">  </span><span class="c1">/// 检验CRC16数据段</span>
+<span class="linenos"> 64</span><span class="w">  </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos"> 65</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pchMessage&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos"> 66</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;dwLength&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos"> 67</span><span class="w">  </span><span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+<span class="linenos"> 68</span><span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="nf">CRC16_Check_Sum</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">pchMessage</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">dwLength</span><span class="p">)</span><span class="w"></span>
+<span class="linenos"> 69</span><span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 70</span><span class="w">      </span><span class="kt">uint16_t</span><span class="w">  </span><span class="n">wExpected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 71</span><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">pchMessage</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">(</span><span class="n">dwLength</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">2</span><span class="p">))</span><span class="w"></span>
+<span class="linenos"> 72</span><span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 73</span><span class="w">              </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 74</span><span class="w">          </span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 75</span><span class="w">      </span><span class="n">wExpected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Get_CRC16_Check</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">pchMessage</span><span class="p">,</span><span class="w"> </span><span class="n">dwLength</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 76</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="p">(((</span><span class="n">wExpected</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xff</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">pchMessage</span><span class="p">[</span><span class="n">dwLength</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="p">)</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(((</span><span class="n">wExpected</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xff</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">pchMessage</span><span class="p">[</span><span class="n">dwLength</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">]));</span><span class="w"></span>
+<span class="linenos"> 77</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 78</span>
+<span class="linenos"> 79</span><span class="w">  </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos"> 80</span><span class="w">  </span><span class="c1">/// 检查帧头</span>
+<span class="linenos"> 81</span><span class="w">  </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos"> 82</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pData&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos"> 83</span><span class="w">  </span><span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+<span class="linenos"> 84</span><span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">check_protocol_heade</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">pData</span><span class="p">)</span><span class="w"></span>
+<span class="linenos"> 85</span><span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 86</span><span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="n">pData</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">PROTOCOL_HEAD_ID</span><span class="p">)</span><span class="w"></span>
+<span class="linenos"> 87</span><span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 88</span><span class="w">          </span><span class="k">if</span><span class="p">(</span><span class="n">CRC8_Check_Sum</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pData</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">4</span><span class="p">))</span><span class="w"></span>
+<span class="linenos"> 89</span><span class="w">              </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 90</span><span class="w">                  </span><span class="k">return</span><span class="w">  </span><span class="n">PROTOCOL_RESULT_OK</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 91</span><span class="w">              </span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 92</span><span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 93</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_CHECK_HEAD_ERR</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 94</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 95</span>
+<span class="linenos"> 96</span><span class="w">  </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos"> 97</span><span class="w">  </span><span class="c1">/// 方式一-&gt;初始化frame_struct 自动分配地址</span>
+<span class="linenos"> 98</span><span class="w">  </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos"> 99</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pFrameStruct&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">100</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;uLen&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">101</span><span class="w">  </span><span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+<span class="linenos">102</span><span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">init_frame_struct</span><span class="p">(</span><span class="n">frame_struct</span><span class="o">*</span><span class="w"> </span><span class="n">pFrameStruct</span><span class="p">,</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">uLen</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">103</span><span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">104</span><span class="w">      </span><span class="n">user_data_struct</span><span class="w"> </span><span class="o">*</span><span class="n">pUserDataStruct</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_user</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">105</span><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">pUserDataStruct</span><span class="o">-&gt;</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">pData</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">))</span><span class="w"></span>
+<span class="linenos">106</span><span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">107</span><span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">uLen</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">MAX_BUFFER_SIZE</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">108</span><span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">109</span><span class="w">              </span><span class="n">pUserDataStruct</span><span class="o">-&gt;</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">max_data_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uLen</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">110</span><span class="w">              </span><span class="n">pUserDataStruct</span><span class="o">-&gt;</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">pData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">malloc</span><span class="p">(</span><span class="n">pUserDataStruct</span><span class="o">-&gt;</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">max_data_len</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)));</span><span class="w"></span>
+<span class="linenos">111</span><span class="w">              </span><span class="n">memset</span><span class="p">(</span><span class="n">pUserDataStruct</span><span class="o">-&gt;</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">pData</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">pUserDataStruct</span><span class="o">-&gt;</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">max_data_len</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">data_union</span><span class="p">)));</span><span class="w"></span>
+<span class="linenos">112</span><span class="w">              </span><span class="k">return</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_OK</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">113</span><span class="w">          </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">114</span><span class="w">          </span><span class="k">else</span><span class="w"></span>
+<span class="linenos">115</span><span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">116</span><span class="w">              </span><span class="k">return</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_OUT_OF_LEN</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">117</span><span class="w">          </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">118</span><span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">119</span><span class="w">      </span><span class="k">else</span><span class="w"></span>
+<span class="linenos">120</span><span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">121</span><span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_ERR</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">122</span><span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">123</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">124</span>
+<span class="linenos">125</span><span class="w">  </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos">126</span><span class="w">  </span><span class="c1">/// 方式二-&gt;初始化frame_struct 外部分配地址 该方式更方便修改数据</span>
+<span class="linenos">127</span><span class="w">  </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos">128</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pFrameStruct&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">129</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pFrameSt&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">130</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;uLen&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">131</span><span class="w">  </span><span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+<span class="linenos">132</span><span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">init_frame_pointer</span><span class="p">(</span><span class="n">frame_struct</span><span class="o">*</span><span class="w"> </span><span class="n">pFrameStruct</span><span class="p">,</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">pFrameSt</span><span class="p">,</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">uLen</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">133</span><span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">134</span><span class="w">      </span><span class="n">user_data_struct</span><span class="w"> </span><span class="o">*</span><span class="n">pUserDataStruct</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_user</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">135</span><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">pUserDataStruct</span><span class="o">-&gt;</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">pData</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">))</span><span class="w"></span>
+<span class="linenos">136</span><span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">137</span><span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">uLen</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">MAX_BUFFER_SIZE</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">138</span><span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">139</span><span class="w">              </span><span class="n">pUserDataStruct</span><span class="o">-&gt;</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">max_data_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uLen</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">140</span><span class="w">              </span><span class="n">pUserDataStruct</span><span class="o">-&gt;</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">pData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">pFrameSt</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">141</span><span class="w">              </span><span class="c1">// pUserDataStruct-&gt;cmd_data.pData = (uint32_t*) malloc(pUserDataStruct-&gt;cmd_data.max_data_len * (sizeof(uint32_t)));</span>
+<span class="linenos">142</span><span class="w">              </span><span class="n">memset</span><span class="p">(</span><span class="n">pUserDataStruct</span><span class="o">-&gt;</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">pData</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">pUserDataStruct</span><span class="o">-&gt;</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">max_data_len</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">data_union</span><span class="p">)));</span><span class="w"></span>
+<span class="linenos">143</span><span class="w">              </span><span class="k">return</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_OK</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">144</span><span class="w">          </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">145</span><span class="w">          </span><span class="k">else</span><span class="w"></span>
+<span class="linenos">146</span><span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">147</span><span class="w">              </span><span class="k">return</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_OUT_OF_LEN</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">148</span><span class="w">          </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">149</span><span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">150</span><span class="w">      </span><span class="k">else</span><span class="w"></span>
+<span class="linenos">151</span><span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">152</span><span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_ERR</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">153</span><span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">154</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">155</span>
+<span class="linenos">156</span><span class="w">  </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos">157</span><span class="w">  </span><span class="c1">/// 方式一 -&gt;初始化message_struct</span>
+<span class="linenos">158</span><span class="w">  </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos">159</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pMessageStruct&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">160</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;uLen&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">161</span><span class="w">  </span><span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+<span class="linenos">162</span><span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">init_message_struct</span><span class="p">(</span><span class="n">message_struct</span><span class="o">*</span><span class="w"> </span><span class="n">pMessageStruct</span><span class="p">,</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">uLen</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">163</span><span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">164</span><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">))</span><span class="w"></span>
+<span class="linenos">165</span><span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">166</span><span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">uLen</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">get_protocol_size</span><span class="p">(</span><span class="n">MAX_BUFFER_SIZE</span><span class="p">))</span><span class="w"></span>
+<span class="linenos">167</span><span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">168</span><span class="w">              </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">max_data_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uLen</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">169</span><span class="w">              </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">max_data_len</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)));</span><span class="w"></span>
+<span class="linenos">170</span><span class="w">              </span><span class="n">memset</span><span class="p">(</span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">max_data_len</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)));</span><span class="w"></span>
+<span class="linenos">171</span><span class="w">              </span><span class="k">return</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_OK</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">172</span><span class="w">          </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">173</span><span class="w">          </span><span class="k">else</span><span class="w"></span>
+<span class="linenos">174</span><span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">175</span><span class="w">              </span><span class="k">return</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_OUT_OF_LEN</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">176</span><span class="w">          </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">177</span><span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">178</span><span class="w">      </span><span class="k">else</span><span class="w"></span>
+<span class="linenos">179</span><span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">180</span><span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_ERR</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">181</span><span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">182</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">183</span>
+<span class="linenos">184</span><span class="w">  </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos">185</span><span class="w">  </span><span class="c1">/// 方式二 -&gt;初始化message_struct</span>
+<span class="linenos">186</span><span class="w">  </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos">187</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pMessageStruct&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">188</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pMessageSt&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">189</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;uLen&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">190</span><span class="w">  </span><span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+<span class="linenos">191</span><span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">init_message_pointer</span><span class="p">(</span><span class="n">message_struct</span><span class="o">*</span><span class="w"> </span><span class="n">pMessageStruct</span><span class="p">,</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">pMessageSt</span><span class="p">,</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">uLen</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">192</span><span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">193</span><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">))</span><span class="w"></span>
+<span class="linenos">194</span><span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">195</span><span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">uLen</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">get_protocol_size</span><span class="p">(</span><span class="n">MAX_BUFFER_SIZE</span><span class="p">))</span><span class="w"></span>
+<span class="linenos">196</span><span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">197</span><span class="w">              </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">max_data_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uLen</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">198</span><span class="w">              </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="o">*</span><span class="p">)</span><span class="n">pMessageSt</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">199</span><span class="w">              </span><span class="c1">// pMessageStruct-&gt;pData = (uint8_t *)malloc(pMessageStruct-&gt;max_data_len * (sizeof(uint8_t)));</span>
+<span class="linenos">200</span><span class="w">              </span><span class="n">memset</span><span class="p">(</span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">max_data_len</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)));</span><span class="w"></span>
+<span class="linenos">201</span><span class="w">              </span><span class="k">return</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_OK</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">202</span><span class="w">          </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">203</span><span class="w">          </span><span class="k">else</span><span class="w"></span>
+<span class="linenos">204</span><span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">205</span><span class="w">              </span><span class="k">return</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_OUT_OF_LEN</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">206</span><span class="w">          </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">207</span><span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">208</span><span class="w">      </span><span class="k">else</span><span class="w"></span>
+<span class="linenos">209</span><span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">210</span><span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_ERR</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">211</span><span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">212</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">213</span>
+<span class="linenos">214</span><span class="w">  </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos">215</span><span class="w">  </span><span class="c1">/// 根据data_union长度计算数据帧长度，用于分配内存</span>
+<span class="linenos">216</span><span class="w">  </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos">217</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;uLen&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">218</span><span class="w">  </span><span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+<span class="linenos">219</span><span class="w">  </span><span class="kt">uint16_t</span><span class="w"> </span><span class="nf">get_protocol_size</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">uLen</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">220</span><span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">221</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">uLen</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">PROTOCOL_DATA_OFFSET</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">222</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">223</span>
+<span class="linenos">224</span><span class="w">  </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos">225</span><span class="w">  </span><span class="c1">/// 方式一 初始化,并初始化内存</span>
+<span class="linenos">226</span><span class="w">  </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos">227</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pProtocol&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">228</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;uLen&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">229</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">init_protocol</span><span class="p">(</span><span class="n">protocol_struct</span><span class="o">*</span><span class="w"> </span><span class="n">pProtocol</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">uLen</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">230</span><span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">231</span><span class="w">      </span><span class="cm">/*初始化crc*/</span><span class="w"></span>
+<span class="linenos">232</span><span class="w">      </span><span class="n">init_crc16_tab</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">233</span><span class="w">      </span><span class="cm">/*分配内存空间*/</span><span class="w"></span>
+<span class="linenos">234</span><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">init_frame_struct</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pProtocol</span><span class="o">-&gt;</span><span class="n">frame_st</span><span class="p">,</span><span class="w"> </span><span class="n">uLen</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">235</span><span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">236</span><span class="w">          </span><span class="n">PROTOCOL_ERROR_PRINTF</span><span class="p">(</span><span class="s">&quot;pProtocol init_frame_struct err!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">237</span><span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">238</span><span class="w">      </span><span class="n">PROTOCOL_DEBUG_PRINTF</span><span class="p">(</span><span class="s">&quot;pProtocol init_frame_struct ok!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">239</span><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">init_message_struct</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pProtocol</span><span class="o">-&gt;</span><span class="n">message_st</span><span class="p">,</span><span class="w"> </span><span class="n">get_protocol_size</span><span class="p">(</span><span class="n">uLen</span><span class="p">))</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">240</span><span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">241</span><span class="w">          </span><span class="n">PROTOCOL_ERROR_PRINTF</span><span class="p">(</span><span class="s">&quot;pProtocol init_message_struct err!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">242</span><span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">243</span><span class="w">      </span><span class="n">PROTOCOL_DEBUG_PRINTF</span><span class="p">(</span><span class="s">&quot;pProtocol init_message_struct ok!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">244</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">245</span>
+<span class="linenos">246</span><span class="w">  </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos">247</span><span class="w">  </span><span class="c1">/// 方式二 外部预先分配好内存空间</span>
+<span class="linenos">248</span><span class="w">  </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos">249</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pProtocol&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">250</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pFrameSt&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">251</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pMessageSt&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">252</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;uLen&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">253</span><span class="w">  </span><span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+<span class="linenos">254</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">init_protocol_pointer</span><span class="p">(</span><span class="n">protocol_struct</span><span class="o">*</span><span class="w"> </span><span class="n">pProtocol</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">pFrameSt</span><span class="p">,</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">pMessageSt</span><span class="p">,</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">uLen</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">255</span><span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">256</span><span class="w">      </span><span class="cm">/*初始化crc*/</span><span class="w"></span>
+<span class="linenos">257</span><span class="w">      </span><span class="n">init_crc16_tab</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">258</span><span class="w">      </span><span class="cm">/*分配内存空间*/</span><span class="w"></span>
+<span class="linenos">259</span><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">init_frame_pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pProtocol</span><span class="o">-&gt;</span><span class="n">frame_st</span><span class="p">,</span><span class="n">pFrameSt</span><span class="p">,</span><span class="w"> </span><span class="n">uLen</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">260</span><span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">261</span><span class="w">          </span><span class="n">PROTOCOL_ERROR_PRINTF</span><span class="p">(</span><span class="s">&quot;pProtocol init_frame_struct err!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">262</span><span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_ERR</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">263</span><span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">264</span><span class="w">      </span><span class="n">PROTOCOL_DEBUG_PRINTF</span><span class="p">(</span><span class="s">&quot;pProtocol init_frame_struct ok!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">265</span><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">init_message_pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pProtocol</span><span class="o">-&gt;</span><span class="n">message_st</span><span class="p">,</span><span class="n">pMessageSt</span><span class="p">,</span><span class="n">get_protocol_size</span><span class="p">(</span><span class="n">uLen</span><span class="p">))</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">266</span><span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">267</span><span class="w">          </span><span class="n">PROTOCOL_ERROR_PRINTF</span><span class="p">(</span><span class="s">&quot;pProtocol init_message_struct err!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">268</span><span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_ERR</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">269</span><span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">270</span><span class="w">      </span><span class="n">PROTOCOL_DEBUG_PRINTF</span><span class="p">(</span><span class="s">&quot;pProtocol init_message_struct ok!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">271</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_OK</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">272</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">273</span>
+<span class="linenos">274</span><span class="w">  </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos">275</span><span class="w">  </span><span class="c1">/// 生成带发送的数据内容</span>
+<span class="linenos">276</span><span class="w">  </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos">277</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pProtocol&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">278</span><span class="w">  </span><span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+<span class="linenos">279</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">make_protocol</span><span class="p">(</span><span class="n">protocol_struct</span><span class="o">*</span><span class="w"> </span><span class="n">pProtocol</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">280</span><span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">281</span><span class="w">      </span><span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">282</span><span class="w">      </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">pos_offset</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">283</span><span class="w">      </span><span class="n">frame_struct</span><span class="w">    </span><span class="o">*</span><span class="n">pFrameStruct</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pProtocol</span><span class="o">-&gt;</span><span class="n">frame_st</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">284</span><span class="w">      </span><span class="n">message_struct</span><span class="w">  </span><span class="o">*</span><span class="n">pMessageStruct</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pProtocol</span><span class="o">-&gt;</span><span class="n">message_st</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">285</span><span class="w">      </span><span class="c1">//更新头部数据</span>
+<span class="linenos">286</span><span class="w">      </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">.</span><span class="n">sof</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="n">PROTOCOL_HEAD_ID</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">287</span><span class="w">      </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">.</span><span class="n">data_length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_user</span><span class="p">.</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">data_len</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="n">data_union</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">288</span>
+<span class="linenos">289</span><span class="w">      </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">.</span><span class="n">sof</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">290</span><span class="w">      </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">.</span><span class="n">data_length</span><span class="p">)</span><span class="o">&amp;</span><span class="mh">0xff</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">291</span><span class="w">      </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">.</span><span class="n">data_length</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">)</span><span class="o">&amp;</span><span class="mh">0xff</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">292</span>
+<span class="linenos">293</span><span class="w">      </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">.</span><span class="n">crc_check</span><span class="w">   </span><span class="o">=</span><span class="w">  </span><span class="n">Get_CRC8_Check</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">3</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">294</span><span class="w">      </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">.</span><span class="n">crc_check</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">295</span>
+<span class="linenos">296</span><span class="w">      </span><span class="c1">//更新设备类型</span>
+<span class="linenos">297</span><span class="w">      </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_user</span><span class="p">.</span><span class="n">equipment_type</span><span class="p">)</span><span class="o">&amp;</span><span class="mh">0xff</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">298</span><span class="w">      </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_user</span><span class="p">.</span><span class="n">equipment_type</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">)</span><span class="o">&amp;</span><span class="mh">0xff</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">299</span><span class="w">      </span><span class="c1">//更新设备ID</span>
+<span class="linenos">300</span><span class="w">      </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_user</span><span class="p">.</span><span class="n">equipment_id</span><span class="p">)</span><span class="o">&amp;</span><span class="mh">0xff</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">301</span><span class="w">      </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_user</span><span class="p">.</span><span class="n">equipment_id</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">)</span><span class="o">&amp;</span><span class="mh">0xff</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">302</span><span class="w">      </span><span class="c1">//更新设备ID</span>
+<span class="linenos">303</span><span class="w">      </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_user</span><span class="p">.</span><span class="n">data_id</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xff</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">304</span><span class="w">      </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_user</span><span class="p">.</span><span class="n">data_id</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xff</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">305</span><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_user</span><span class="p">.</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">data_len</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_user</span><span class="p">.</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">max_data_len</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">306</span><span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">307</span><span class="w">          </span><span class="n">pos_offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_user</span><span class="p">.</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">data_len</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">data_union</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">308</span><span class="w">          </span><span class="c1">//复制内存</span>
+<span class="linenos">309</span><span class="w">          </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">memcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="n">PROTOCOL_DATA_OFFSET</span><span class="p">],</span><span class="o">&amp;</span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_user</span><span class="p">.</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">pData</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">pos_offset</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">310</span><span class="w">          </span><span class="n">pos_offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_user</span><span class="p">.</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">data_len</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">data_union</span><span class="p">)</span><span class="o">+</span><span class="n">PROTOCOL_DATA_OFFSET</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">311</span><span class="w">          </span><span class="c1">//帧尾校验值</span>
+<span class="linenos">312</span><span class="w">          </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_tail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Get_CRC16_Check</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">pos_offset</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">313</span><span class="w">          </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="n">pos_offset</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_tail</span><span class="p">)</span><span class="o">&amp;</span><span class="mh">0XFF</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">314</span><span class="w">          </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="n">pos_offset</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_tail</span><span class="o">&gt;&gt;</span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0XFF</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">315</span><span class="w">          </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">data_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pos_offset</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">316</span><span class="w">          </span><span class="n">PROTOCOL_DEBUG_PRINTF</span><span class="p">(</span><span class="s">&quot;make_protocol-&gt;&gt;data_len[%d] &gt; max_data_len[%d]!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos">317</span><span class="w">              </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_user</span><span class="p">.</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">data_len</span><span class="p">,</span><span class="w"></span>
+<span class="linenos">318</span><span class="w">              </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_user</span><span class="p">.</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">max_data_len</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">319</span><span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_OK</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">320</span><span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">321</span><span class="w">      </span><span class="k">else</span><span class="w"></span>
+<span class="linenos">322</span><span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">323</span><span class="w">          </span><span class="n">PROTOCOL_ERROR_PRINTF</span><span class="p">(</span><span class="s">&quot;make_protocol-&gt;&gt;data_len[%d] &gt; max_data_len[%d]!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos">324</span><span class="w">                  </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_user</span><span class="p">.</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">data_len</span><span class="p">,</span><span class="w"></span>
+<span class="linenos">325</span><span class="w">                  </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_user</span><span class="p">.</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">max_data_len</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">326</span><span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_OUT_OF_LEN</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">327</span><span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">328</span><span class="w">      </span><span class="n">PROTOCOL_DEBUG_PRINTF</span><span class="p">(</span><span class="s">&quot;make_protocol-&gt;&gt;data_len[%d],max_data_len[%d]!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos">329</span><span class="w">          </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_user</span><span class="p">.</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">data_len</span><span class="p">,</span><span class="w"></span>
+<span class="linenos">330</span><span class="w">          </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_user</span><span class="p">.</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">max_data_len</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">331</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_ERR</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">332</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">333</span>
+<span class="linenos">334</span><span class="w">  </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos">335</span><span class="w">  </span><span class="c1">/// 解析接收到的数据</span>
+<span class="linenos">336</span><span class="w">  </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos">337</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pProtocol&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">338</span><span class="w">  </span><span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+<span class="linenos">339</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">parse_protocol</span><span class="p">(</span><span class="n">protocol_struct</span><span class="o">*</span><span class="w"> </span><span class="n">pProtocol</span><span class="p">,</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">parseDataLen</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">340</span><span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">341</span><span class="w">      </span><span class="c1">//解析数据，使用前需提前缓冲 pProtocol-&gt;message_st.pData</span>
+<span class="linenos">342</span><span class="w">      </span><span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">343</span><span class="w">      </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">pos_offset</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">344</span><span class="w">      </span><span class="n">frame_struct</span><span class="o">*</span><span class="w"> </span><span class="n">pFrameStruct</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pProtocol</span><span class="o">-&gt;</span><span class="n">frame_st</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">345</span><span class="w">      </span><span class="n">message_struct</span><span class="o">*</span><span class="w"> </span><span class="n">pMessageStruct</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pProtocol</span><span class="o">-&gt;</span><span class="n">message_st</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">346</span><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">check_protocol_heade</span><span class="p">(</span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_OK</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">347</span><span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">348</span><span class="w">          </span><span class="c1">//更新帧头数据</span>
+<span class="linenos">349</span><span class="w">          </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">.</span><span class="n">sof</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">350</span><span class="w">          </span><span class="c1">//获取data段的数据长度</span>
+<span class="linenos">351</span><span class="w">          </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">.</span><span class="n">data_length</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span><span class="w"></span>
+<span class="linenos">352</span><span class="w">          </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">.</span><span class="n">crc_check</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">353</span>
+<span class="linenos">354</span><span class="w">          </span><span class="c1">//获取此次数据包长度</span>
+<span class="linenos">355</span><span class="w">          </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">data_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">.</span><span class="n">data_length</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">PROTOCOL_DATA_OFFSET</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">356</span><span class="w">          </span><span class="c1">//计算解析后得到的 data_union 数据长度</span>
+<span class="linenos">357</span><span class="w">          </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_user</span><span class="p">.</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">data_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">.</span><span class="n">data_length</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">data_union</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">358</span><span class="w">          </span><span class="k">if</span><span class="p">(</span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">data_len</span><span class="o">&lt;=</span><span class="n">parseDataLen</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">359</span><span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">360</span><span class="w">              </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">data_len</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">max_data_len</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">361</span><span class="w">              </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">362</span><span class="w">                  </span><span class="k">if</span><span class="p">(</span><span class="n">CRC16_Check_Sum</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">data_len</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">363</span><span class="w">                  </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">364</span><span class="w">                      </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_user</span><span class="p">.</span><span class="n">equipment_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">&lt;&lt;</span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="mi">4</span><span class="p">]);</span><span class="w"></span>
+<span class="linenos">365</span><span class="w">                      </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_user</span><span class="p">.</span><span class="n">equipment_id</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="mi">6</span><span class="p">]);</span><span class="w"></span>
+<span class="linenos">366</span><span class="w">                      </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_user</span><span class="p">.</span><span class="n">data_id</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="mi">8</span><span class="p">]);</span><span class="w"></span>
+<span class="linenos">367</span><span class="w">                      </span><span class="c1">//拷贝 data段 指定长度数据</span>
+<span class="linenos">368</span><span class="w">                      </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">memcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_user</span><span class="p">.</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">pData</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="n">PROTOCOL_DATA_OFFSET</span><span class="p">],</span><span class="w"> </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">.</span><span class="n">data_length</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">369</span><span class="w">                      </span><span class="n">pos_offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">.</span><span class="n">data_length</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">PROTOCOL_DATA_OFFSET</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">370</span><span class="w">                      </span><span class="n">pFrameStruct</span><span class="o">-&gt;</span><span class="n">frame_tail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="n">pos_offset</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">pData</span><span class="p">[</span><span class="n">pos_offset</span><span class="p">]);</span><span class="w"></span>
+<span class="linenos">371</span><span class="w">                      </span><span class="k">return</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_OK</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">372</span><span class="w">                  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">373</span><span class="w">                  </span><span class="k">else</span><span class="w"></span>
+<span class="linenos">374</span><span class="w">                  </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">375</span><span class="w">                      </span><span class="c1">//待解析BUFF超过预定解析数据容量，避免内存越界</span>
+<span class="linenos">376</span><span class="w">                      </span><span class="n">PROTOCOL_ERROR_PRINTF</span><span class="p">(</span><span class="s">&quot;parse_protocol-&gt;&gt;CRC16_Check_Sum err!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">377</span><span class="w">                      </span><span class="k">return</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_CHECK_FRAME_ERR</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">378</span><span class="w">                  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">379</span><span class="w">              </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">380</span><span class="w">              </span><span class="k">else</span><span class="w"></span>
+<span class="linenos">381</span><span class="w">              </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">382</span><span class="w">                  </span><span class="c1">//待解析BUFF超过预定解析数据容量，避免内存越界</span>
+<span class="linenos">383</span><span class="w">                  </span><span class="n">PROTOCOL_ERROR_PRINTF</span><span class="p">(</span><span class="s">&quot;parse_protocol-&gt;&gt;data_len[%d] &gt; max_data_len[%d]!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos">384</span><span class="w">                      </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">data_len</span><span class="p">,</span><span class="w"></span>
+<span class="linenos">385</span><span class="w">                      </span><span class="n">pMessageStruct</span><span class="o">-&gt;</span><span class="n">max_data_len</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">386</span><span class="w">                  </span><span class="k">return</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_OUT_OF_LEN</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">387</span><span class="w">              </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">388</span><span class="w">          </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">389</span><span class="w">          </span><span class="k">else</span><span class="w"></span>
+<span class="linenos">390</span><span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">391</span><span class="w">              </span><span class="c1">//通过包头计算，还未收到完整的数据包</span>
+<span class="linenos">392</span><span class="w">  </span><span class="c1">//            PROTOCOL_ERROR_PRINTF(&quot;parse_protocol-&gt;&gt;data_len[%d] &gt; max_data_len[%d]!\n&quot;,</span>
+<span class="linenos">393</span><span class="w">  </span><span class="c1">//                pMessageStruct-&gt;data_len,</span>
+<span class="linenos">394</span><span class="w">  </span><span class="c1">//                pMessageStruct-&gt;max_data_len);</span>
+<span class="linenos">395</span><span class="w">              </span><span class="k">return</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_OUT_OF_LEN</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">396</span><span class="w">          </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">397</span><span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">398</span><span class="w">      </span><span class="k">else</span><span class="w"></span>
+<span class="linenos">399</span><span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">400</span><span class="w">          </span><span class="c1">//待解析BUFF超过预定解析数据容量，避免内存越界</span>
+<span class="linenos">401</span><span class="w">          </span><span class="n">PROTOCOL_ERROR_PRINTF</span><span class="p">(</span><span class="s">&quot;parse_protocol-&gt;&gt;check_protocol_heade err!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">402</span><span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_CHECK_HEAD_ERR</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">403</span><span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">404</span><span class="w">      </span><span class="n">PROTOCOL_DEBUG_PRINTF</span><span class="p">(</span><span class="s">&quot;parse_protocol-&gt;&gt;check_protocol_heade ok!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">405</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">PROTOCOL_RESULT_ERR</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">406</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">407</span>
+<span class="linenos">408</span>
+<span class="linenos">409</span><span class="w">  </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos">410</span><span class="w">  </span><span class="c1">/// 反初始化，释放内存,如果是方式二创建然后反初始化，请注意规避野指针</span>
+<span class="linenos">411</span><span class="w">  </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos">412</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pProtocol&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">413</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">deinit_protocol</span><span class="p">(</span><span class="n">protocol_struct</span><span class="o">*</span><span class="w"> </span><span class="n">pProtocol</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">414</span><span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">415</span><span class="w">      </span><span class="c1">//指针为空不需要判断</span>
+<span class="linenos">416</span><span class="w">      </span><span class="n">free</span><span class="p">(</span><span class="n">pProtocol</span><span class="o">-&gt;</span><span class="n">frame_st</span><span class="p">.</span><span class="n">frame_user</span><span class="p">.</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">pData</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">417</span><span class="w">      </span><span class="n">free</span><span class="p">(</span><span class="n">pProtocol</span><span class="o">-&gt;</span><span class="n">message_st</span><span class="p">.</span><span class="n">pData</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">418</span><span class="w">      </span><span class="c1">//memset(pProtocol, 0, sizeof(protocol_struct));</span>
+<span class="linenos">419</span><span class="w">      </span><span class="n">pProtocol</span><span class="o">-&gt;</span><span class="n">frame_st</span><span class="p">.</span><span class="n">frame_user</span><span class="p">.</span><span class="n">cmd_data</span><span class="p">.</span><span class="n">pData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">420</span><span class="w">      </span><span class="n">pProtocol</span><span class="o">-&gt;</span><span class="n">message_st</span><span class="p">.</span><span class="n">pData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">421</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">422</span>
+<span class="linenos">423</span><span class="w">  </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos">424</span><span class="w">  </span><span class="c1">/// 提供给用户，直接操作数据，但是请注意不要超过数据长度，避免内存越界</span>
+<span class="linenos">425</span><span class="w">  </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos">426</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pProtocol&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">427</span><span class="w">  </span><span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+<span class="linenos">428</span><span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">user_data_struct</span><span class="w">  </span><span class="o">*</span><span class="w"> </span><span class="nf">get_user_data_point</span><span class="p">(</span><span class="n">protocol_struct</span><span class="o">*</span><span class="w"> </span><span class="n">pProtocol</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">429</span><span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">430</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pProtocol</span><span class="o">-&gt;</span><span class="n">frame_st</span><span class="p">.</span><span class="n">frame_user</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">431</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">432</span>
+<span class="linenos">433</span><span class="w">  </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos">434</span><span class="w">  </span><span class="c1">/// 提供给用户，直接操作数据，但是请注意不要超过数据长度，避免内存越界</span>
+<span class="linenos">435</span><span class="w">  </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos">436</span><span class="w">  </span><span class="c1">/// &lt;param name=&quot;pProtocol&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">437</span><span class="w">  </span><span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+<span class="linenos">438</span><span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">message_struct</span><span class="w">    </span><span class="o">*</span><span class="w"> </span><span class="nf">get_message_point</span><span class="p">(</span><span class="n">protocol_struct</span><span class="o">*</span><span class="w"> </span><span class="n">pProtocol</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">439</span><span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">440</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pProtocol</span><span class="o">-&gt;</span><span class="n">message_st</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">441</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">bsp_protocol.h</span><a class="headerlink" href="#id9" title="永久链接至代码"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span><span class="w">  </span><span class="cp">#ifndef _BSP_PROTOCOL_H_</span>
+<span class="linenos">  2</span><span class="w">  </span><span class="cp">#define _BSP_PROTOCOL_H_</span>
+<span class="linenos">  3</span>
+<span class="linenos">  4</span>
+<span class="linenos">  5</span><span class="w">  </span><span class="cp">#ifdef __cplusplus</span>
+<span class="linenos">  6</span><span class="w">  </span><span class="k">extern</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">  7</span><span class="w">  </span><span class="cp">#endif</span>
+<span class="linenos">  8</span>
+<span class="linenos">  9</span><span class="w">  </span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="linenos"> 10</span><span class="w">  </span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdint.h&gt;</span><span class="cp"></span>
+<span class="linenos"> 11</span><span class="w">  </span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+<span class="linenos"> 12</span>
+<span class="linenos"> 13</span>
+<span class="linenos"> 14</span><span class="w">  </span><span class="cp">#define PROTOCOL_HEAD_ID        0XA5</span>
+<span class="linenos"> 15</span><span class="w">  </span><span class="cp">#define PROTOCOL_HEAD_LEN       4</span>
+<span class="linenos"> 16</span><span class="w">  </span><span class="cp">#define PROTOCOL_DATA_OFFSET    10</span>
+<span class="linenos"> 17</span><span class="w">  </span><span class="cp">#define MAX_BUFFER_SIZE         128</span>
+<span class="linenos"> 18</span>
+<span class="linenos"> 19</span>
+<span class="linenos"> 20</span><span class="w">  </span><span class="cp">#define LOG_LEVEL_DEBUG (1&lt;&lt;0)</span>
+<span class="linenos"> 21</span><span class="w">  </span><span class="cp">#define LOG_LEVEL_INFO_ (1&lt;&lt;1)</span>
+<span class="linenos"> 22</span><span class="w">  </span><span class="cp">#define LOG_LEVEL_WARN_ (1&lt;&lt;2)</span>
+<span class="linenos"> 23</span><span class="w">  </span><span class="cp">#define LOG_LEVEL_ERROR (1&lt;&lt;3)</span>
+<span class="linenos"> 24</span><span class="w">  </span><span class="cp">#define LOG_LEVEL_FATAL (1&lt;&lt;4)</span>
+<span class="linenos"> 25</span>
+<span class="linenos"> 26</span><span class="w">      </span><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"></span>
+<span class="linenos"> 27</span><span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 28</span><span class="w">          </span><span class="n">PROTOCOL_RESULT_OK</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
+<span class="linenos"> 29</span><span class="w">          </span><span class="n">PROTOCOL_RESULT_ERR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"></span>
+<span class="linenos"> 30</span><span class="w">          </span><span class="n">PROTOCOL_RESULT_CHECK_HEAD_ERR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"></span>
+<span class="linenos"> 31</span><span class="w">          </span><span class="n">PROTOCOL_RESULT_CHECK_FRAME_ERR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"></span>
+<span class="linenos"> 32</span><span class="w">          </span><span class="n">PROTOCOL_RESULT_OUT_OF_LEN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"></span>
+<span class="linenos"> 33</span><span class="w">      </span><span class="p">}</span><span class="n">protocol_result</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 34</span><span class="w">      </span><span class="c1">//32位</span>
+<span class="linenos"> 35</span><span class="w">      </span><span class="k">typedef</span><span class="w"> </span><span class="k">union</span><span class="w"></span>
+<span class="linenos"> 36</span><span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 37</span><span class="w">          </span><span class="kt">char</span><span class="w">        </span><span class="n">data_char</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span><span class="w"></span>
+<span class="linenos"> 38</span><span class="w">          </span><span class="kt">uint8_t</span><span class="w">     </span><span class="n">data_u8</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span><span class="w"></span>
+<span class="linenos"> 39</span><span class="w">          </span><span class="kt">int16_t</span><span class="w">     </span><span class="n">data_int16</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="w"></span>
+<span class="linenos"> 40</span><span class="w">          </span><span class="kt">uint16_t</span><span class="w">    </span><span class="n">data_u16</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="w"></span>
+<span class="linenos"> 41</span><span class="w">          </span><span class="kt">int32_t</span><span class="w">     </span><span class="n">data_int32</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 42</span><span class="w">          </span><span class="kt">uint32_t</span><span class="w">    </span><span class="n">data_u32</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 43</span><span class="w">          </span><span class="kt">float</span><span class="w">       </span><span class="n">data_float</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 44</span><span class="w">      </span><span class="p">}</span><span class="n">data_union</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 45</span><span class="w">      </span><span class="k">typedef</span><span class="w">  </span><span class="k">struct</span><span class="w"></span>
+<span class="linenos"> 46</span><span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 47</span><span class="w">          </span><span class="cm">/*字节偏移 4 --&gt;&gt; 字节大小 2*/</span><span class="w"></span>
+<span class="linenos"> 48</span><span class="w">          </span><span class="kt">uint16_t</span><span class="w">    </span><span class="n">equipment_type</span><span class="p">;</span><span class="w"> </span><span class="c1">//设备类型</span>
+<span class="linenos"> 49</span><span class="w">          </span><span class="cm">/*字节偏移 6 --&gt;&gt; 字节大小 2*/</span><span class="w"></span>
+<span class="linenos"> 50</span><span class="w">          </span><span class="kt">uint16_t</span><span class="w">    </span><span class="n">equipment_id</span><span class="p">;</span><span class="w">   </span><span class="c1">//设备ID</span>
+<span class="linenos"> 51</span><span class="w">          </span><span class="cm">/*字节偏移 8 --&gt;&gt; 字节大小 data_len+2 */</span><span class="w"></span>
+<span class="linenos"> 52</span><span class="w">          </span><span class="kt">uint16_t</span><span class="w">    </span><span class="n">data_id</span><span class="p">;</span><span class="w">        </span><span class="c1">//数据ID</span>
+<span class="linenos"> 53</span><span class="w">          </span><span class="k">struct</span><span class="w"></span>
+<span class="linenos"> 54</span><span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 55</span><span class="w">              </span><span class="kt">uint16_t</span><span class="w">    </span><span class="n">data_len</span><span class="p">;</span><span class="w">     </span><span class="c1">//data_union数据长度</span>
+<span class="linenos"> 56</span><span class="w">              </span><span class="kt">uint16_t</span><span class="w">    </span><span class="n">max_data_len</span><span class="p">;</span><span class="w"> </span><span class="c1">//数据最长长度</span>
+<span class="linenos"> 57</span><span class="w">              </span><span class="kt">uint32_t</span><span class="o">*</span><span class="w">   </span><span class="n">pData</span><span class="p">;</span><span class="w">        </span><span class="c1">//数据(data_union),推荐使用 data_union * pDataUnion = &amp;pData[];</span>
+<span class="linenos"> 58</span><span class="w">          </span><span class="p">}</span><span class="n">cmd_data</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 59</span><span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="n">user_data_struct</span><span class="p">;</span><span class="c1">//数据内容</span>
+<span class="linenos"> 60</span>
+<span class="linenos"> 61</span><span class="w">      </span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"></span>
+<span class="linenos"> 62</span><span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 63</span><span class="w">          </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w">    </span><span class="n">pData</span><span class="p">;</span><span class="w">        </span><span class="c1">//数据</span>
+<span class="linenos"> 64</span><span class="w">          </span><span class="kt">uint16_t</span><span class="w">    </span><span class="n">data_len</span><span class="p">;</span><span class="w">     </span><span class="c1">//数据总长度</span>
+<span class="linenos"> 65</span><span class="w">          </span><span class="kt">uint16_t</span><span class="w">    </span><span class="n">max_data_len</span><span class="p">;</span><span class="w"> </span><span class="c1">//数据最长长度</span>
+<span class="linenos"> 66</span><span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="n">message_struct</span><span class="p">;</span><span class="c1">//消息数据</span>
+<span class="linenos"> 67</span>
+<span class="linenos"> 68</span><span class="w">      </span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"></span>
+<span class="linenos"> 69</span><span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 70</span><span class="w">          </span><span class="cm">/*字节偏移 0 --&gt;&gt; 字节大小 4*/</span><span class="w"></span>
+<span class="linenos"> 71</span><span class="w">          </span><span class="k">struct</span><span class="w"></span>
+<span class="linenos"> 72</span><span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 73</span><span class="w">              </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">sof</span><span class="p">;</span><span class="w">           </span><span class="c1">//固定帧头</span>
+<span class="linenos"> 74</span><span class="w">              </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">data_length</span><span class="p">;</span><span class="w">   </span><span class="c1">//数据长度</span>
+<span class="linenos"> 75</span><span class="w">              </span><span class="kt">uint8_t</span><span class="w">  </span><span class="n">crc_check</span><span class="p">;</span><span class="w">     </span><span class="c1">//帧头CRC校验</span>
+<span class="linenos"> 76</span><span class="w">          </span><span class="p">}</span><span class="w"> </span><span class="n">header</span><span class="p">;</span><span class="w">                                   </span><span class="c1">//数据帧头</span>
+<span class="linenos"> 77</span><span class="w">          </span><span class="n">user_data_struct</span><span class="w"> </span><span class="n">frame_user</span><span class="p">;</span><span class="c1">//用户数据</span>
+<span class="linenos"> 78</span><span class="w">          </span><span class="kt">uint16_t</span><span class="w">         </span><span class="n">frame_tail</span><span class="p">;</span><span class="c1">//帧尾CRC校验</span>
+<span class="linenos"> 79</span><span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="n">frame_struct</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 80</span>
+<span class="linenos"> 81</span><span class="w">      </span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"></span>
+<span class="linenos"> 82</span><span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 83</span><span class="w">          </span><span class="n">frame_struct</span><span class="w">       </span><span class="n">frame_st</span><span class="p">;</span><span class="w">    </span><span class="c1">//原始数据或解析后的数据</span>
+<span class="linenos"> 84</span><span class="w">          </span><span class="n">message_struct</span><span class="w">     </span><span class="n">message_st</span><span class="p">;</span><span class="w">  </span><span class="c1">//有待解析或生成的数据</span>
+<span class="linenos"> 85</span><span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="n">protocol_struct</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 86</span>
+<span class="linenos"> 87</span>
+<span class="linenos"> 88</span>
+<span class="linenos"> 89</span><span class="w">      </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos"> 90</span><span class="w">      </span><span class="c1">/// 根据data_union长度计算数据帧长度，用于分配内存</span>
+<span class="linenos"> 91</span><span class="w">      </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos"> 92</span><span class="w">      </span><span class="c1">/// &lt;param name=&quot;uLen&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos"> 93</span><span class="w">      </span><span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+<span class="linenos"> 94</span><span class="w">      </span><span class="kt">uint16_t</span><span class="w"> </span><span class="nf">get_protocol_size</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">uLen</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 95</span>
+<span class="linenos"> 96</span><span class="w">      </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos"> 97</span><span class="w">      </span><span class="c1">/// 方式一 初始化,并初始化内存</span>
+<span class="linenos"> 98</span><span class="w">      </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos"> 99</span><span class="w">      </span><span class="c1">/// &lt;param name=&quot;pProtocol&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">100</span><span class="w">      </span><span class="c1">/// &lt;param name=&quot;uLen&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">101</span><span class="w">      </span><span class="kt">void</span><span class="w"> </span><span class="nf">init_protocol</span><span class="p">(</span><span class="n">protocol_struct</span><span class="o">*</span><span class="w"> </span><span class="n">pProtocol</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">uLen</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">102</span>
+<span class="linenos">103</span><span class="w">      </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos">104</span><span class="w">      </span><span class="c1">/// 方式二 外部预先分配好内存空间</span>
+<span class="linenos">105</span><span class="w">      </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos">106</span><span class="w">      </span><span class="c1">/// &lt;param name=&quot;pProtocol&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">107</span><span class="w">      </span><span class="c1">/// &lt;param name=&quot;pFrameSt&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">108</span><span class="w">      </span><span class="c1">/// &lt;param name=&quot;pMessageSt&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">109</span><span class="w">      </span><span class="c1">/// &lt;param name=&quot;uLen&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">110</span><span class="w">      </span><span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+<span class="linenos">111</span><span class="w">      </span><span class="kt">int</span><span class="w"> </span><span class="nf">init_protocol_pointer</span><span class="p">(</span><span class="n">protocol_struct</span><span class="o">*</span><span class="w"> </span><span class="n">pProtocol</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">pFrameSt</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">pMessageSt</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">uLen</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">112</span>
+<span class="linenos">113</span><span class="w">      </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos">114</span><span class="w">      </span><span class="c1">/// 生成带发送的数据内容</span>
+<span class="linenos">115</span><span class="w">      </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos">116</span><span class="w">      </span><span class="c1">/// &lt;param name=&quot;pProtocol&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">117</span><span class="w">      </span><span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+<span class="linenos">118</span><span class="w">      </span><span class="kt">int</span><span class="w"> </span><span class="nf">make_protocol</span><span class="p">(</span><span class="n">protocol_struct</span><span class="o">*</span><span class="w"> </span><span class="n">pProtocol</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">119</span>
+<span class="linenos">120</span><span class="w">      </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos">121</span><span class="w">      </span><span class="c1">/// 解析接收到的数据</span>
+<span class="linenos">122</span><span class="w">      </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos">123</span><span class="w">      </span><span class="c1">/// &lt;param name=&quot;pProtocol&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">124</span><span class="w">      </span><span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+<span class="linenos">125</span><span class="w">      </span><span class="kt">int</span><span class="w"> </span><span class="nf">parse_protocol</span><span class="p">(</span><span class="n">protocol_struct</span><span class="o">*</span><span class="w"> </span><span class="n">pProtocol</span><span class="p">,</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">parseDataLen</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">126</span>
+<span class="linenos">127</span><span class="w">      </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos">128</span><span class="w">      </span><span class="c1">/// 反初始化，释放内存,如果是方式二创建然后反初始化，请注意规避野指针</span>
+<span class="linenos">129</span><span class="w">      </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos">130</span><span class="w">      </span><span class="c1">/// &lt;param name=&quot;pProtocol&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">131</span><span class="w">      </span><span class="kt">void</span><span class="w"> </span><span class="nf">deinit_protocol</span><span class="p">(</span><span class="n">protocol_struct</span><span class="o">*</span><span class="w"> </span><span class="n">pProtocol</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">132</span>
+<span class="linenos">133</span>
+<span class="linenos">134</span>
+<span class="linenos">135</span><span class="w">      </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos">136</span><span class="w">      </span><span class="c1">/// 提供给用户，直接操作数据，但是请注意不要超过数据长度，避免内存越界</span>
+<span class="linenos">137</span><span class="w">      </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos">138</span><span class="w">      </span><span class="c1">/// &lt;param name=&quot;pProtocol&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">139</span><span class="w">      </span><span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+<span class="linenos">140</span><span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="n">user_data_struct</span><span class="o">*</span><span class="w"> </span><span class="nf">get_user_data_point</span><span class="p">(</span><span class="n">protocol_struct</span><span class="o">*</span><span class="w"> </span><span class="n">pProtocol</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">141</span>
+<span class="linenos">142</span>
+<span class="linenos">143</span><span class="w">      </span><span class="c1">/// &lt;summary&gt;</span>
+<span class="linenos">144</span><span class="w">      </span><span class="c1">/// 提供给用户，直接操作数据，但是请注意不要超过数据长度，避免内存越界</span>
+<span class="linenos">145</span><span class="w">      </span><span class="c1">/// &lt;/summary&gt;</span>
+<span class="linenos">146</span><span class="w">      </span><span class="c1">/// &lt;param name=&quot;pProtocol&quot;&gt;&lt;/param&gt;</span>
+<span class="linenos">147</span><span class="w">      </span><span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+<span class="linenos">148</span><span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="n">message_struct</span><span class="o">*</span><span class="w"> </span><span class="nf">get_message_point</span><span class="p">(</span><span class="n">protocol_struct</span><span class="o">*</span><span class="w"> </span><span class="n">pProtocol</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">149</span>
+<span class="linenos">150</span><span class="w">  </span><span class="cp">#ifdef __cplusplus</span>
+<span class="linenos">151</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">152</span><span class="w">  </span><span class="cp">#endif</span>
+<span class="linenos">153</span>
+<span class="linenos">154</span><span class="w">  </span><span class="cp">#endif</span>
+</pre></div>
+</div>
+</div>
+<ol class="arabic simple">
+<li><p>通信协议依赖文件(CRC8,CRC16算法)(适用于C、C++)</p></li>
+</ol>
+<blockquote>
+<div><p>&gt;&gt; bsp_crc16.h</p>
+<p>&gt;&gt; bsp_crc16.c 可改为 bsp_crc16.cpp</p>
+<p>&gt;&gt; bsp_crc8.h</p>
+<p>&gt;&gt; bsp_crc8.c 可改为 bsp_crc8.cpp</p>
+<p>&gt;&gt; bsp_protocol.h</p>
+<p>&gt;&gt; bsp_protocol.c 可改为 bsp_protocol.cpp</p>
+<p>&gt;&gt; bsp_protocol_class.h</p>
+<p>&gt;&gt; bsp_protocol_class.cpp</p>
+</div></blockquote>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="SailorProject/readme.html" class="btn btn-neutral float-left" title="2. 项目日志" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="KeyBoard/keyboard.html" class="btn btn-neutral float-right" title="1. 机械键盘介绍(LLQ-82)" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2020/10/29,SEASKY.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

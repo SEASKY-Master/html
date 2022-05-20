@@ -1,77 +1,37 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="zh-CN" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>2. SEASKY-BMI088技术手册 &mdash; SEASKY  文档</title>
-  
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/translations.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
     <link rel="prev" title="1. SEASKY串口通信协议" href="uart_protocol.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../index.html" class="icon icon-home"> SEASKY
-          
-
-          
           </a>
-
-          
-            
-            
               <div class="version">
-                0.0.1
+                0.1.19
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="在文档中搜索" />
@@ -79,35 +39,29 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">实用开发工具</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">实用开发工具</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../rst_sphinx/rst_sphinx.html">1. reStructuredText快速入门</a></li>
 </ul>
-<p class="caption"><span class="caption-text">串口示波器&lt;Sailor Project&gt;</span></p>
+<p class="caption" role="heading"><span class="caption-text">ANSI颜色编码</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ansi/ansi.html">1. ANSI终端颜色编码</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">串口示波器&lt;Sailor Project&gt;</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="SailorProject/SailorProject.html">1. Sailor Project</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SailorProject/readme.html">2. 项目日志</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uart_protocol_v2.html">3. SEASKY串口通信协议V2</a></li>
 </ul>
-<p class="caption"><span class="caption-text">KeyBoard&lt;LLQ-82&gt;</span></p>
+<p class="caption" role="heading"><span class="caption-text">KeyBoard&lt;LLQ-82&gt;</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="KeyBoard/keyboard.html">1. 机械键盘介绍(LLQ-82)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="KeyBoard/keyboard_hw.html">2. 硬件设计指南(LLQ-82)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="KeyBoard/keyboard_sw.html">3. 软件设计指南(LLQ-82)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="KeyBoard/keyboard_struct.html">4. 机械键盘结构设计(LLQ-82)</a></li>
 </ul>
-<p class="caption"><span class="caption-text">SEASKY模块说明</span></p>
+<p class="caption" role="heading"><span class="caption-text">SEASKY模块说明</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="uart_protocol.html">1. SEASKY串口通信协议</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">2. SEASKY-BMI088技术手册</a><ul>
@@ -128,87 +82,46 @@
 </li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">SEASKY</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li><span class="section-number">2. </span>SEASKY-BMI088技术手册</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="../_sources/seasky_works/bmi088.rst.txt" rel="nofollow"> 查看页面源码</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="seasky-bmi088">
-<h1><span class="section-number">2. </span>SEASKY-BMI088技术手册<a class="headerlink" href="#seasky-bmi088" title="永久链接至标题">¶</a></h1>
-<div class="section" id="id1">
-<h2><span class="section-number">2.1. </span>渲染<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+             
+  <section id="seasky-bmi088">
+<h1><span class="section-number">2. </span>SEASKY-BMI088技术手册<a class="headerlink" href="#seasky-bmi088" title="永久链接至标题"></a></h1>
+<section id="id1">
+<h2><span class="section-number">2.1. </span>渲染<a class="headerlink" href="#id1" title="永久链接至标题"></a></h2>
 <blockquote>
 <div><a class="reference internal image-reference" href="../_images/bmi088_v2.png"><img alt="../_images/bmi088_v2.png" class="align-center" src="../_images/bmi088_v2.png" style="width: 800px;" /></a>
 </div></blockquote>
-</div>
-<div class="section" id="id2">
-<h2><span class="section-number">2.2. </span>实物<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+</section>
+<section id="id2">
+<h2><span class="section-number">2.2. </span>实物<a class="headerlink" href="#id2" title="永久链接至标题"></a></h2>
 <blockquote>
 <div><a class="reference internal image-reference" href="../_images/bmi088.jpg"><img alt="../_images/bmi088.jpg" class="align-center" src="../_images/bmi088.jpg" style="width: 800px;" /></a>
 </div></blockquote>
-</div>
-<div class="section" id="id3">
-<h2><span class="section-number">2.3. </span>Seasky BMI088开源地址<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+</section>
+<section id="id3">
+<h2><span class="section-number">2.3. </span>Seasky BMI088开源地址<a class="headerlink" href="#id3" title="永久链接至标题"></a></h2>
 <blockquote>
 <div><div class="admonition seealso">
 <p class="admonition-title">参见</p>
@@ -217,11 +130,11 @@
 </ul>
 </div>
 </div></blockquote>
-</div>
-<div class="section" id="id4">
-<h2><span class="section-number">2.4. </span>协议<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
-<div class="section" id="bmi08816">
-<h3><span class="section-number">2.4.1. </span>BMI088模块16位寄存器<a class="headerlink" href="#bmi08816" title="永久链接至标题">¶</a></h3>
+</section>
+<section id="id4">
+<h2><span class="section-number">2.4. </span>协议<a class="headerlink" href="#id4" title="永久链接至标题"></a></h2>
+<section id="bmi08816">
+<h3><span class="section-number">2.4.1. </span>BMI088模块16位寄存器<a class="headerlink" href="#bmi08816" title="永久链接至标题"></a></h3>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 25%" />
@@ -289,15 +202,15 @@
 <li><p>使用CAN发送数据 <code class="docutils literal notranslate"><span class="pre">0X8004</span></code> -&gt;关闭串口输出，CAN持续输出姿态数据</p></li>
 <li><p>使用USART发送数据 <code class="docutils literal notranslate"><span class="pre">0X4008</span></code> -&gt;在保证CAN未发送(bit15=0)的情况下，关闭CAN输出，USART持续输出，注意发送数据需要协议打包</p></li>
 </ul>
-</div>
-<div class="section" id="uart">
-<h3><span class="section-number">2.4.2. </span>UART方式通信协议<a class="headerlink" href="#uart" title="永久链接至标题">¶</a></h3>
-<div class="section" id="id5">
-<h4><span class="section-number">2.4.2.1. </span>通信要求<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h4>
+</section>
+<section id="uart">
+<h3><span class="section-number">2.4.2. </span>UART方式通信协议<a class="headerlink" href="#uart" title="永久链接至标题"></a></h3>
+<section id="id5">
+<h4><span class="section-number">2.4.2.1. </span>通信要求<a class="headerlink" href="#id5" title="永久链接至标题"></a></h4>
 <p>配置为波特率 <code class="docutils literal notranslate"><span class="pre">115200</span></code>，<code class="docutils literal notranslate"><span class="pre">8</span></code> 位数据位，<code class="docutils literal notranslate"><span class="pre">1</span></code> 位停止位，<code class="docutils literal notranslate"><span class="pre">无</span></code> 硬件流控，<code class="docutils literal notranslate"><span class="pre">无</span></code> 校验位,发送频率 <code class="docutils literal notranslate"><span class="pre">100Hz</span></code> .</p>
-</div>
-<div class="section" id="id6">
-<h4><span class="section-number">2.4.2.2. </span>接口协议说明<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h4>
+</section>
+<section id="id6">
+<h4><span class="section-number">2.4.2.2. </span>接口协议说明<a class="headerlink" href="#id6" title="永久链接至标题"></a></h4>
 <p>SEASKY通信协议-详情见 <code class="docutils literal notranslate"><span class="pre">串口协议文件</span></code></p>
 <ul>
 <li><p>BMI088端发送接口(float数据长度- 10)</p>
@@ -354,36 +267,36 @@
 <li><p>发送函数(该模块发送调用函数)</p></li>
 </ul>
 <div class="literal-block-wrapper docutils container" id="id7">
-<div class="code-block-caption"><span class="caption-text">bmi088 usart mode -&gt;send.</span><a class="headerlink" href="#id7" title="永久链接至代码">¶</a></div>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kt">void</span> <span class="nf">imu_usart_send</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-<span class="linenos"> 2</span><span class="p">{</span>
-<span class="linenos"> 3</span>    <span class="k">static</span> <span class="kt">uint8_t</span> <span class="n">send_data</span><span class="p">[</span><span class="mi">60</span><span class="p">];</span><span class="c1">//保证大于发送的数据</span>
-<span class="linenos"> 4</span>    <span class="kt">uint16_t</span> <span class="n">tx_flag</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">send_data_len</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<div class="code-block-caption"><span class="caption-text">bmi088 usart mode -&gt;send.</span><a class="headerlink" href="#id7" title="永久链接至代码"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kt">void</span><span class="w"> </span><span class="nf">imu_usart_send</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"></span>
+<span class="linenos"> 2</span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 3</span><span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">send_data</span><span class="p">[</span><span class="mi">60</span><span class="p">];</span><span class="c1">//保证大于发送的数据</span>
+<span class="linenos"> 4</span><span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">tx_flag</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">send_data_len</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
 <span class="linenos"> 5</span>
-<span class="linenos"> 6</span>    <span class="cm">/*发送寄存器赋值*/</span>
-<span class="linenos"> 7</span>    <span class="n">tx_flag</span> <span class="o">|=</span> <span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">res</span><span class="o">&amp;</span><span class="mh">0x01</span><span class="p">;</span>
-<span class="linenos"> 8</span>    <span class="n">tx_flag</span> <span class="o">|=</span> <span class="p">(</span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">cmd</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">)</span><span class="o">&amp;</span><span class="mh">0x01</span><span class="p">;</span>
+<span class="linenos"> 6</span><span class="w">    </span><span class="cm">/*发送寄存器赋值*/</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="w">    </span><span class="n">tx_flag</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">res</span><span class="o">&amp;</span><span class="mh">0x01</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w">    </span><span class="n">tx_flag</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="p">(</span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">cmd</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">)</span><span class="o">&amp;</span><span class="mh">0x01</span><span class="p">;</span><span class="w"></span>
 <span class="linenos"> 9</span>
-<span class="linenos">10</span>    <span class="cm">/*发送的数据赋值*/</span>
-<span class="linenos">11</span>    <span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">float_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">accel</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
-<span class="linenos">12</span>    <span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">float_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">accel</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
-<span class="linenos">13</span>    <span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">float_data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">accel</span><span class="p">.</span><span class="n">z</span><span class="p">;</span>
+<span class="linenos">10</span><span class="w">    </span><span class="cm">/*发送的数据赋值*/</span><span class="w"></span>
+<span class="linenos">11</span><span class="w">    </span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">float_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">accel</span><span class="p">.</span><span class="n">x</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">12</span><span class="w">    </span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">float_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">accel</span><span class="p">.</span><span class="n">y</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">13</span><span class="w">    </span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">float_data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">accel</span><span class="p">.</span><span class="n">z</span><span class="p">;</span><span class="w"></span>
 <span class="linenos">14</span>
-<span class="linenos">15</span>    <span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">float_data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">angle_rate</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
-<span class="linenos">16</span>    <span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">float_data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">angle_rate</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
-<span class="linenos">17</span>    <span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">float_data</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">angle_rate</span><span class="p">.</span><span class="n">z</span><span class="p">;</span>
+<span class="linenos">15</span><span class="w">    </span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">float_data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">angle_rate</span><span class="p">.</span><span class="n">x</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">16</span><span class="w">    </span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">float_data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">angle_rate</span><span class="p">.</span><span class="n">y</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">17</span><span class="w">    </span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">float_data</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">angle_rate</span><span class="p">.</span><span class="n">z</span><span class="p">;</span><span class="w"></span>
 <span class="linenos">18</span>
-<span class="linenos">19</span>    <span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">float_data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">gyro</span><span class="p">.</span><span class="n">yaw</span><span class="p">;</span>
-<span class="linenos">20</span>    <span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">float_data</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">continuous_gyro</span><span class="p">.</span><span class="n">yaw</span><span class="p">;</span>
+<span class="linenos">19</span><span class="w">    </span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">float_data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">gyro</span><span class="p">.</span><span class="n">yaw</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">20</span><span class="w">    </span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">float_data</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">continuous_gyro</span><span class="p">.</span><span class="n">yaw</span><span class="p">;</span><span class="w"></span>
 <span class="linenos">21</span>
-<span class="linenos">22</span>    <span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">float_data</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">gyro</span><span class="p">.</span><span class="n">pitch</span><span class="p">;</span>
-<span class="linenos">23</span>    <span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">float_data</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">gyro</span><span class="p">.</span><span class="n">roll</span><span class="p">;</span>
+<span class="linenos">22</span><span class="w">    </span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">float_data</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">gyro</span><span class="p">.</span><span class="n">pitch</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">23</span><span class="w">    </span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">float_data</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">gyro</span><span class="p">.</span><span class="n">roll</span><span class="p">;</span><span class="w"></span>
 <span class="linenos">24</span>
-<span class="linenos">25</span>    <span class="n">get_protocol_send_data</span><span class="p">(</span><span class="n">IMU_USART_TX_ID</span><span class="p">,</span><span class="n">tx_flag</span><span class="p">,</span><span class="o">&amp;</span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">float_data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-<span class="linenos">26</span>                          <span class="mi">10</span><span class="p">,</span><span class="n">send_data</span><span class="p">,</span><span class="o">&amp;</span><span class="n">send_data_len</span><span class="p">);</span>
+<span class="linenos">25</span><span class="w">    </span><span class="n">get_protocol_send_data</span><span class="p">(</span><span class="n">IMU_USART_TX_ID</span><span class="p">,</span><span class="n">tx_flag</span><span class="p">,</span><span class="o">&amp;</span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">ctr</span><span class="p">.</span><span class="n">float_data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"></span>
+<span class="linenos">26</span><span class="w">                          </span><span class="mi">10</span><span class="p">,</span><span class="n">send_data</span><span class="p">,</span><span class="o">&amp;</span><span class="n">send_data_len</span><span class="p">);</span><span class="w"></span>
 <span class="linenos">27</span>
-<span class="linenos">28</span>    <span class="n">usart_send</span><span class="p">(</span><span class="n">send_data</span><span class="p">,</span><span class="n">send_data_len</span><span class="p">);</span>
-<span class="linenos">29</span><span class="p">}</span>
+<span class="linenos">28</span><span class="w">    </span><span class="n">usart_send</span><span class="p">(</span><span class="n">send_data</span><span class="p">,</span><span class="n">send_data_len</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">29</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -415,33 +328,33 @@
 <li><p>寄存器数据打包函数</p></li>
 </ul>
 <div class="literal-block-wrapper docutils container" id="id8">
-<div class="code-block-caption"><span class="caption-text">seasky通用协议打包函数.</span><a class="headerlink" href="#id8" title="永久链接至代码">¶</a></div>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">get_protocol_send_data</span>
+<div class="code-block-caption"><span class="caption-text">seasky通用协议打包函数.</span><a class="headerlink" href="#id8" title="永久链接至代码"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">get_protocol_send_data</span><span class="w"></span>
 <span class="linenos">2</span><span class="p">(</span><span class="mh">0X0201</span><span class="p">,</span><span class="c1">//信号id</span>
-<span class="linenos">3</span> <span class="n">flag</span><span class="p">,</span><span class="c1">//16位寄存器</span>
-<span class="linenos">4</span> <span class="nb">NULL</span><span class="p">,</span><span class="c1">//待发送的float数据</span>
-<span class="linenos">5</span> <span class="mi">0</span><span class="p">,</span><span class="c1">//float的数据长度</span>
-<span class="linenos">6</span> <span class="n">usart6_tx_buf</span><span class="p">,</span><span class="c1">//待发送的数据帧</span>
-<span class="linenos">7</span> <span class="o">&amp;</span><span class="n">usart6_tx_length</span><span class="p">);</span><span class="c1">//待发送的数据帧长度</span>
+<span class="linenos">3</span><span class="w"> </span><span class="n">flag</span><span class="p">,</span><span class="c1">//16位寄存器</span>
+<span class="linenos">4</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="c1">//待发送的float数据</span>
+<span class="linenos">5</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="c1">//float的数据长度</span>
+<span class="linenos">6</span><span class="w"> </span><span class="n">usart6_tx_buf</span><span class="p">,</span><span class="c1">//待发送的数据帧</span>
+<span class="linenos">7</span><span class="w"> </span><span class="o">&amp;</span><span class="n">usart6_tx_length</span><span class="p">);</span><span class="c1">//待发送的数据帧长度</span>
 </pre></div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="can">
-<h3><span class="section-number">2.4.3. </span>CAN方式通信<a class="headerlink" href="#can" title="永久链接至标题">¶</a></h3>
+</section>
+</section>
+<section id="can">
+<h3><span class="section-number">2.4.3. </span>CAN方式通信<a class="headerlink" href="#can" title="永久链接至标题"></a></h3>
 <ul class="simple">
 <li><p>CAN波特率1MHZ、发送频率100Hz</p></li>
 <li><p>协议部分</p></li>
 <li><p>定义共用体变量</p></li>
 </ul>
 <div class="literal-block-wrapper docutils container" id="id9">
-<div class="code-block-caption"><span class="caption-text">float和uint8数据处理.</span><a class="headerlink" href="#id9" title="永久链接至代码">¶</a></div>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">typedef</span> <span class="k">union</span>
-<span class="linenos">2</span><span class="p">{</span>
-<span class="linenos">3</span>  <span class="kt">float</span> <span class="n">data_f</span><span class="p">;</span>
-<span class="linenos">4</span>  <span class="kt">uint8_t</span> <span class="n">data_u8</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
-<span class="linenos">5</span><span class="p">}</span><span class="n">data_f_u8</span><span class="p">;</span>
+<div class="code-block-caption"><span class="caption-text">float和uint8数据处理.</span><a class="headerlink" href="#id9" title="永久链接至代码"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">typedef</span><span class="w"> </span><span class="k">union</span><span class="w"></span>
+<span class="linenos">2</span><span class="p">{</span><span class="w"></span>
+<span class="linenos">3</span><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">data_f</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">4</span><span class="w">  </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">data_u8</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">5</span><span class="p">}</span><span class="n">data_f_u8</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -540,66 +453,66 @@
 </li>
 </ul>
 <div class="literal-block-wrapper docutils container" id="id10">
-<div class="code-block-caption"><span class="caption-text">使用can向bmi088发送控制数据.</span><a class="headerlink" href="#id10" title="永久链接至代码">¶</a></div>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cm">/*设定BMI088*/</span>
-<span class="linenos"> 2</span><span class="kt">void</span> <span class="nf">set_can_tx_bmi088</span><span class="p">(</span><span class="kt">uint16_t</span> <span class="n">flag</span><span class="p">)</span>
-<span class="linenos"> 3</span><span class="p">{</span>
-<span class="linenos"> 4</span>    <span class="n">CanTxMsg</span> <span class="n">TxMessage</span><span class="p">;</span>
-<span class="linenos"> 5</span>    <span class="n">TxMessage</span><span class="p">.</span><span class="n">StdId</span><span class="o">=</span> <span class="n">CAN_TX_BMI088_CMD</span><span class="p">;</span>
-<span class="linenos"> 6</span>    <span class="n">TxMessage</span><span class="p">.</span><span class="n">IDE</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos"> 7</span>    <span class="n">TxMessage</span><span class="p">.</span><span class="n">RTR</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos"> 8</span>    <span class="n">TxMessage</span><span class="p">.</span><span class="n">DLC</span> <span class="o">=</span> <span class="mi">8</span><span class="p">;</span>
-<span class="linenos"> 9</span>    <span class="n">TxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">flag</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">;</span>
-<span class="linenos">10</span>    <span class="n">TxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">flag</span><span class="p">;</span>
-<span class="linenos">11</span>    <span class="n">TxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">;</span>
-<span class="linenos">12</span>    <span class="n">TxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos">13</span>    <span class="n">TxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">;</span>
-<span class="linenos">14</span>    <span class="n">TxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos">15</span>    <span class="n">TxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">;</span>
-<span class="linenos">16</span>    <span class="n">TxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos">17</span>    <span class="n">CAN_Transmit</span><span class="p">(</span><span class="n">CAN2</span><span class="p">,</span><span class="o">&amp;</span><span class="n">TxMessage</span><span class="p">);</span>
-<span class="linenos">18</span>  <span class="p">}</span>
+<div class="code-block-caption"><span class="caption-text">使用can向bmi088发送控制数据.</span><a class="headerlink" href="#id10" title="永久链接至代码"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cm">/*设定BMI088*/</span><span class="w"></span>
+<span class="linenos"> 2</span><span class="kt">void</span><span class="w"> </span><span class="nf">set_can_tx_bmi088</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">flag</span><span class="p">)</span><span class="w"></span>
+<span class="linenos"> 3</span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="w">    </span><span class="n">CanTxMsg</span><span class="w"> </span><span class="n">TxMessage</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="n">TxMessage</span><span class="p">.</span><span class="n">StdId</span><span class="o">=</span><span class="w"> </span><span class="n">CAN_TX_BMI088_CMD</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="w">    </span><span class="n">TxMessage</span><span class="p">.</span><span class="n">IDE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="w">    </span><span class="n">TxMessage</span><span class="p">.</span><span class="n">RTR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w">    </span><span class="n">TxMessage</span><span class="p">.</span><span class="n">DLC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="n">TxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flag</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">    </span><span class="n">TxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flag</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">11</span><span class="w">    </span><span class="n">TxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">12</span><span class="w">    </span><span class="n">TxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">13</span><span class="w">    </span><span class="n">TxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">14</span><span class="w">    </span><span class="n">TxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">15</span><span class="w">    </span><span class="n">TxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">16</span><span class="w">    </span><span class="n">TxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">17</span><span class="w">    </span><span class="n">CAN_Transmit</span><span class="p">(</span><span class="n">CAN2</span><span class="p">,</span><span class="o">&amp;</span><span class="n">TxMessage</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">18</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
 </li>
 <li><p>BMI088模块端发送</p>
 <div class="literal-block-wrapper docutils container" id="id11">
-<div class="code-block-caption"><span class="caption-text">bmi088模块端的can发送函数.</span><a class="headerlink" href="#id11" title="永久链接至代码">¶</a></div>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kt">void</span> <span class="nf">CAN_Send_Msg</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">Send_StdId</span><span class="p">,</span><span class="kt">float</span> <span class="n">data1</span><span class="p">,</span><span class="kt">float</span> <span class="n">data2</span><span class="p">)</span>
-<span class="linenos"> 2</span><span class="p">{</span>
+<div class="code-block-caption"><span class="caption-text">bmi088模块端的can发送函数.</span><a class="headerlink" href="#id11" title="永久链接至代码"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kt">void</span><span class="w"> </span><span class="nf">CAN_Send_Msg</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">Send_StdId</span><span class="p">,</span><span class="kt">float</span><span class="w"> </span><span class="n">data1</span><span class="p">,</span><span class="kt">float</span><span class="w"> </span><span class="n">data2</span><span class="p">)</span><span class="w"></span>
+<span class="linenos"> 2</span><span class="p">{</span><span class="w"></span>
 <span class="linenos"> 3</span>
-<span class="linenos"> 4</span>    <span class="k">static</span> <span class="n">CAN_TxHeaderTypeDef</span>  <span class="n">Tx_Message</span><span class="p">;</span>
-<span class="linenos"> 5</span>    <span class="k">static</span> <span class="kt">uint8_t</span>              <span class="n">Tx_Buf</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>
-<span class="linenos"> 6</span>    <span class="kt">uint32_t</span> <span class="n">send_mail_box</span><span class="p">;</span>
-<span class="linenos"> 7</span>    <span class="n">data_f_u8</span> <span class="n">Tx_data</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+<span class="linenos"> 4</span><span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">CAN_TxHeaderTypeDef</span><span class="w">  </span><span class="n">Tx_Message</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w">              </span><span class="n">Tx_Buf</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">send_mail_box</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="w">    </span><span class="n">data_f_u8</span><span class="w"> </span><span class="n">Tx_data</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="w"></span>
 <span class="linenos"> 8</span>
-<span class="linenos"> 9</span>    <span class="n">Tx_Message</span><span class="p">.</span><span class="n">StdId</span> <span class="o">=</span> <span class="n">Send_StdId</span><span class="p">;</span><span class="c1">//设置id</span>
-<span class="linenos">10</span>    <span class="n">Tx_Message</span><span class="p">.</span><span class="n">IDE</span> <span class="o">=</span> <span class="n">CAN_ID_STD</span><span class="p">;</span>
-<span class="linenos">11</span>    <span class="n">Tx_Message</span><span class="p">.</span><span class="n">RTR</span> <span class="o">=</span> <span class="n">CAN_RTR_DATA</span><span class="p">;</span>
-<span class="linenos">12</span>    <span class="n">Tx_Message</span><span class="p">.</span><span class="n">DLC</span> <span class="o">=</span> <span class="mh">0x08</span><span class="p">;</span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="n">Tx_Message</span><span class="p">.</span><span class="n">StdId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Send_StdId</span><span class="p">;</span><span class="c1">//设置id</span>
+<span class="linenos">10</span><span class="w">    </span><span class="n">Tx_Message</span><span class="p">.</span><span class="n">IDE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CAN_ID_STD</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">11</span><span class="w">    </span><span class="n">Tx_Message</span><span class="p">.</span><span class="n">RTR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CAN_RTR_DATA</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">12</span><span class="w">    </span><span class="n">Tx_Message</span><span class="p">.</span><span class="n">DLC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x08</span><span class="p">;</span><span class="w"></span>
 <span class="linenos">13</span>
-<span class="linenos">14</span>    <span class="n">Tx_data</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">data_f</span><span class="o">=</span><span class="n">data1</span><span class="p">;</span>
-<span class="linenos">15</span>    <span class="n">Tx_data</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">data_f</span><span class="o">=</span><span class="n">data2</span><span class="p">;</span>
+<span class="linenos">14</span><span class="w">    </span><span class="n">Tx_data</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">data_f</span><span class="o">=</span><span class="n">data1</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">15</span><span class="w">    </span><span class="n">Tx_data</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">data_f</span><span class="o">=</span><span class="n">data2</span><span class="p">;</span><span class="w"></span>
 <span class="linenos">16</span>
-<span class="linenos">17</span>    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">8</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
-<span class="linenos">18</span>        <span class="p">{</span>
-<span class="linenos">19</span>            <span class="n">Tx_Buf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">Tx_data</span><span class="p">[</span><span class="n">i</span><span class="o">/</span><span class="mi">4</span><span class="p">].</span><span class="n">data_u8</span><span class="p">[</span><span class="n">i</span><span class="o">%</span><span class="mi">4</span><span class="p">];</span>
-<span class="linenos">20</span>        <span class="p">}</span>
-<span class="linenos">21</span>    <span class="k">while</span><span class="p">(</span><span class="n">HAL_CAN_AddTxMessage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hcan1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">Tx_Message</span><span class="p">,</span><span class="n">Tx_Buf</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">send_mail_box</span><span class="p">));</span>
-<span class="linenos">22</span><span class="p">}</span>
+<span class="linenos">17</span><span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="mi">8</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">18</span><span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">19</span><span class="w">            </span><span class="n">Tx_Buf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">Tx_data</span><span class="p">[</span><span class="n">i</span><span class="o">/</span><span class="mi">4</span><span class="p">].</span><span class="n">data_u8</span><span class="p">[</span><span class="n">i</span><span class="o">%</span><span class="mi">4</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">20</span><span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">21</span><span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="n">HAL_CAN_AddTxMessage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hcan1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Tx_Message</span><span class="p">,</span><span class="n">Tx_Buf</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">send_mail_box</span><span class="p">));</span><span class="w"></span>
+<span class="linenos">22</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
 </li>
 <li><p>BMI088模块端发送函数调用</p>
 <div class="literal-block-wrapper docutils container" id="id12">
-<div class="code-block-caption"><span class="caption-text">bmi088模块端的can发送数据.</span><a class="headerlink" href="#id12" title="永久链接至代码">¶</a></div>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">CAN_Send_Msg</span><span class="p">(</span><span class="mh">0x301</span><span class="p">,</span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">accel</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">angle_rate</span><span class="p">.</span><span class="n">x</span><span class="p">);</span>
-<span class="linenos">2</span><span class="n">CAN_Send_Msg</span><span class="p">(</span><span class="mh">0x302</span><span class="p">,</span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">accel</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">angle_rate</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
-<span class="linenos">3</span><span class="n">CAN_Send_Msg</span><span class="p">(</span><span class="mh">0x303</span><span class="p">,</span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">accel</span><span class="p">.</span><span class="n">z</span><span class="p">,</span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">angle_rate</span><span class="p">.</span><span class="n">z</span><span class="p">);</span>
-<span class="linenos">4</span><span class="n">CAN_Send_Msg</span><span class="p">(</span><span class="mh">0x304</span><span class="p">,</span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">gyro</span><span class="p">.</span><span class="n">yaw</span><span class="p">,</span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">continuous_gyro</span><span class="p">.</span><span class="n">yaw</span><span class="p">);</span>
-<span class="linenos">5</span><span class="n">CAN_Send_Msg</span><span class="p">(</span><span class="mh">0x305</span><span class="p">,</span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">gyro</span><span class="p">.</span><span class="n">pitch</span><span class="p">,</span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">gyro</span><span class="p">.</span><span class="n">roll</span><span class="p">);</span>
+<div class="code-block-caption"><span class="caption-text">bmi088模块端的can发送数据.</span><a class="headerlink" href="#id12" title="永久链接至代码"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">CAN_Send_Msg</span><span class="p">(</span><span class="mh">0x301</span><span class="p">,</span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">accel</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">angle_rate</span><span class="p">.</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">2</span><span class="n">CAN_Send_Msg</span><span class="p">(</span><span class="mh">0x302</span><span class="p">,</span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">accel</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">angle_rate</span><span class="p">.</span><span class="n">y</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">3</span><span class="n">CAN_Send_Msg</span><span class="p">(</span><span class="mh">0x303</span><span class="p">,</span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">accel</span><span class="p">.</span><span class="n">z</span><span class="p">,</span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">angle_rate</span><span class="p">.</span><span class="n">z</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">4</span><span class="n">CAN_Send_Msg</span><span class="p">(</span><span class="mh">0x304</span><span class="p">,</span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">gyro</span><span class="p">.</span><span class="n">yaw</span><span class="p">,</span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">continuous_gyro</span><span class="p">.</span><span class="n">yaw</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">5</span><span class="n">CAN_Send_Msg</span><span class="p">(</span><span class="mh">0x305</span><span class="p">,</span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">gyro</span><span class="p">.</span><span class="n">pitch</span><span class="p">,</span><span class="n">imu_ctr_t</span><span class="p">.</span><span class="n">imu_t</span><span class="o">-&gt;</span><span class="n">gyro</span><span class="p">.</span><span class="n">roll</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -608,13 +521,13 @@
 <ul>
 <li><p>可以使用枚举定义如下变量</p>
 <div class="literal-block-wrapper docutils container" id="id13">
-<div class="code-block-caption"><span class="caption-text">bmi088模块端的can发送数据.</span><a class="headerlink" href="#id13" title="永久链接至代码">¶</a></div>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span> <span class="n">CAN_RX_BMI088_X</span> <span class="o">=</span> <span class="mh">0X301</span><span class="p">,</span>
-<span class="linenos">2</span> <span class="n">CAN_RX_BMI088_Y</span> <span class="o">=</span> <span class="mh">0X302</span><span class="p">,</span>
-<span class="linenos">3</span> <span class="n">CAN_RX_BMI088_Z</span> <span class="o">=</span> <span class="mh">0X303</span><span class="p">,</span>
-<span class="linenos">4</span> <span class="n">CAN_RX_BMI088_YAW</span> <span class="o">=</span> <span class="mh">0X304</span><span class="p">,</span>
-<span class="linenos">5</span> <span class="n">CAN_RX_BMI088_GYRO</span> <span class="o">=</span> <span class="mh">0X305</span><span class="p">,</span>
-<span class="linenos">6</span> <span class="n">CAN_TX_BMI088_CMD</span> <span class="o">=</span> <span class="mh">0X306</span>
+<div class="code-block-caption"><span class="caption-text">bmi088模块端的can发送数据.</span><a class="headerlink" href="#id13" title="永久链接至代码"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="w"> </span><span class="n">CAN_RX_BMI088_X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0X301</span><span class="p">,</span><span class="w"></span>
+<span class="linenos">2</span><span class="w"> </span><span class="n">CAN_RX_BMI088_Y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0X302</span><span class="p">,</span><span class="w"></span>
+<span class="linenos">3</span><span class="w"> </span><span class="n">CAN_RX_BMI088_Z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0X303</span><span class="p">,</span><span class="w"></span>
+<span class="linenos">4</span><span class="w"> </span><span class="n">CAN_RX_BMI088_YAW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0X304</span><span class="p">,</span><span class="w"></span>
+<span class="linenos">5</span><span class="w"> </span><span class="n">CAN_RX_BMI088_GYRO</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0X305</span><span class="p">,</span><span class="w"></span>
+<span class="linenos">6</span><span class="w"> </span><span class="n">CAN_TX_BMI088_CMD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0X306</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -622,131 +535,131 @@
 <li><p>结构体</p></li>
 </ul>
 <div class="literal-block-wrapper docutils container" id="id14">
-<div class="code-block-caption"><span class="caption-text">bmi088模块端的can发送数据.</span><a class="headerlink" href="#id14" title="永久链接至代码">¶</a></div>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">typedef</span> <span class="k">union</span>
-<span class="linenos"> 2</span><span class="p">{</span>
-<span class="linenos"> 3</span>    <span class="kt">float</span> <span class="n">data_f</span><span class="p">;</span>
-<span class="linenos"> 4</span>    <span class="kt">uint8_t</span> <span class="n">data_u8</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
-<span class="linenos"> 5</span><span class="p">}</span> <span class="n">data_f_u8</span><span class="p">;</span>
-<span class="linenos"> 6</span><span class="k">typedef</span>  <span class="k">struct</span>
-<span class="linenos"> 7</span><span class="p">{</span>
-<span class="linenos"> 8</span>    <span class="k">struct</span>
-<span class="linenos"> 9</span>    <span class="p">{</span>
-<span class="linenos">10</span>        <span class="kt">uint8_t</span> <span class="nl">res</span><span class="p">:</span><span class="mi">1</span><span class="p">;</span><span class="c1">//&lt;&lt;0</span>
-<span class="linenos">11</span>        <span class="kt">uint8_t</span> <span class="nl">cmd</span><span class="p">:</span><span class="mi">1</span><span class="p">;</span><span class="c1">//&lt;&lt;1</span>
-<span class="linenos">12</span>        <span class="kt">uint8_t</span> <span class="nl">can_out_cmd</span><span class="p">:</span><span class="mi">1</span><span class="p">;</span><span class="c1">//&lt;&lt;2</span>
-<span class="linenos">13</span>        <span class="kt">uint8_t</span> <span class="nl">usart_out_cmd</span><span class="p">:</span><span class="mi">1</span><span class="p">;</span><span class="c1">//&lt;&lt;3</span>
-<span class="linenos">14</span>        <span class="kt">uint16_t</span> <span class="n">flag</span><span class="p">;</span>
-<span class="linenos">15</span>    <span class="p">}</span> <span class="n">imu_ctr</span><span class="p">;</span>
-<span class="linenos">16</span>    <span class="k">struct</span>
-<span class="linenos">17</span>    <span class="p">{</span>
-<span class="linenos">18</span>        <span class="kt">float</span> <span class="n">x</span><span class="p">;</span>
-<span class="linenos">19</span>        <span class="kt">float</span> <span class="n">y</span><span class="p">;</span>
-<span class="linenos">20</span>        <span class="kt">float</span> <span class="n">z</span><span class="p">;</span>
-<span class="linenos">21</span>    <span class="p">}</span> <span class="n">acc</span><span class="p">;</span>
-<span class="linenos">22</span>    <span class="k">struct</span>
-<span class="linenos">23</span>    <span class="p">{</span>
-<span class="linenos">24</span>        <span class="kt">float</span> <span class="n">x</span><span class="p">;</span>
-<span class="linenos">25</span>        <span class="kt">float</span> <span class="n">y</span><span class="p">;</span>
-<span class="linenos">26</span>        <span class="kt">float</span> <span class="n">z</span><span class="p">;</span>
-<span class="linenos">27</span>    <span class="p">}</span> <span class="n">rate</span><span class="p">;</span>
-<span class="linenos">28</span>    <span class="k">struct</span>
-<span class="linenos">29</span>    <span class="p">{</span>
-<span class="linenos">30</span>        <span class="kt">float</span> <span class="n">yaw</span><span class="p">;</span>
-<span class="linenos">31</span>        <span class="kt">float</span> <span class="n">pitch</span><span class="p">;</span>
-<span class="linenos">32</span>        <span class="kt">float</span> <span class="n">roll</span><span class="p">;</span>
-<span class="linenos">33</span>        <span class="kt">float</span> <span class="n">yaw_c</span><span class="p">;</span>
-<span class="linenos">34</span>    <span class="p">}</span> <span class="n">angle</span><span class="p">;</span>
-<span class="linenos">35</span><span class="p">}</span> <span class="n">seasky_bmi088</span><span class="p">;</span>
+<div class="code-block-caption"><span class="caption-text">bmi088模块端的can发送数据.</span><a class="headerlink" href="#id14" title="永久链接至代码"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">typedef</span><span class="w"> </span><span class="k">union</span><span class="w"></span>
+<span class="linenos"> 2</span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 3</span><span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">data_f</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">data_u8</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="p">}</span><span class="w"> </span><span class="n">data_f_u8</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="k">typedef</span><span class="w">  </span><span class="k">struct</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w">    </span><span class="k">struct</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">        </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">res</span><span class="o">:</span><span class="mi">1</span><span class="p">;</span><span class="c1">//&lt;&lt;0</span>
+<span class="linenos">11</span><span class="w">        </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">cmd</span><span class="o">:</span><span class="mi">1</span><span class="p">;</span><span class="c1">//&lt;&lt;1</span>
+<span class="linenos">12</span><span class="w">        </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">can_out_cmd</span><span class="o">:</span><span class="mi">1</span><span class="p">;</span><span class="c1">//&lt;&lt;2</span>
+<span class="linenos">13</span><span class="w">        </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">usart_out_cmd</span><span class="o">:</span><span class="mi">1</span><span class="p">;</span><span class="c1">//&lt;&lt;3</span>
+<span class="linenos">14</span><span class="w">        </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">flag</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">15</span><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="n">imu_ctr</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">16</span><span class="w">    </span><span class="k">struct</span><span class="w"></span>
+<span class="linenos">17</span><span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">18</span><span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">x</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">19</span><span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">y</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">20</span><span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">z</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">21</span><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="n">acc</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">22</span><span class="w">    </span><span class="k">struct</span><span class="w"></span>
+<span class="linenos">23</span><span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">24</span><span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">x</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">25</span><span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">y</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">26</span><span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">z</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">27</span><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="n">rate</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">28</span><span class="w">    </span><span class="k">struct</span><span class="w"></span>
+<span class="linenos">29</span><span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">30</span><span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">yaw</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">31</span><span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">pitch</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">32</span><span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">roll</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">33</span><span class="w">        </span><span class="kt">float</span><span class="w"> </span><span class="n">yaw_c</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">34</span><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="n">angle</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">35</span><span class="p">}</span><span class="w"> </span><span class="n">seasky_bmi088</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
 <ul>
 <li><p>数据解读</p>
 <div class="literal-block-wrapper docutils container" id="id15">
-<div class="code-block-caption"><span class="caption-text">bmi088模块端的can发送数据.</span><a class="headerlink" href="#id15" title="永久链接至代码">¶</a></div>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kt">void</span> <span class="nf">get_bmi088</span><span class="p">(</span><span class="kt">float</span> <span class="o">*</span><span class="n">imu_1</span><span class="p">,</span><span class="kt">float</span> <span class="o">*</span><span class="n">imu_2</span><span class="p">,</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data</span><span class="p">)</span>
-<span class="linenos"> 2</span><span class="p">{</span>
-<span class="linenos"> 3</span>   <span class="n">data_f_u8</span> <span class="n">rx_buf</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
-<span class="linenos"> 4</span>   <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">8</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
-<span class="linenos"> 5</span>       <span class="p">{</span>
-<span class="linenos"> 6</span>           <span class="n">rx_buf</span><span class="p">[</span><span class="n">i</span><span class="o">/</span><span class="mi">4</span><span class="p">].</span><span class="n">data_u8</span><span class="p">[</span><span class="n">i</span><span class="o">%</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
-<span class="linenos"> 7</span>       <span class="p">}</span>
-<span class="linenos"> 8</span>   <span class="o">*</span><span class="n">imu_1</span> <span class="o">=</span> <span class="n">rx_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">data_f</span><span class="p">;</span>
-<span class="linenos"> 9</span>   <span class="o">*</span><span class="n">imu_2</span> <span class="o">=</span> <span class="n">rx_buf</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">data_f</span><span class="p">;</span>
-<span class="linenos">10</span><span class="p">}</span>
+<div class="code-block-caption"><span class="caption-text">bmi088模块端的can发送数据.</span><a class="headerlink" href="#id15" title="永久链接至代码"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kt">void</span><span class="w"> </span><span class="nf">get_bmi088</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">imu_1</span><span class="p">,</span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">imu_2</span><span class="p">,</span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">)</span><span class="w"></span>
+<span class="linenos"> 2</span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 3</span><span class="w">   </span><span class="n">data_f_u8</span><span class="w"> </span><span class="n">rx_buf</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="w">   </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="mi">8</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="w">       </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="w">           </span><span class="n">rx_buf</span><span class="p">[</span><span class="n">i</span><span class="o">/</span><span class="mi">4</span><span class="p">].</span><span class="n">data_u8</span><span class="p">[</span><span class="n">i</span><span class="o">%</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="w">       </span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w">   </span><span class="o">*</span><span class="n">imu_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rx_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">data_f</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="w">   </span><span class="o">*</span><span class="n">imu_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rx_buf</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">data_f</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">10</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
 </li>
 <li><p>对应到具体数据</p>
 <div class="literal-block-wrapper docutils container" id="id16">
-<div class="code-block-caption"><span class="caption-text">can接收中断调用.</span><a class="headerlink" href="#id16" title="永久链接至代码">¶</a></div>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span> <span class="kt">void</span> <span class="nf">get_moto_info2</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-<span class="linenos"> 2</span> <span class="p">{</span>
-<span class="linenos"> 3</span>     <span class="n">CanRxMsg</span> <span class="n">RxMessage</span><span class="p">;</span>
-<span class="linenos"> 4</span>     <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
-<span class="linenos"> 5</span>     <span class="n">CAN_Receive</span><span class="p">(</span><span class="n">CAN2</span><span class="p">,</span><span class="n">CAN_FIFO0</span><span class="p">,</span><span class="o">&amp;</span><span class="n">RxMessage</span><span class="p">);</span>
-<span class="linenos"> 6</span>     <span class="k">switch</span><span class="p">(</span><span class="n">RxMessage</span><span class="p">.</span><span class="n">StdId</span><span class="p">)</span>
-<span class="linenos"> 7</span>         <span class="p">{</span>
-<span class="linenos"> 8</span>         <span class="k">case</span> <span class="nl">CAN_RX_BMI088_X</span> <span class="p">:</span>
-<span class="linenos"> 9</span>             <span class="n">get_bmi088x</span><span class="p">(</span><span class="n">RxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">);</span>
-<span class="linenos">10</span>             <span class="k">break</span><span class="p">;</span>
-<span class="linenos">11</span>         <span class="k">case</span> <span class="nl">CAN_RX_BMI088_Y</span> <span class="p">:</span>
-<span class="linenos">12</span>             <span class="n">get_bmi088y</span><span class="p">(</span><span class="n">RxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">);</span>
-<span class="linenos">13</span>             <span class="k">break</span><span class="p">;</span>
-<span class="linenos">14</span>         <span class="k">case</span> <span class="nl">CAN_RX_BMI088_Z</span> <span class="p">:</span>
-<span class="linenos">15</span>             <span class="n">get_bmi088z</span><span class="p">(</span><span class="n">RxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">);</span>
-<span class="linenos">16</span>             <span class="k">break</span><span class="p">;</span>
-<span class="linenos">17</span>         <span class="k">case</span> <span class="nl">CAN_RX_BMI088_YAW</span> <span class="p">:</span>
-<span class="linenos">18</span>             <span class="n">get_bmi088_yaw</span><span class="p">(</span><span class="n">RxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">);</span>
-<span class="linenos">19</span>             <span class="k">break</span><span class="p">;</span>
-<span class="linenos">20</span>         <span class="k">case</span> <span class="nl">CAN_RX_BMI088_GYRO</span><span class="p">:</span>
-<span class="linenos">21</span>             <span class="n">get_bmi088_angle</span><span class="p">(</span><span class="n">RxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">);</span>
-<span class="linenos">22</span>             <span class="k">break</span><span class="p">;</span>
-<span class="linenos">23</span>         <span class="k">default</span><span class="o">:</span>
-<span class="linenos">24</span>             <span class="p">;</span>
-<span class="linenos">25</span>             <span class="k">break</span><span class="p">;</span>
-<span class="linenos">26</span>         <span class="p">}</span>
-<span class="linenos">27</span> <span class="p">}</span>
+<div class="code-block-caption"><span class="caption-text">can接收中断调用.</span><a class="headerlink" href="#id16" title="永久链接至代码"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">get_moto_info2</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"></span>
+<span class="linenos"> 2</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 3</span><span class="w">     </span><span class="n">CanRxMsg</span><span class="w"> </span><span class="n">RxMessage</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="w">     </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="w">     </span><span class="n">CAN_Receive</span><span class="p">(</span><span class="n">CAN2</span><span class="p">,</span><span class="n">CAN_FIFO0</span><span class="p">,</span><span class="o">&amp;</span><span class="n">RxMessage</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="w">     </span><span class="k">switch</span><span class="p">(</span><span class="n">RxMessage</span><span class="p">.</span><span class="n">StdId</span><span class="p">)</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="w">         </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w">         </span><span class="k">case</span><span class="w"> </span><span class="nl">CAN_RX_BMI088_X</span><span class="w"> </span><span class="p">:</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="w">             </span><span class="n">get_bmi088x</span><span class="p">(</span><span class="n">RxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">             </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">11</span><span class="w">         </span><span class="k">case</span><span class="w"> </span><span class="nl">CAN_RX_BMI088_Y</span><span class="w"> </span><span class="p">:</span><span class="w"></span>
+<span class="linenos">12</span><span class="w">             </span><span class="n">get_bmi088y</span><span class="p">(</span><span class="n">RxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">13</span><span class="w">             </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">14</span><span class="w">         </span><span class="k">case</span><span class="w"> </span><span class="nl">CAN_RX_BMI088_Z</span><span class="w"> </span><span class="p">:</span><span class="w"></span>
+<span class="linenos">15</span><span class="w">             </span><span class="n">get_bmi088z</span><span class="p">(</span><span class="n">RxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">16</span><span class="w">             </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">17</span><span class="w">         </span><span class="k">case</span><span class="w"> </span><span class="nl">CAN_RX_BMI088_YAW</span><span class="w"> </span><span class="p">:</span><span class="w"></span>
+<span class="linenos">18</span><span class="w">             </span><span class="n">get_bmi088_yaw</span><span class="p">(</span><span class="n">RxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">19</span><span class="w">             </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">20</span><span class="w">         </span><span class="k">case</span><span class="w"> </span><span class="nl">CAN_RX_BMI088_GYRO</span><span class="p">:</span><span class="w"></span>
+<span class="linenos">21</span><span class="w">             </span><span class="n">get_bmi088_angle</span><span class="p">(</span><span class="n">RxMessage</span><span class="p">.</span><span class="n">Data</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">22</span><span class="w">             </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">23</span><span class="w">         </span><span class="k">default</span><span class="o">:</span><span class="w"></span>
+<span class="linenos">24</span><span class="w">             </span><span class="p">;</span><span class="w"></span>
+<span class="linenos">25</span><span class="w">             </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">26</span><span class="w">         </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">27</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
 <div class="literal-block-wrapper docutils container" id="id17">
-<div class="code-block-caption"><span class="caption-text">can接收中断调用.</span><a class="headerlink" href="#id17" title="永久链接至代码">¶</a></div>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span> <span class="kt">void</span> <span class="nf">get_bmi088x</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data</span><span class="p">)</span>
-<span class="linenos"> 2</span> <span class="p">{</span>
-<span class="linenos"> 3</span>     <span class="n">get_bmi088</span><span class="p">(</span><span class="o">&amp;</span><span class="n">imu_rm</span><span class="p">.</span><span class="n">acc</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="o">&amp;</span><span class="n">imu_rm</span><span class="p">.</span><span class="n">rate</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="n">data</span><span class="p">);</span>
-<span class="linenos"> 4</span> <span class="p">}</span>
-<span class="linenos"> 5</span> <span class="kt">void</span> <span class="nf">get_bmi088y</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data</span><span class="p">)</span>
-<span class="linenos"> 6</span> <span class="p">{</span>
-<span class="linenos"> 7</span>     <span class="n">get_bmi088</span><span class="p">(</span><span class="o">&amp;</span><span class="n">imu_rm</span><span class="p">.</span><span class="n">acc</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="o">&amp;</span><span class="n">imu_rm</span><span class="p">.</span><span class="n">rate</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="n">data</span><span class="p">);</span>
-<span class="linenos"> 8</span> <span class="p">}</span>
-<span class="linenos"> 9</span> <span class="kt">void</span> <span class="nf">get_bmi088z</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data</span><span class="p">)</span>
-<span class="linenos">10</span> <span class="p">{</span>
-<span class="linenos">11</span>     <span class="n">get_bmi088</span><span class="p">(</span><span class="o">&amp;</span><span class="n">imu_rm</span><span class="p">.</span><span class="n">acc</span><span class="p">.</span><span class="n">z</span><span class="p">,</span><span class="o">&amp;</span><span class="n">imu_rm</span><span class="p">.</span><span class="n">rate</span><span class="p">.</span><span class="n">z</span><span class="p">,</span><span class="n">data</span><span class="p">);</span>
-<span class="linenos">12</span> <span class="p">}</span>
-<span class="linenos">13</span> <span class="kt">void</span> <span class="nf">get_bmi088_yaw</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data</span><span class="p">)</span>
-<span class="linenos">14</span> <span class="p">{</span>
-<span class="linenos">15</span>     <span class="n">get_bmi088</span><span class="p">(</span><span class="o">&amp;</span><span class="n">imu_rm</span><span class="p">.</span><span class="n">angle</span><span class="p">.</span><span class="n">yaw</span><span class="p">,</span><span class="o">&amp;</span><span class="n">imu_rm</span><span class="p">.</span><span class="n">angle</span><span class="p">.</span><span class="n">yaw_c</span><span class="p">,</span><span class="n">data</span><span class="p">);</span>
-<span class="linenos">16</span> <span class="p">}</span>
-<span class="linenos">17</span> <span class="kt">void</span> <span class="nf">get_bmi088_angle</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data</span><span class="p">)</span>
-<span class="linenos">18</span> <span class="p">{</span>
-<span class="linenos">19</span>     <span class="n">get_bmi088</span><span class="p">(</span><span class="o">&amp;</span><span class="n">imu_rm</span><span class="p">.</span><span class="n">angle</span><span class="p">.</span><span class="n">pitch</span><span class="p">,</span><span class="o">&amp;</span><span class="n">imu_rm</span><span class="p">.</span><span class="n">angle</span><span class="p">.</span><span class="n">roll</span><span class="p">,</span><span class="n">data</span><span class="p">);</span>
-<span class="linenos">20</span> <span class="p">}</span>
+<div class="code-block-caption"><span class="caption-text">can接收中断调用.</span><a class="headerlink" href="#id17" title="永久链接至代码"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">get_bmi088x</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">)</span><span class="w"></span>
+<span class="linenos"> 2</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 3</span><span class="w">     </span><span class="n">get_bmi088</span><span class="p">(</span><span class="o">&amp;</span><span class="n">imu_rm</span><span class="p">.</span><span class="n">acc</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="o">&amp;</span><span class="n">imu_rm</span><span class="p">.</span><span class="n">rate</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="n">data</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">get_bmi088y</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">)</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="w">     </span><span class="n">get_bmi088</span><span class="p">(</span><span class="o">&amp;</span><span class="n">imu_rm</span><span class="p">.</span><span class="n">acc</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="o">&amp;</span><span class="n">imu_rm</span><span class="p">.</span><span class="n">rate</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="n">data</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">get_bmi088z</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">10</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">11</span><span class="w">     </span><span class="n">get_bmi088</span><span class="p">(</span><span class="o">&amp;</span><span class="n">imu_rm</span><span class="p">.</span><span class="n">acc</span><span class="p">.</span><span class="n">z</span><span class="p">,</span><span class="o">&amp;</span><span class="n">imu_rm</span><span class="p">.</span><span class="n">rate</span><span class="p">.</span><span class="n">z</span><span class="p">,</span><span class="n">data</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">12</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">13</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">get_bmi088_yaw</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">14</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">15</span><span class="w">     </span><span class="n">get_bmi088</span><span class="p">(</span><span class="o">&amp;</span><span class="n">imu_rm</span><span class="p">.</span><span class="n">angle</span><span class="p">.</span><span class="n">yaw</span><span class="p">,</span><span class="o">&amp;</span><span class="n">imu_rm</span><span class="p">.</span><span class="n">angle</span><span class="p">.</span><span class="n">yaw_c</span><span class="p">,</span><span class="n">data</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">16</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">17</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">get_bmi088_angle</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">18</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">19</span><span class="w">     </span><span class="n">get_bmi088</span><span class="p">(</span><span class="o">&amp;</span><span class="n">imu_rm</span><span class="p">.</span><span class="n">angle</span><span class="p">.</span><span class="n">pitch</span><span class="p">,</span><span class="o">&amp;</span><span class="n">imu_rm</span><span class="p">.</span><span class="n">angle</span><span class="p">.</span><span class="n">roll</span><span class="p">,</span><span class="n">data</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">20</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
 </li>
 <li><p>接收端发送控制数据(寄存器赋值处理不完整)</p>
 <div class="literal-block-wrapper docutils container" id="id18">
-<div class="code-block-caption"><span class="caption-text">can发送数据.</span><a class="headerlink" href="#id18" title="永久链接至代码">¶</a></div>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span> <span class="kt">void</span> <span class="nf">imu_set</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-<span class="linenos">2</span> <span class="p">{</span>
-<span class="linenos">3</span>     <span class="n">imu_rm</span><span class="p">.</span><span class="n">imu_ctr</span><span class="p">.</span><span class="n">flag</span> <span class="o">|=</span> <span class="n">imu_rm</span><span class="p">.</span><span class="n">imu_ctr</span><span class="p">.</span><span class="n">res</span><span class="o">&amp;</span><span class="mh">0x01</span><span class="p">;</span>
-<span class="linenos">4</span>     <span class="n">imu_rm</span><span class="p">.</span><span class="n">imu_ctr</span><span class="p">.</span><span class="n">flag</span> <span class="o">|=</span> <span class="p">(</span><span class="n">imu_rm</span><span class="p">.</span><span class="n">imu_ctr</span><span class="p">.</span><span class="n">cmd</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">)</span><span class="o">&amp;</span><span class="mh">0x01</span><span class="p">;</span>
-<span class="linenos">5</span>     <span class="n">set_can_tx_bmi088</span><span class="p">(</span><span class="n">imu_rm</span><span class="p">.</span><span class="n">imu_ctr</span><span class="p">.</span><span class="n">flag</span><span class="p">);</span>
-<span class="linenos">6</span> <span class="p">}</span>
+<div class="code-block-caption"><span class="caption-text">can发送数据.</span><a class="headerlink" href="#id18" title="永久链接至代码"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">imu_set</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">2</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">3</span><span class="w">     </span><span class="n">imu_rm</span><span class="p">.</span><span class="n">imu_ctr</span><span class="p">.</span><span class="n">flag</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">imu_rm</span><span class="p">.</span><span class="n">imu_ctr</span><span class="p">.</span><span class="n">res</span><span class="o">&amp;</span><span class="mh">0x01</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">4</span><span class="w">     </span><span class="n">imu_rm</span><span class="p">.</span><span class="n">imu_ctr</span><span class="p">.</span><span class="n">flag</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="p">(</span><span class="n">imu_rm</span><span class="p">.</span><span class="n">imu_ctr</span><span class="p">.</span><span class="n">cmd</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">)</span><span class="o">&amp;</span><span class="mh">0x01</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">5</span><span class="w">     </span><span class="n">set_can_tx_bmi088</span><span class="p">(</span><span class="n">imu_rm</span><span class="p">.</span><span class="n">imu_ctr</span><span class="p">.</span><span class="n">flag</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">6</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -754,55 +667,39 @@
 </ul>
 </li>
 </ul>
-</div>
-</div>
-</div>
+<p>pip install sphinx-doc –default-timeout=100 -i <a class="reference external" href="https://pypi.tuna.tsinghua.edu.cn/simple/">https://pypi.tuna.tsinghua.edu.cn/simple/</a></p>
+</section>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="uart_protocol.html" class="btn btn-neutral float-left" title="1. SEASKY串口通信协议" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; 版权所有 2021/10/15,SEASKY.
-
-    </p>
+    <p>&#169; 版权所有 2020/10/29,SEASKY.</p>
   </div>
-    
-    
-    
-    利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
-    
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
-    
-    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
